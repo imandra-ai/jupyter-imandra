@@ -183,18 +183,20 @@ let handler wireio iopub mtype  =
           ( "execution_count", `Int  !counter  ) ]
     in
     match mtype with
-      | "kernel_info_request" -> "kernel_info_reply" , reply_kernel_info
-      | "comm_open"           -> "comm_close"        , reply_comm
-      | "execute_request"     -> "execute_result"    , reply_execute
-      | _ -> failwith ("bad mtype: " ^ mtype)
+      | "kernel_info_request" -> Some ("kernel_info_reply", reply_kernel_info)
+      | "comm_open"           -> Some ("comm_close"       , reply_comm)
+      | "execute_request"     -> Some ("execute_result"   , reply_execute)
+      | _ -> print_endline ("bad mtype: " ^ mtype); None
 
 let handle wireio iopub socket =
     let zmqids, msg = WireIO.read_msg wireio socket in
     let mtype = msg.WireIO.header |> J.from_string |> JU.member "msg_type" |> JU.to_string in
-    let rtype, handler = handler wireio iopub mtype in
-    let content = handler msg in
-    let rmsg = WireIO.mk_message wireio rtype msg.WireIO.header content in
-    WireIO.send_msg wireio socket ~zmqids:zmqids rmsg
+    match handler wireio iopub mtype with
+      | None -> ()
+      | Some (rtype, handler) ->
+        let content = handler msg in
+        let rmsg = WireIO.mk_message wireio rtype msg.WireIO.header content in
+        WireIO.send_msg wireio socket ~zmqids:zmqids rmsg
 
 let () =
     Exec.init ();

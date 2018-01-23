@@ -8,3 +8,6 @@ build:
 
 clean:
 	$(OCAMLBUILD) -clean
+
+install-kernel:
+	jupyter kernelspec install `pwd` --user

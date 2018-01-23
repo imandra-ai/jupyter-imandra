@@ -1,0 +1,5 @@
+{
+    "argv": ["./jucaml.byte", "{connection_file}"],
+    "display_name": "JUcaml",
+    "language": "OCaml"
+}
