@@ -19,7 +19,7 @@ clean:
 	$(OCAMLBUILD) -clean
 
 install-kernel:
-	jupyter kernelspec install `pwd`/kernel --user
+	jupyter kernelspec install `pwd`/jupyter_imandra/ --user
 
 reindent:
 	@which ocp-indent || ( echo "require ocp-indent" ; exit 1 )
