@@ -4,7 +4,7 @@ OCAMLBUILD=ocamlbuild -use-ocamlfind
 all: build
 
 build:
-	$(OCAMLBUILD) jucaml.byte
+	$(OCAMLBUILD) jymandra.byte
 
 clean:
 	$(OCAMLBUILD) -clean
