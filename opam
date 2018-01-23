@@ -1,0 +1,29 @@
+opam-version: "1.2"
+name: "jupyter_imandra"
+version: "0.0.1"
+maintainer: "Simon Cruanes <smon@aestheticintegration.com>"
+authors: ["Simon Cruanes <simon@aestheticintegration.com>" "Kostya"]
+homepage: "http://www.imandra.ai/"
+bug-reports: "Simon <simon@aestheticintegration.com>"
+license: "Commercial/Restricted/Confidential"
+dev-repo: "https://github.com/AestheticIntegration/jupyter_imandra"
+build: [
+  [make "build"]
+]
+install: [
+  ["cp" "jymandra.byte" "%{bin}%/jymandra"]
+  [make "install-kernel"]
+]
+remove: ["rm" "%{bin}%/jymandra"]
+depends: [
+  "ocamlfind" {build}
+  "zmq"
+  "nocrypto"
+  "imandra"
+  "yojson"
+  "hex"
+  "base-unix"
+  "ocaml-compiler-libs"
+  "uuidm"
+]
+
