@@ -1,5 +1,5 @@
 {
-    "argv": ["./jymandra.byte", "{connection_file}"],
+    "argv": ["jymandra", "{connection_file}"],
     "display_name": "Imandra",
     "language": "imandra"
 }

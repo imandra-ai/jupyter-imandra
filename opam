@@ -11,10 +11,9 @@ build: [
   [make "build"]
 ]
 install: [
-  ["cp" "jymandra.byte" "%{bin}%/jymandra"]
-  [make "install-kernel"]
+  [make "install" "install-kernel"]
 ]
-remove: ["rm" "%{bin}%/jymandra"]
+remove: [make "uninstall"]
 depends: [
   "ocamlfind" {build}
   "zmq"

@@ -11,7 +11,7 @@ as well as the `imandra` library and Z3.
 # Installation 
 Check in which directories your Jupyter looks for kernels.
 
-    $ make install-kernel 
+    $ make install install-kernel 
 
 
 Start a web notebook with:

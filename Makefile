@@ -6,11 +6,20 @@ all: build
 build:
 	$(OCAMLBUILD) src/jymandra.byte
 
+BIN?=/usr/bin/
+
+install: build
+	@echo "install binary into $(BIN)"
+	cp jymandra.byte $(BIN)/jymandra
+
+uninstall:
+	rm $(BIN)/jymandra
+
 clean:
 	$(OCAMLBUILD) -clean
 
 install-kernel:
-	jupyter kernelspec install `pwd` --user
+	jupyter kernelspec install `pwd`/kernel --user
 
 reindent:
 	@which ocp-indent || ( echo "require ocp-indent" ; exit 1 )
