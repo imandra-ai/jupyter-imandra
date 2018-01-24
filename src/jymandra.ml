@@ -2,10 +2,10 @@
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
-module I = Imandra_top
+module I_top = Toplevel (* imandra toplevel *)
 
 module Exec = struct
-  let init () = I.do_init ()
+  let init () = I_top.do_init ()
 
   let bigflush () =
     Format.pp_print_flush Format.std_formatter ();
@@ -65,7 +65,7 @@ module Exec = struct
   let exec code (callback:string -> unit) : unit =
     wrap_capture callback @@ fun () ->
       wrap_exec_exn ()      @@ fun () ->
-      I.eval_string code
+      I_top.eval_string code
 
   let exec_lwt (code:string) : string Lwt.t =
     let r = ref "" in
