@@ -16,7 +16,6 @@ module Exec = struct
     let open Unix in
     CCIO.File.with_temp ~prefix:"jupyter-imandra" ~suffix:".capture"
       (fun capture ->
-         print_endline @@ "capture file " ^ capture;
          let fd = openfile capture [ O_RDWR; O_TRUNC; O_CREAT ] 0o600  in
          let tmp_cout, tmp_cerr = dup stdout, dup stderr in
          dup2 fd stdout;
@@ -42,7 +41,6 @@ module Exec = struct
          let _ = read  fd buffer 0 sz in
          close fd;
          callback buffer;
-         print_endline @@ "done with " ^ capture;
          result)
 
   (* TODO: wow ??? *)
