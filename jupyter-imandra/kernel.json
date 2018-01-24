@@ -2,9 +2,7 @@
     "argv": [
       "jymandra",
       "--connection-file",
-      "{connection_file}",
-      "--log",
-      "/tmp/log.txt"
+      "{connection_file}"
     ],
     "display_name": "Imandra",
     "language": "imandra"
