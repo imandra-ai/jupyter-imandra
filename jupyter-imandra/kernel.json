@@ -1,0 +1,11 @@
+{
+    "argv": [
+      "jymandra",
+      "--connection-file",
+      "{connection_file}",
+      "--log",
+      "/tmp/log.txt"
+    ],
+    "display_name": "Imandra",
+    "language": "imandra"
+}

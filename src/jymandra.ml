@@ -1,20 +1,11 @@
-module J  = Yojson.Basic
-module JU = Yojson.Basic.Util
 
+module C = Jupyter_kernel.Client
+module Main = Jupyter_kernel.Client_main
+module Log = Jupyter_kernel.Log
+module I = Imandra_top
 
 module Exec = struct
-  let init () =
-    let ppf = Format.str_formatter in
-    (* Next line forces loading of the Topdirs module and population of toplevel directives *)
-    try Topdirs.load_file ppf "" |> ignore with _ -> ();
-      Compenv.readenv ppf Compenv.Before_args;
-      Compenv.readenv ppf Compenv.Before_link;
-      Toploop.set_paths ();
-      begin
-        try Toploop.initialize_toplevel_env ()
-        with Env.Error _ | Typetexp.Error _ as exn ->
-          Location.report_exception ppf exn; exit 2
-      end
+  let init () = I.do_init ()
 
   let bigflush () =
     Format.pp_print_flush Format.std_formatter ();
@@ -23,32 +14,38 @@ module Exec = struct
 
   let wrap_capture callback f =
     let open Unix in
-    let fd = openfile  "capture" [ O_RDWR; O_TRUNC; O_CREAT ] 0o600  in
-    let tmp_cout, tmp_cerr = dup stdout, dup stderr in
-    dup2 fd stdout;
-    dup2 fd stderr;
-    let reset () =
-      bigflush ();
-      dup2 tmp_cout stdout;
-      dup2 tmp_cerr stderr;
-    in
-    let result = try f () with ex -> begin
-        reset ();
-        close fd;
-        print_endline "wrap_capture exception here";
-        flush_all ();
-        raise ex
-      end in
-    reset ();
-    let sz = (fstat fd).st_size in
-    let buffer = Bytes.create sz in
-    let _ = lseek fd 0 SEEK_SET in
-    let _ = read  fd buffer 0 sz in
-    close fd;
-    callback buffer;
-    result
+    CCIO.File.with_temp ~prefix:"jupyter-imandra" ~suffix:".capture"
+      (fun capture ->
+         print_endline @@ "capture file " ^ capture;
+         let fd = openfile capture [ O_RDWR; O_TRUNC; O_CREAT ] 0o600  in
+         let tmp_cout, tmp_cerr = dup stdout, dup stderr in
+         dup2 fd stdout;
+         dup2 fd stderr;
+         let reset () =
+           bigflush ();
+           dup2 tmp_cout stdout;
+           dup2 tmp_cerr stderr;
+         in
+         let result =
+           try f ()
+           with ex ->
+             reset ();
+             close fd;
+             print_endline "wrap_capture exception here";
+             flush_all ();
+             raise ex
+         in
+         reset ();
+         let sz = (fstat fd).st_size in
+         let buffer = Bytes.create sz in
+         let _ = lseek fd 0 SEEK_SET in
+         let _ = read  fd buffer 0 sz in
+         close fd;
+         callback buffer;
+         print_endline @@ "done with " ^ capture;
+         result)
 
-
+  (* TODO: wow ??? *)
   let wrap_exec_exn default f =
     let snap = Btype.snapshot () in
     try
@@ -65,179 +62,68 @@ module Exec = struct
         Location.report_exception Format.err_formatter x;
         default
 
+  let exec code (callback:string -> unit) : unit =
+    wrap_capture callback @@ fun () ->
+      wrap_exec_exn ()      @@ fun () ->
+      I.eval_string code
 
-  let exec code callback =
-    let lexbuf = Lexing.from_string code in
-    let phrases = wrap_capture callback @@ fun () ->
-      wrap_exec_exn []      @@ fun () ->
-      !Toploop.parse_use_file lexbuf
-    in
-    phrases |> List.map (fun phrase ->
-      try
-        let reply =
-          wrap_capture callback @@ fun () ->
-          wrap_exec_exn  ""     @@ fun () ->
-          ignore (Toploop.execute_phrase true Format.str_formatter phrase);
-          Format.flush_str_formatter () in
-        callback reply
-      with _ -> print_endline "Uncatched exception from execution. Bad."
-    ) |> ignore
+  let exec_lwt (code:string) : string Lwt.t =
+    let r = ref "" in
+    exec code (fun s -> r := s);
+    Lwt.return !r
 end
 
-module WireIO = struct
-  type t = {
-    key : Cstruct.t;
-    uuid: string;
-    kerneldir: string
-  }
+(* idempotent initialization *)
+let start = lazy (Exec.init ())
 
-  let create key = {
-    kerneldir  = Filename.dirname Sys.argv.(0);
-    key  = Cstruct.of_string key;
-    uuid = Uuidm.to_string (Uuidm.create `V4)
-  }
+(* blocking function *)
+let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
+  Lazy.force start;
+  let open Lwt.Infix in
+  print_endline @@ "run " ^ str;
+  Log.log ("parse " ^ str);
+  Lwt.catch
+    (fun res ->
+       Exec.exec_lwt str >|= fun res ->
+       Result.Ok (C.Kernel.ok ~actions:[] @@ Some res))
+    (function
+      | Stack_overflow ->
+        Lwt.return @@ Result.Error "stack overflow."
+      | e ->
+        Result.Error
+          (CCFormat.sprintf "error: %s@." (Printexc.to_string e))
+        |> Lwt.return )
 
-  type wire_msg = {
-    header : string;
-    parent_header : string;
-    metadata : string;
-    content : string;
-    extra : string list
-  }
-
-  let msg_to_list msg =
-    [ msg.header; msg.parent_header; msg.metadata; msg.content] @ msg.extra
-
-  let sign t msg =
-    msg |> msg_to_list
-    |> List.map Cstruct.of_string
-    |> Cstruct.concat
-    |> Nocrypto.Hash.mac `SHA256 ~key:(t.key)
-    |> Hex.of_cstruct
-    |> function `Hex x -> x
-
-  let mk_message t ?(metadata="{}") ?(extra=[]) htype parent_header content =
-    let header = J.to_string @@ `Assoc [
-        ("date"     , `String (Unix.gettimeofday() |> string_of_float));
-        ("msg_id"   , `String Uuidm.(to_string @@ create `V4));
-        ("username" , `String "kernel");
-        ("session"  , `String t.uuid  );
-        ("msg_type" , `String htype   );
-        ("version"  , `String "1.0"   )
-      ]
-    in
-    { header; parent_header; content; metadata; extra }
-
-  let read_msg t socket =
-    let message = ZMQ.Socket.recv_all socket in
-    let rec scan zmqids = function
-      | "<IDS|MSG>"::signature::h::p::m::c::e ->
-        let msg = {
-          header = h; parent_header = p; metadata = m; content = c; extra = e
-        } in
-        zmqids , signature, msg
-      | zmqid::tl -> scan (zmqid::zmqids) tl
-      | _ -> failwith "Malformed wire message."
-    in
-    let zmqids, signature, msg = scan [] message in
-    if String.compare (sign t msg) signature != 0 then
-      failwith "Received a message with wrong signature."
-    else zmqids, msg
-
-  let send_msg t socket ?(zmqids=[]) msg =
-    let lmsg = "<IDS|MSG>" :: sign t msg :: msg_to_list msg in
-    ZMQ.Socket.send_all socket ( zmqids @ lmsg )
-end
-
-let counter = ref 0;;
-
-let handler wireio iopub mtype  =
-  let content msg key =
-    msg.WireIO.content |> J.from_string |> JU.member key |> JU.to_string
+(* auto-completion *)
+let complete pos str = 
+  let completion_matches = []
+  (* FIXME
+    if pos > String.length str then []
+    else
+      Completion.complete ~cursor_pos:pos str
+      |> List.map (fun c -> c.Completion.text)
+  *)
   in
-  let send_to_iopub msg = function
-    | "" -> print_endline "Ignoring reply"
-    | reply ->
-      print_endline ("Sending reply" ^ reply);
-      let content = J.to_string @@ `Assoc [
-          ("name", `String "stdout"); ("text", `String reply)] in
-      print_endline content;
-      let rmsg = WireIO.mk_message wireio "stream" msg.WireIO.header content in
-      WireIO.send_msg wireio iopub rmsg
-  in
-  let reply_kernel_info _msg =
-    J.to_string @@ J.from_file ( Filename.concat wireio.WireIO.kerneldir "kernel_info.json")
-  in
-  let reply_comm msg = J.to_string @@ `Assoc [
-      ("comm_id",     `String (content msg "comm_id"    ));
-      ("target_name", `String (content msg "target_name"));
-      ("data",        `Assoc [])
-    ]
-  in
-  let reply_execute msg =
-    counter := !counter + 1;
-    let code = content msg "code" in
-    Exec.exec code @@ send_to_iopub msg ;
-    J.to_string @@ `Assoc [
-      ( "status", `String "ok" );
-      ( "execution_count", `Int  !counter  ) ]
-  in
-  match mtype with
-    | "kernel_info_request" -> Some ("kernel_info_reply", reply_kernel_info)
-    | "comm_open"           -> Some ("comm_close"       , reply_comm)
-    | "execute_request"     -> Some ("execute_result"   , reply_execute)
-    | _ -> print_endline ("bad mtype: " ^ mtype); None
+  let c = {
+    C.Kernel.completion_matches;
+    completion_start=0; completion_end=pos
+  } in
+  c
 
-let handle wireio iopub socket =
-  let zmqids, msg = WireIO.read_msg wireio socket in
-  let mtype = msg.WireIO.header |> J.from_string |> JU.member "msg_type" |> JU.to_string in
-  match handler wireio iopub mtype with
-    | None -> ()
-    | Some (rtype, handler) ->
-      let content = handler msg in
-      let rmsg = WireIO.mk_message wireio rtype msg.WireIO.header content in
-      WireIO.send_msg wireio socket ~zmqids:zmqids rmsg
+let is_complete _ = Lwt.return C.Kernel.Is_complete
+
+let kernel : C.Kernel.t =
+  C.Kernel.make
+    ~banner:"Imandra"
+    ~exec:(fun ~count msg -> run_ count msg)
+    ~is_complete
+    ~history:(fun _ -> Lwt.return [])
+    ~inspect:(fun _ -> Lwt.return (Result.Error "not implemented"))
+    ~language:"Imandra"
+    ~language_version:[0;1;0]
+    ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
+    ()
 
 let () =
-  Exec.init ();
-
-  (* Processing Jupyter-kernel settings file *)
-  let filename = Sys.argv.(1) in
-  let settings_str k = J.from_file filename |> JU.member k |> JU.to_string in
-  let settings_int k = J.from_file filename |> JU.member k |> JU.to_int    in
-
-  (* Setting up WireIO module *)
-  let wireio = settings_str "key" |> WireIO.create in
-
-  (* Firing up ZMQ sockets *)
-  let context = ZMQ.Context.create () in
-  let hb      = ZMQ.Socket.create context ZMQ.Socket.rep
-  and shell   = ZMQ.Socket.create context ZMQ.Socket.router
-  and control = ZMQ.Socket.create context ZMQ.Socket.router
-  and stdin   = ZMQ.Socket.create context ZMQ.Socket.router
-  and iopub   = ZMQ.Socket.create context ZMQ.Socket.pub   in
-  let addr = Printf.sprintf "%s://%s:%d" (settings_str "transport") (settings_str "ip") in
-  settings_int "hb_port"     |> addr |> ZMQ.Socket.bind hb     ;
-  settings_int "shell_port"  |> addr |> ZMQ.Socket.bind shell  ;
-  settings_int "control_port"|> addr |> ZMQ.Socket.bind control;
-  settings_int "stdin_port"  |> addr |> ZMQ.Socket.bind stdin  ;
-  settings_int "iopub_port"  |> addr |> ZMQ.Socket.bind iopub  ;
-
-  (* Creating poller *)
-  let poller = ZMQ.Poll.( mask_of
-        [|(hb,In); (shell,In); (control,In); (stdin,In) |] ) in
-
-  (* Entering polling loop *)
-  let handle = handle wireio iopub in
-  while true do
-    let evts = ZMQ.Poll.poll poller in
-    [ hb; shell; control; stdin ]
-    |> List.iteri
-      (fun i socket -> match i, evts.(i) with
-         | _, None   -> ()
-         | 1, Some _ -> handle shell
-         | _, Some _ ->
-           print_string ("Received event on socket #" ^ string_of_int i ^"\n");
-           ZMQ.Socket.recv_all socket |> String.concat "\n" |> print_string;
-           flush stdout)
-  done
+  Lwt_main.run
+    (Main.main ~usage:"jupyter-imandra" kernel)
