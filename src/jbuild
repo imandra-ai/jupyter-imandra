@@ -1,0 +1,9 @@
+(executable
+  ((name jymandra)
+   (public_name jymandra)
+   (package jupyter-imandra)
+   (modes (byte))
+   (libraries (jupyter-kernel containers
+               compiler-libs.common compiler-libs.toplevel
+               imandra.lib))
+  ))

@@ -6,23 +6,19 @@ authors: ["Simon Cruanes <simon@aestheticintegration.com>" "Kostya"]
 homepage: "http://www.imandra.ai/"
 bug-reports: "Simon <simon@aestheticintegration.com>"
 license: "Commercial/Restricted/Confidential"
-dev-repo: "https://github.com/AestheticIntegration/jupyter_imandra"
+dev-repo: "https://github.com/AestheticIntegration/jupyter_imandra.git"
 build: [
   [make "build"]
 ]
 install: [
-  [make "BIN=%{bin}%" "install" "install-kernel"]
+  ["jbuilder" "install"]
+  [make "install-kernel"]
 ]
-remove: [make "BIN=%{bin}%" "uninstall"]
 depends: [
-  "ocamlfind" {build}
-  "zmq"
-  "nocrypto"
-  "imandra"
-  "yojson"
-  "hex"
-  "base-unix"
+  "jbuilder" {build}
   "ocaml-compiler-libs"
-  "uuidm"
+  "containers"
+  "imandra"
+  "jupyter-kernel"
 ]
 

@@ -1,22 +1,13 @@
- 
-OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 all: build
 
 build:
-	$(OCAMLBUILD) src/jymandra.byte
+	jbuilder build @install
 
 BIN?=/usr/bin/
 
-install: build
-	@echo "install binary into $(BIN)"
-	cp jymandra.byte $(BIN)/jymandra
-
-uninstall:
-	rm $(BIN)/jymandra
-
 clean:
-	$(OCAMLBUILD) -clean
+	jbuilder clean
 
 install-kernel:
 	jupyter kernelspec install `pwd`/jupyter_imandra/ --user

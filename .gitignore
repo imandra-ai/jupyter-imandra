@@ -1,2 +1,4 @@
 *.byte
 _build
+.merlin
+*.install
