@@ -110,7 +110,12 @@ let complete pos str =
   } in
   c
 
-let is_complete _ = Lwt.return C.Kernel.Is_complete
+let is_complete s =
+  let r =
+    if CCString.mem ~sub:";;" s
+    then C.Kernel.Is_complete else C.Kernel.Is_not_complete ""
+  in
+  Lwt.return r
 
 let kernel : C.Kernel.t =
   C.Kernel.make
