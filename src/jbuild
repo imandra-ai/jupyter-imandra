@@ -5,5 +5,5 @@
    (modes (byte))
    (libraries (jupyter-kernel containers unix
                compiler-libs.common compiler-libs.toplevel
-               imandra.lib))
+               imandra.lib z3))
   ))
