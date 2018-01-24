@@ -76,7 +76,6 @@ end
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
-  print_endline @@ "run " ^ str;
   Log.log ("parse " ^ str);
   Lwt.catch
     (fun res ->
@@ -127,7 +126,7 @@ let kernel : C.Kernel.t =
 
 let () =
   (* initialize before starting lwt *)
-  I_top.do_init ();
+  Exec.init();
   print_endline "init done";
   Lwt_main.run
     (Main.main ~usage:"jupyter-imandra" kernel)
