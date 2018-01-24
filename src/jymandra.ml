@@ -73,12 +73,8 @@ module Exec = struct
     Lwt.return !r
 end
 
-(* idempotent initialization *)
-let start = lazy (Exec.init ())
-
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
-  Lazy.force start;
   let open Lwt.Infix in
   print_endline @@ "run " ^ str;
   Log.log ("parse " ^ str);
@@ -130,5 +126,8 @@ let kernel : C.Kernel.t =
     ()
 
 let () =
+  (* initialize before starting lwt *)
+  I_top.do_init ();
+  print_endline "init done";
   Lwt_main.run
     (Main.main ~usage:"jupyter-imandra" kernel)
