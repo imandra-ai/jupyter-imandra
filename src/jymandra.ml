@@ -173,6 +173,7 @@ let kernel : C.Kernel.t =
 let () =
   (* initialize before starting lwt *)
   Exec.init();
+  ignore (I_top.eval_string  "#redef;; ");
   Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourself *)
   print_endline "init done";
   Lwt_main.run
