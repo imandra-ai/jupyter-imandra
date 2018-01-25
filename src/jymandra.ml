@@ -17,9 +17,9 @@ module Res = struct
     begin match R.view r with
       | R.Verify v ->
         let header = match v with
-          | R.V_proved _ -> H.h4 ~a:[H.a_style "color=green"] @@ [H.pcdata "Proved"]
-          | R.V_refuted _ -> H.h4 ~a:[H.a_style "color=red"] @@ [H.pcdata "Refuted"]
-          | R.V_unknown _ -> H.h4 ~a:[H.a_style "color=yellow"] @@ [H.pcdata "Unknown"]
+          | R.V_proved _ -> H.h4 ~a:[H.a_style "color:green"] @@ [H.pcdata "Proved"]
+          | R.V_refuted _ -> H.h4 ~a:[H.a_style "color:red"] @@ [H.pcdata "Refuted"]
+          | R.V_unknown _ -> H.h4 ~a:[H.a_style "color:yellow"] @@ [H.pcdata "Unknown"]
         in
         H.div [header; H.p @@ [H.pcdata (R.to_string r)]]
       | R.Decompose l ->
