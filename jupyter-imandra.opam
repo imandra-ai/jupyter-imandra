@@ -20,5 +20,6 @@ depends: [
   "containers"
   "imandra"
   "jupyter-kernel"
+  "tyxml"
 ]
 
