@@ -4,6 +4,53 @@ module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
 module I_top = Imandra_lib.Imandra (* imandra toplevel *)
 
+module Res = struct
+  module R = Imandra_lib.Top_result
+  module H = Tyxml.Html
+
+  type t = Imandra_lib.Top_result.t
+  type 'a html = ([<Html_types.div] as 'a) H.elt
+
+  (* render result as HTML *)
+  let html_of_res (r:t) : _ html =
+    let module Expr = Imandra_lib.Expr in
+    begin match r with
+      | R.Verify v ->
+        let header = match v with
+          | R.V_proved _ -> H.h4 ~a:[H.a_style "color=green"] @@ [H.pcdata "Proved"]
+          | R.V_refuted _ -> H.h4 ~a:[H.a_style "color=red"] @@ [H.pcdata "Refuted"]
+          | R.V_unknown _ -> H.h4 ~a:[H.a_style "color=yellow"] @@ [H.pcdata "Unknown"]
+        in
+        H.div [header; H.p @@ [H.pcdata (R.to_string r)]]
+      | R.Decompose l ->
+        let rows =
+          List.map
+            (fun { R.reg_constraints; reg_invariant } ->
+               let col1 =
+                 H.ul
+                   (List.map
+                      (fun f -> H.li [H.pcdata @@ Expr.to_string f]) reg_constraints)
+               and col2 =
+                 H.pcdata @@ Expr.to_string reg_invariant
+               in
+               H.tr [H.td [col1]; H.td [col2]])
+            l
+        in
+        let thead =
+          H.thead [H.tr [H.th [H.pcdata "constraints"]; H.th [H.pcdata "invariants"]]]
+        in
+        H.div [H.table ~thead rows]
+    end
+
+  let mime_of_html (h:_ H.elt) : C.mime_data =
+    let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
+    {C.mime_type="text/html"; mime_content=s; mime_b64=false}
+
+  let to_action (r:t) : C.Kernel.exec_action =
+    let m = html_of_res r |> mime_of_html in
+    C.Kernel.Mime [m]
+end
+
 module Exec = struct
   let init () = I_top.do_init ()
 
@@ -60,15 +107,15 @@ module Exec = struct
         Location.report_exception Format.err_formatter x;
         default
 
-  let exec code (callback:string -> unit) : unit =
+  let exec code (callback:string -> unit) : Res.t list =
     wrap_capture callback @@ fun () ->
-      wrap_exec_exn ()      @@ fun () ->
-      I_top.eval_string code
+    wrap_exec_exn []      @@ fun () ->
+    I_top.eval_string code
 
-  let exec_lwt (code:string) : string Lwt.t =
-    let r = ref "" in
-    exec code (fun s -> r := s);
-    Lwt.return !r
+  let exec_lwt (code:string) : (string * Res.t list) Lwt.t =
+    let out = ref "" in
+    let r_l = exec code (fun s -> out := s) in
+    Lwt.return (!out,r_l)
 end
 
 (* blocking function *)
@@ -77,8 +124,9 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   Log.log ("parse " ^ str);
   Lwt.catch
     (fun res ->
-       Exec.exec_lwt str >|= fun res ->
-       Result.Ok (C.Kernel.ok ~actions:[] @@ Some res))
+       Exec.exec_lwt str >|= fun (out,res_l) ->
+       let actions = List.map Res.to_action res_l in
+       Result.Ok (C.Kernel.ok ~actions @@ Some out))
     (function
       | Stack_overflow ->
         Lwt.return @@ Result.Error "stack overflow."
@@ -88,7 +136,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
         |> Lwt.return )
 
 (* auto-completion *)
-let complete pos str = 
+let complete pos str =
   let completion_matches = []
   (* FIXME
     if pos > String.length str then []
