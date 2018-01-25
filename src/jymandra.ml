@@ -2,7 +2,7 @@
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
-module I_top = Toplevel (* imandra toplevel *)
+module I_top = Imandra_lib.Imandra (* imandra toplevel *)
 
 module Exec = struct
   let init () = I_top.do_init ()
