@@ -14,7 +14,7 @@ module Res = struct
   (* render result as HTML *)
   let html_of_res (r:t) : _ html =
     let module Expr = Imandra_lib.Expr in
-    begin match r with
+    begin match R.view r with
       | R.Verify v ->
         let header = match v with
           | R.V_proved _ -> H.h4 ~a:[H.a_style "color=green"] @@ [H.pcdata "Proved"]
