@@ -173,6 +173,7 @@ let kernel : C.Kernel.t =
 let () =
   (* initialize before starting lwt *)
   Exec.init();
+  Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourself *)
   print_endline "init done";
   Lwt_main.run
     (Main.main ~usage:"jupyter-imandra" kernel)
