@@ -1,8 +1,9 @@
 
+open Imandra_lib
+
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
-module I_top = Imandra_lib.Imandra (* imandra toplevel *)
 
 module Res = struct
   module R = Imandra_lib.Top_result
@@ -29,9 +30,9 @@ module Res = struct
                let col1 =
                  H.ul
                    (List.map
-                      (fun f -> H.li [H.pcdata @@ Expr.to_string f]) reg_constraints)
+                      (fun f -> H.li [H.pcdata @@ Term.pretty_to_string f]) reg_constraints)
                and col2 =
-                 H.pcdata @@ Expr.to_string reg_invariant
+                 H.pcdata @@ Term.pretty_to_string reg_invariant
                in
                H.tr [H.td [col1]; H.td [col2]])
             l
@@ -52,7 +53,7 @@ module Res = struct
 end
 
 module Exec = struct
-  let init () = I_top.do_init ()
+  let init () = Imandra.do_init ()
 
   let bigflush () =
     Format.pp_print_flush Format.std_formatter ();
@@ -110,7 +111,7 @@ module Exec = struct
   let exec code (callback:string -> unit) : Res.t list =
     wrap_capture callback @@ fun () ->
     wrap_exec_exn []      @@ fun () ->
-    I_top.eval_string code
+    Imandra.eval_string code
 
   let exec_lwt (code:string) : (string * Res.t list) Lwt.t =
     let out = ref "" in
@@ -173,7 +174,7 @@ let kernel : C.Kernel.t =
 let () =
   (* initialize before starting lwt *)
   Exec.init();
-  ignore (I_top.eval_string  "#redef;; ");
+  ignore (Imandra.eval_string  "#redef;; ");
   Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourself *)
   print_endline "init done";
   Lwt_main.run
