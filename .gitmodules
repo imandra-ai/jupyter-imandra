@@ -1,0 +1,3 @@
+[submodule "imandra"]
+	path = imandra
+	url = git@github.com:AestheticIntegration/imandra
