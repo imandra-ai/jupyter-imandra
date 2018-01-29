@@ -1,7 +1,7 @@
 FROM imandra-build as kernel-build
 RUN opam pin add imandra . --no-action
 
-RUN sudo apk update && sudo apk add git zeromq-dev
+RUN sudo apt-get update && sudo apt-get install -y git libzmq3-dev
 RUN cd /home/opam/opam-repository && git pull
 RUN opam config exec -- opam update && opam upgrade
 
@@ -14,13 +14,18 @@ ADD Makefile \
     ./
 
 RUN opam config exec -- opam pin add jupyter-imandra . --no-action
-RUN opam config exec -- opam install jupyter-imandra --deps-only
-RUN opam config exec -- make build
+RUN opam config exec -- opam install jupyter-imandra
 
 FROM jupyter/minimal-notebook
-COPY --from=kernel-build /build/jupyter-imandra/_build/install/default/bin/jymandra /usr/bin/jymandra
-COPY --from=kernel-build /home/opam/.opam/4.03.0/lib/imandra  /home/opam/.opam/4.03.0/lib/imandra
-ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
+
+USER root
+RUN apt-get update && apt-get install -y git libzmq3-dev
+
+USER jovyan
+COPY --from=kernel-build /home/opam/.opam/4.03.0/  /home/opam/.opam/4.03.0/
+
+ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/:$LD_LIBRARY_PATH
 ENV CAML_LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
+ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
 ADD jupyter-imandra /usr/local/share/jupyter/kernels/imandra/
