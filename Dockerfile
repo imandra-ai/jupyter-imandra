@@ -23,5 +23,4 @@ COPY --from=kernel-build /home/opam/.opam/4.03.0/lib/imandra  /home/opam/.opam/4
 ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
 ENV CAML_LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
 
-ADD jupyter-imandra /jupyter/imandra/
-RUN jupyter kernelspec install /jupyter/imandra/ --user
+ADD jupyter-imandra /usr/local/share/jupyter/kernels/imandra/
