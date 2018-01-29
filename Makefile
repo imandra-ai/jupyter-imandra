@@ -24,5 +24,5 @@ watch:
 	done
 
 jupyterhub-docker-image:
-	docker build -t imandra-build --target build imandra
+	docker build -f imandra/Dockerfile.ubuntu -t imandra-build --target build imandra
 	docker build -t imandra-jupyterhub .
