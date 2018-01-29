@@ -53,7 +53,9 @@ module Res = struct
 end
 
 module Exec = struct
-  let init () = Imandra.do_init ()
+  let init () =
+    Imandra_lib.Pconfig.State.Set.top_results true;
+    Imandra.do_init ()
 
   let bigflush () =
     Format.pp_print_flush Format.std_formatter ();
