@@ -12,7 +12,6 @@ build: [
 ]
 install: [
   ["jbuilder" "install"]
-  [make "install-kernel"]
 ]
 depends: [
   "jbuilder" {build}
