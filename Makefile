@@ -22,3 +22,7 @@ watch:
 		echo "============ at `date` ==========" ; \
 		make all; \
 	done
+
+jupyterhub-docker-image:
+	docker build -t imandra-build --target build imandra
+	docker build -t imandra-jupyterhub .
