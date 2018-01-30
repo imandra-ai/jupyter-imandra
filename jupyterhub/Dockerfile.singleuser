@@ -25,3 +25,5 @@ ENV CAML_LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/
 ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
 ADD jupyter-imandra /usr/local/share/jupyter/kernels/imandra/
+RUN rmdir work
+ADD example_notebooks/* .
