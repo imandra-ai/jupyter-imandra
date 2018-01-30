@@ -16,6 +16,8 @@ FROM jupyter/minimal-notebook
 
 USER root
 RUN apt-get update && apt-get install -y git libzmq3-dev
+ADD example_notebooks/* .
+RUN chown -R jovyan:users *
 
 USER jovyan
 COPY --from=kernel-build /home/opam/.opam/4.03.0/  /home/opam/.opam/4.03.0/
@@ -26,4 +28,3 @@ ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
 ADD jupyter-imandra /usr/local/share/jupyter/kernels/imandra/
 RUN rmdir work
-ADD example_notebooks/* .
