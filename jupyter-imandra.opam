@@ -21,5 +21,6 @@ depends: [
   "imandra"
   "jupyter-kernel"
   "tyxml"
+  "curly"
 ]
 
