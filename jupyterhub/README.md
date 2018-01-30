@@ -45,6 +45,8 @@ helm repo update
 This should not be committed to git - solution for storing this still pending. 
 https://github.com/kubernetes/helm/issues/2196
 
+The current value is a temporary one for scratchpad cluster and will be changed for production.
+
 ```shell
 openssl rand -hex 32
 ```
