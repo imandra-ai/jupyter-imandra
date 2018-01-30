@@ -37,6 +37,19 @@ kubectl --namespace=kube-system patch deployment tiller-deploy --type=json --pat
 helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 
+```
+### Install jupyterhub on the cluster
+
+#### Generating a new secret token (for config.yml)
+
+This should not be committed to git - solution for storing this still pending. 
+https://github.com/kubernetes/helm/issues/2196
+
+```shell
+openssl rand -hex 32
+```
+
+```shell
 helm install jupyterhub/jupyterhub \
     --version=v0.5 \
     --name=jupyterhub-imandra \
@@ -48,3 +61,4 @@ helm install jupyterhub/jupyterhub \
 ```shell
 helm upgrade jupyterhub-imandra jupyterhub/jupyterhub --version=v0.5 -f jupyterhub/config.yaml
 ```
+
