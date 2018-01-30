@@ -23,6 +23,10 @@ watch:
 		make all; \
 	done
 
-jupyterhub-docker-image:
+jupyterhub-docker-build:
 	docker build -f imandra/Dockerfile.ubuntu -t imandra-build --target build imandra
-	docker build -f Dockerfile.jupyterhub -t imandra-jupyterhub .
+	docker build -f jupyterhub/Dockerfile.singleuser -t jupyterhub-imandra .
+
+jupyterhub-docker-push:
+	docker tag jupyterhub-imandra eu.gcr.io/vocal-territory-126312/jupyter-imandra:$(tag)
+	docker push eu.gcr.io/vocal-territory-126312/jupyter-imandra:$(tag)
