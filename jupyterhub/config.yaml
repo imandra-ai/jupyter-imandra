@@ -1,0 +1,19 @@
+proxy:
+  secretToken: "13695ef1580096332b28f3cfcaf2c836dc50e468731e3a6b14e29352fa8f3cb6"
+
+singleuser:
+  image:
+    name: eu.gcr.io/vocal-territory-126312/jupyter-imandra
+    tag: "2018-01-30-16-22"
+  storage:
+    type: none
+  memory:
+     limit: 250M
+     guarantee: 250M
+
+cull:
+  timeout: 300
+  every: 60
+
+auth:
+  type: tmp
