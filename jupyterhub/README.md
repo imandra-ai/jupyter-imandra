@@ -18,6 +18,10 @@ gcloud container clusters create jupyterhub-imandra-cluster --num-nodes=1 --mach
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=dave@aestheticintegration.com
 ```
 
+#### NOTES:
+
+- Currently node autoscaling and cluster 'network policy enabled' have both been set manually through the UI too.
+
 ### Pushing singleuser image
 ```shell
 gcloud docker --authorize-only
