@@ -20,15 +20,17 @@ ADD example_notebooks/* .
 RUN chown -R jovyan:users *
 
 USER jovyan
-COPY --from=kernel-build /home/opam/.opam/4.03.0/  /home/opam/.opam/4.03.0/
 RUN rm -rf /opt/conda/pkgs/terminado*
 RUN rm -rf /opt/conda/lib/python3.6/site-packages/terminado*
 RUN rm -rf /opt/conda/share/jupyter/kernels/python3
 RUN rm -rf /opt/conda/lib/python3.6/site-packages/ipykernel*
+COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/ocamlrun  /home/opam/.opam/4.03.0/bin/ocamlrun
+COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/jymandra  /home/opam/.opam/4.03.0/bin/jymandra
+COPY --from=kernel-build /home/opam/.opam/4.03.0/lib  /home/opam/.opam/4.03.0/lib
 
 ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/:$LD_LIBRARY_PATH
 ENV CAML_LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
 ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
-ADD jupyter-imandra /usr/local/share/jupyter/kernels/imandra/
+ADD jupyter-imandra /opt/conda/share/jupyter/kernels/imandra/
 RUN rmdir work
