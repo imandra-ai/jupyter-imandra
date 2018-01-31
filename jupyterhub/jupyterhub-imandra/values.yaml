@@ -15,3 +15,10 @@ jupyterhub:
   
   auth:
     type: tmp
+
+  proxy:
+    https:
+      hosts:
+        - try.imandra.ai
+      letsencrypt:
+        contactEmail: dave@aestheticintegration.com
