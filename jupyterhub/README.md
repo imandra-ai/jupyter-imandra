@@ -45,22 +45,19 @@ helm repo update
 This should not be committed to git - solution for storing this still pending. 
 https://github.com/kubernetes/helm/issues/2196
 
-The current value is a temporary one for scratchpad cluster and will be changed for production.
+The current value is a temporary one for scratchpad cluster and will be changed for production. The value is needed for upgrades too so store it somewhere safe (but not in git).
 
 ```shell
 openssl rand -hex 32
 ```
 
 ```shell
-helm install jupyterhub/jupyterhub \
-    --version=v0.5 \
-    --name=jupyterhub-imandra \
-    -f jupyterhub/config.yaml
+helm install ./jupyterhub-imandra --name=jupyterhub-imandra --set jupyterhub.proxy.secretToken=<SECRET_TOKEN_VALUE>
 ```
 
 ### To update after a `config.yaml` change:
 
 ```shell
-helm upgrade jupyterhub-imandra jupyterhub/jupyterhub --version=v0.5 -f jupyterhub/config.yaml
+helm upgrade jupyterhub-imandra ./jupyterhub-imandra --set jupyterhub.proxy.secretToken=<SECRET_TOKEN_VALUE>
 ```
 
