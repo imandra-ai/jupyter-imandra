@@ -26,7 +26,10 @@ watch:
 jupyterhub-docker-build:
 	docker build -f imandra/Dockerfile.ubuntu -t imandra-build --target build imandra
 	docker build -f jupyterhub/Dockerfile.singleuser -t jupyterhub-imandra .
+	docker build -f jupyterhub/Dockerfile.landing-page -t jupyterhub-landing-page jupyterhub
 
 jupyterhub-docker-push:
 	docker tag jupyterhub-imandra eu.gcr.io/vocal-territory-126312/jupyter-imandra:$(tag)
+	docker tag jupyterhub-landing-page eu.gcr.io/vocal-territory-126312/jupyter-landing-page:$(tag)
 	docker push eu.gcr.io/vocal-territory-126312/jupyter-imandra:$(tag)
+	docker push eu.gcr.io/vocal-territory-126312/jupyter-landing-page:$(tag)
