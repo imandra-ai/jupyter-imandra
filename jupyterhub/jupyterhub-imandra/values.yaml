@@ -1,4 +1,7 @@
 jupyterhub:
+  ingress:
+    enabled: true
+
   hub:
     baseUrl: /h/
   singleuser:
