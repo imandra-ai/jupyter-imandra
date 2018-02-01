@@ -5,6 +5,67 @@ module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
 
+module Doc_render = struct
+  module H = Tyxml.Html
+  module D = Imandra_lib.Document
+
+  (* display a document as HTML *)
+  let to_html (doc:D.t) : [<Html_types.div] H.elt =
+    let mk_header ?a ~depth l = match depth with
+      | 1 -> H.h1 ?a l
+      | 2 -> H.h2 ?a l
+      | 3 -> H.h3 ?a l
+      | 4 -> H.h4 ?a l
+      | 5 -> H.h5 ?a l
+      | n when n>=6 -> H.h6 ?a l
+      | _ -> assert false
+    in
+    let rec aux ~depth (doc:D.t) =
+      (* obtain HTML attributes *)
+      let a =
+        CCList.filter_map
+          (function
+            | D.A_color s -> Some (H.a_style ("color:"^s))
+            | D.A_custom _ -> None)
+          (D.attrs doc)
+      in
+      aux_content ~a ~depth doc
+    and aux_content ~a ~depth doc =
+      match D.view doc with
+      | D.Section s -> mk_header ~a ~depth [H.pcdata s]
+      | D.Par s -> H.p ~a [H.pcdata s]
+      | D.Pre s -> H.pre ~a [H.pcdata s]
+      | D.List l ->
+        H.ul ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
+      | D.Block l ->
+        H.div ~a (List.map (aux ~depth) l)
+      | D.Indented (s,sub) ->
+        let depth = depth+1 in
+        H.div ~a [
+          mk_header ~a ~depth [H.pcdata s];
+          aux ~depth sub;
+        ]
+      | D.Tbl {headers;rows} ->
+        let thead = match headers with
+          | None -> None
+          | Some l ->
+            let l = List.map (fun s -> H.th [H.pcdata s]) l in
+            Some (H.thead [H.tr l])
+        and rows =
+          let depth=depth+1 in
+          List.map
+            (fun row -> H.tr (List.map (fun s -> H.td [aux ~depth s]) row))
+            rows
+        in
+        H.table ~a ?thead rows
+    in
+    H.div [aux ~depth:3 doc]
+
+  let mime_of_html (h:_ H.elt) : C.mime_data =
+    let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
+    {C.mime_type="text/html"; mime_content=s; mime_b64=false}
+end
+
 module Res = struct
   module R = Imandra_lib.Top_result
   module H = Tyxml.Html
@@ -12,43 +73,12 @@ module Res = struct
   type t = Imandra_lib.Top_result.t
   type 'a html = ([<Html_types.div] as 'a) H.elt
 
-  (* render result as HTML *)
-  let html_of_res (r:t) : _ html =
-    let module Expr = Imandra_lib.Expr in
-    begin match R.view r with
-      | R.Verify v ->
-        let header = match v with
-          | R.V_proved _ -> H.h4 ~a:[H.a_style "color:green"] @@ [H.pcdata "Proved"]
-          | R.V_refuted _ -> H.h4 ~a:[H.a_style "color:red"] @@ [H.pcdata "Refuted"]
-          | R.V_unknown _ -> H.h4 ~a:[H.a_style "color:yellow"] @@ [H.pcdata "Unknown"]
-        in
-        H.div [header; H.p @@ [H.pcdata (R.to_string r)]]
-      | R.Decompose l ->
-        let rows =
-          List.map
-            (fun { R.reg_constraints; reg_invariant } ->
-               let col1 =
-                 H.ul
-                   (List.map
-                      (fun f -> H.li [H.pcdata @@ Term.pretty_to_string f]) reg_constraints)
-               and col2 =
-                 H.pcdata @@ Term.pretty_to_string reg_invariant
-               in
-               H.tr [H.td [col1]; H.td [col2]])
-            l
-        in
-        let thead =
-          H.thead [H.tr [H.th [H.pcdata "constraints"]; H.th [H.pcdata "invariants"]]]
-        in
-        H.div [H.table ~thead rows]
-    end
-
-  let mime_of_html (h:_ H.elt) : C.mime_data =
-    let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
-    {C.mime_type="text/html"; mime_content=s; mime_b64=false}
-
   let to_action (r:t) : C.Kernel.exec_action =
-    let m = html_of_res r |> mime_of_html in
+    let m =
+      R.to_doc r
+      |> Doc_render.to_html
+      |> Doc_render.mime_of_html
+    in
     C.Kernel.Mime [m]
 end
 
