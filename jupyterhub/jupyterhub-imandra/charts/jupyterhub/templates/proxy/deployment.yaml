@@ -54,14 +54,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 10254
+              port: 80
               scheme: HTTP
             initialDelaySeconds: 10
             timeoutSeconds: 1
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 10254
+              port: 80
               scheme: HTTP
           ports:
             - name: http

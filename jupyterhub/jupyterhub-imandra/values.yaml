@@ -1,11 +1,26 @@
+landingpage:
+  image:
+    name: eu.gcr.io/vocal-territory-126312/jupyter-landing-page
+    tag: "2018-02-01-16-11"
+  resources:
+    requests:
+      cpu: 0.2
+      memory: 512Mi
+  imagePullPolicy: IfNotPresent
+
 jupyterhub:
+  ingress:
+    enabled: true
+    hosts:
+      - try.imandra.ai
+
   hub:
     baseUrl: /h/
 
   singleuser:
     image:
       name: eu.gcr.io/vocal-territory-126312/jupyter-imandra
-      tag: "2018-01-31-10-58"
+      tag: "2018-02-01-16-11"
     storage:
       type: none
     memory:
@@ -20,8 +35,10 @@ jupyterhub:
     type: tmp
 
   proxy:
-    https:
-      hosts:
-        - try.imandra.ai
-      letsencrypt:
-        contactEmail: dave@aestheticintegration.com
+    service:
+      type: NodePort
+  #   https:
+  #     hosts:
+  #       - try.imandra.ai
+  #     letsencrypt:
+  #       contactEmail: dave@aestheticintegration.com

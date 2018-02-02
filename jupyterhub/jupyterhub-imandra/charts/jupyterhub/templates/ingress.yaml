@@ -16,16 +16,19 @@ metadata:
   {{- end }}
 spec:
   rules:
-    {{- $root := . -}}
-    {{- range $host := .Values.ingress.hosts }}
-    - host: {{ $host }}
-      http:
+    - http:
         paths:
-          - path: {{ $root.Values.hub.baseUrl }}
+          - backend:
+              serviceName: landing-page
+              servicePort: http
+          - path: /h
             backend:
               serviceName: proxy-public
               servicePort: 80
-    {{- end -}}
+          - path: /h/*
+            backend:
+              serviceName: proxy-public
+              servicePort: 80
   {{- if .Values.ingress.tls }}
   tls:
 {{ toYaml .Values.ingress.tls | indent 4 }}
