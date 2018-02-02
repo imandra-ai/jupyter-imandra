@@ -1,5 +1,43 @@
 <html>
-    <body style="background-color: #000; margin: 0 auto">
-        <img src="landing-image.png" style="margin-top: 200px; width: 100%">
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+        <style>
+         body {
+             background-color: #000;
+             margin: 0 auto;
+         }
+
+         .image  {
+             margin-top: 200px;
+             width: 100%;
+         }
+
+         .under-image {
+            display: flex;
+             justify-content: space-around;
+             width: 100%;
+         }
+
+         .try-button {
+             display: block;
+             border: 1px #27D798 solid;
+             border-radius: 2px;
+             padding: 5px;
+             background-color: #27D79855;
+             color: white;
+             font-family: 'Libre Baskerville';
+             text-decoration: none;
+             text-transform: uppercase;
+         }
+
+        </style>
+
+    </head>
+
+    <body>
+        <img class="image" src="landing-image.png">
+        <div class="under-image">
+            <a class="try-button" href="/h/tmplogin">Click here</a>
+        </div>
     </body>
 </html>
