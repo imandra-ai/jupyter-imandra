@@ -9,11 +9,6 @@ landingpage:
   imagePullPolicy: IfNotPresent
 
 jupyterhub:
-  ingress:
-    enabled: true
-    hosts:
-      - try.imandra.ai
-
   hub:
     baseUrl: /h/
 
@@ -35,10 +30,8 @@ jupyterhub:
     type: tmp
 
   proxy:
-    service:
-      type: NodePort
-  #   https:
-  #     hosts:
-  #       - try.imandra.ai
-  #     letsencrypt:
-  #       contactEmail: dave@aestheticintegration.com
+    https:
+      hosts:
+        - try.imandra.ai
+      letsencrypt:
+        contactEmail: dave@aestheticintegration.com

@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: landing-page
 spec:
-  type: NodePort
   selector:
     name: landing-page
     component: landing-page

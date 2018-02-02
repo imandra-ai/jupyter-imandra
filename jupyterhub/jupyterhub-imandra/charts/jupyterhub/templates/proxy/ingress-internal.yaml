@@ -13,7 +13,14 @@ spec:
     {{- range $host := .Values.proxy.https.hosts }}
     - http:
         paths:
-          - path: /
+          - backend:
+              serviceName: landing-page
+              servicePort: http
+          - path: /h
+            backend:
+              serviceName: proxy-http
+              servicePort: 8000
+          - path: /h/*
             backend:
               serviceName: proxy-http
               servicePort: 8000
