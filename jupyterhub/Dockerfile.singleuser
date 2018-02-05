@@ -12,7 +12,7 @@ ADD src jupyter-imandra.opam ./
 RUN opam config exec -- opam pin add jupyter-imandra . --no-action
 RUN opam config exec -- opam install jupyter-imandra
 
-FROM jupyter/minimal-notebook
+FROM jupyter/minimal-notebook:9089b66a9813
 
 USER root
 RUN apt-get update && apt-get install -y git libzmq3-dev
