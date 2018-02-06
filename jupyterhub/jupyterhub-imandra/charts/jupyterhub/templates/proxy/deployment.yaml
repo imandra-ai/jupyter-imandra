@@ -9,6 +9,12 @@ metadata:
   name: proxy
 spec:
   replicas: 1
+  strategy:
+      rollingUpdate:
+          # There's no PVCs attached here, so is ok to set maxUnavailable to 1
+          # This means new pod will be spun up and traffic transferred to it
+          # before old pod is shut down.
+          maxUnavailable: 1
   template:
     metadata:
       annotations:
@@ -30,6 +36,20 @@ spec:
       serviceAccountName: proxy
       {{- end }}
       nodeSelector: {{ toJson .Values.proxy.nodeSelector }}
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: component
+                      operator: In
+                      values: ['hub']
+                    - key: release
+                      operator: In
+                      values: [ {{ .Release.Name | quote }} ]
       containers:
         - name: nginx
           image: "{{ .Values.proxy.nginx.image.name }}:{{ .Values.proxy.nginx.image.tag }}"
@@ -54,14 +74,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 80
+              port: 10254
               scheme: HTTP
             initialDelaySeconds: 10
             timeoutSeconds: 1
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 80
+              port: 10254
               scheme: HTTP
           ports:
             - name: http

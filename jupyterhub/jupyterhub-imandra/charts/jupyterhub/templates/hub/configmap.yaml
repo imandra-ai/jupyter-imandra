@@ -47,6 +47,10 @@ data:
   auth.globus.callback-url: {{.Values.auth.globus.callbackUrl | quote}}
   auth.globus.identity-provider: {{.Values.auth.globus.identityProvider | quote}}
   {{- end }}
+  {{ if eq .Values.auth.type "lti" -}}
+  auth.lti.consumers: |
+{{ toYaml .Values.auth.lti.consumers | indent 4 }}
+  {{- end }}
 
   {{ if .Values.auth.whitelist.users -}}
   auth.whitelist.users: |
@@ -63,6 +67,8 @@ data:
   auth.custom.config : {{ toJson .Values.auth.custom.config | quote }}
   {{- end }}
 
+  auth.state.enabled: {{ .Values.auth.state.enabled | quote }}
+
   {{ if .Values.singleuser.lifecycleHooks -}}
   singleuser.lifecycle-hooks: {{ toJson .Values.singleuser.lifecycleHooks | quote }}
   {{- end }}
@@ -70,6 +76,13 @@ data:
   {{ if .Values.singleuser.initContainers -}}
   singleuser.init-containers: {{ toJson .Values.singleuser.initContainers | quote }}
   {{- end }}
+
+  singleuser.network-tools.image.name: {{ .Values.singleuser.networkTools.image.name | quote }}
+  singleuser.network-tools.image.tag: {{ .Values.singleuser.networkTools.image.tag | quote }}
+
+  singleuser.cloud-metadata: |
+{{ toYaml .Values.singleuser.cloudMetadata | indent 4 }}
+
   singleuser.start-timeout: {{ .Values.singleuser.startTimeout | quote }}
   hub.concurrent-spawn-limit: {{ .Values.hub.concurrentSpawnLimit | quote }}
   {{ if .Values.hub.activeServerLimit }}
@@ -83,14 +96,23 @@ data:
     {{$name}}:
       {{ range $key, $value := $service -}}
       {{ if ne $key "apiToken" -}}
-      {{$key}}: {{ $value }}
+      # Use toJson since values can be more than just strings
+      {{$key}}: {{ toJson $value }}
       {{- end }}
       {{ end }}
     {{ end }}
   {{- end }}
   {{ if .Values.hub.extraConfig -}}
-  hub.extra-config.py: |
+  {{ $extraConfigType := typeOf .Values.hub.extraConfig -}}
+  {{ if eq $extraConfigType "string" -}}
+  hub.extra-config.default.py: |
 {{ .Values.hub.extraConfig | indent 4 }}
+  {{ else if eq $extraConfigType "map[string]interface {}" -}}
+  {{ range $key, $value := .Values.hub.extraConfig -}}
+  hub.extra-config.{{ $key }}.py: |
+{{ $value | indent 4 }}
+  {{- end }}
+  {{- end }}
   {{- end }}
   {{ if .Values.hub.extraConfigVars -}}
   hub.extra-vars: {{ toJson .Values.hub.extraConfigVars | quote }}
@@ -98,11 +120,20 @@ data:
   {{ if .Values.singleuser.cmd -}}
   singleuser.cmd: {{ .Values.singleuser.cmd | quote }}
   {{- end }}
+  {{ if .Values.singleuser.defaultUrl }}
+  singleuser.default-url: {{ .Values.singleuser.defaultUrl | quote }}
+  {{- end }}
 
   singleuser.uid: {{ .Values.singleuser.uid | quote }}
   singleuser.fs-gid: {{ .Values.singleuser.fsGid | quote }}
+  {{ if .Values.singleuser.serviceAccountName }}
+  singleuser.service-account-name: {{ .Values.singleuser.serviceAccountName | quote }}
+  {{- end }}
   singleuser.node-selector: {{ toJson .Values.singleuser.nodeSelector | quote }}
 
+  {{ if .Values.singleuser.schedulerStrategy }}
+  singleuser.scheduler-strategy: {{ .Values.singleuser.schedulerStrategy | quote }}
+  {{- end }}
   singleuser.storage.type: {{ .Values.singleuser.storage.type | quote }}
   singleuser.storage.home_mount_path: {{ .Values.singleuser.storage.homeMountPath | quote }}
   singleuser.storage.extra-volumes: {{ toJson .Values.singleuser.storage.extraVolumes | quote }}

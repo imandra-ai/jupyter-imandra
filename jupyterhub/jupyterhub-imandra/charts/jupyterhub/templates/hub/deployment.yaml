@@ -4,6 +4,19 @@ metadata:
   name: hub
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      {{ if eq .Values.hub.db.type "sqlite-pvc" }}
+      # If we're using a PVC, set maxUnavailable to 1
+      # This is required, since the pod attached to PVC must die
+      # before new pod can run.
+      maxUnavailable: 1
+      {{ else }}
+      # If we aren't using a PVC, it's ok to spawn up a new pod
+      # before killing the currently running one. This also makes the '--wait'
+      # flag of helm work properly
+      maxUnavailable: 0
+      {{ end }}
   template:
     metadata:
       labels:
@@ -24,6 +37,20 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/hub/secret.yaml") . | sha256sum }}
     spec:
       nodeSelector: {{ toJson .Values.hub.nodeSelector }}
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: component
+                      operator: In
+                      values: ['proxy']
+                    - key: release
+                      operator: In
+                      values: [ {{ .Release.Name | quote }} ]
       volumes:
       - name: config
         configMap:
@@ -31,6 +58,9 @@ spec:
       - name: secret
         secret:
           secretName: hub-secret
+      {{ if .Values.hub.extraVolumes }}
+{{ toYaml .Values.hub.extraVolumes | indent 6 }}
+      {{ end }}
       {{ if eq .Values.hub.db.type "sqlite-pvc" }}
       - name: hub-db-dir
         persistentVolumeClaim:
@@ -74,6 +104,9 @@ spec:
             name: config
           - mountPath: /etc/jupyterhub/secret/
             name: secret
+          {{ if .Values.hub.extraVolumeMounts }}
+{{ toYaml .Values.hub.extraVolumeMounts | indent 10 }}
+          {{ end }}
         {{ if eq .Values.hub.db.type "sqlite-pvc" }}
           - mountPath: /srv/jupyterhub
             name: hub-db-dir
@@ -109,6 +142,13 @@ spec:
         - name: {{ $key | quote }}
           value: {{ $value | quote }}
         {{ end -}}
+        {{ if .Values.auth.state.enabled }}
+        - name: JUPYTERHUB_CRYPT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: hub-secret
+              key: auth.state.crypto-key
+        {{ end }}
         ports:
           - containerPort: 8081
             name: hub

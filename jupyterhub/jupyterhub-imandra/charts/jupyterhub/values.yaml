@@ -26,15 +26,19 @@ hub:
   extraConfigMap: {}
   extraEnv: {}
   extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
   image:
     name: jupyterhub/k8s-hub
-    tag: v0.5.0
+    tag: v0.6
   resources:
     requests:
       cpu: 0.2
       memory: 512Mi
   services: {}
   imagePullPolicy: IfNotPresent
+  pdb:
+    enabled: true
 
 rbac:
   enabled: true
@@ -82,6 +86,8 @@ proxy:
     resources: {}
   labels:
   nodeSelector: {}
+  pdb:
+    enabled: true
   https:
     enabled: true
     type: letsencrypt
@@ -103,8 +109,19 @@ auth:
     users:
   dummy:
     password:
+  state:
+    enabled: false
+    cryptoKey:
+
 
 singleuser:
+  networkTools:
+    image:
+      name: jupyterhub/k8s-network-tools
+      tag: v0.6
+  cloudMetadata:
+    enabled: false
+    ip: 169.254.169.254
   extraLabels: {}
   extraEnv: {}
   lifecycleHooks:
@@ -112,6 +129,8 @@ singleuser:
   nodeSelector: {}
   uid: 1000
   fsGid: 1000
+  serviceAccountName:
+  schedulerStrategy:
   storage:
     type: dynamic
     extraVolumes: []
@@ -125,7 +144,7 @@ singleuser:
       storageClass:
   image:
     name: jupyterhub/k8s-singleuser-sample
-    tag: v0.5.0
+    tag: v0.6
   startTimeout: 300
   cpu:
     limit:
@@ -134,12 +153,21 @@ singleuser:
     limit:
     guarantee: 1G
   cmd: jupyterhub-singleuser
+  defaultUrl:
 
 prePuller:
-  enabled: true
-  image:
-    name: yuvipanda/image-allnodes-puller
-    tag: v0.8
+  hook:
+    enabled: true
+    extraEnv: {}
+    image:
+      name: jupyterhub/k8s-pre-puller
+      tag: v0.6
+  continuous:
+    enabled: false
+  pause:
+    image:
+      name: gcr.io/google_containers/pause
+      tag: '3.0'
 
 ingress:
   enabled: false
@@ -152,4 +180,3 @@ cull:
   users: false
   timeout: 3600
   every: 600
-
