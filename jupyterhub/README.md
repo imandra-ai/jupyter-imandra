@@ -14,7 +14,7 @@ gcloud config set core/project vocal-territory-126312
 ### Cluster creation
 
 ```shell
-gcloud container clusters create jupyterhub-imandra-cluster --num-nodes=1 --machine-type=n1-standard-2 --zone=europe-west2-a --cluster-version=1.8.6-gke.0
+gcloud container clusters create jupyterhub-imandra-cluster --num-nodes=1 --machine-type=n1-standard-2 --cluster-version=1.8.6-gke.0
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=dave@aestheticintegration.com
 ```
 
