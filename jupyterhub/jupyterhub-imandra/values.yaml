@@ -1,7 +1,7 @@
 landingpage:
   image:
     name: eu.gcr.io/vocal-territory-126312/jupyterhub-landing-page
-    tag: "2018-02-06-10-56"
+    tag: "2018-02-06-11-51"
   resources:
     requests:
       cpu: 0.2
@@ -11,14 +11,15 @@ landingpage:
 jupyterhub:
   hub:
     image:
-      tag: "v0.6"
+      name: eu.gcr.io/vocal-territory-126312/jupyterhub-k8s-hub
+      tag: "2018-02-06-11-51"
 
     baseUrl: /h/
 
   singleuser:
     image:
       name: eu.gcr.io/vocal-territory-126312/jupyterhub-imandra
-      tag: "2018-02-06-10-56"
+      tag: "2018-02-06-11-51"
     storage:
       type: none
     memory:
