@@ -94,6 +94,7 @@ module Exec = struct
 
   let wrap_capture callback f =
     let open Unix in
+    Unix.putenv "TERM" ""; (* ensure that upon errors, invalid input is repeated *)
     CCIO.File.with_temp ~prefix:"jupyter-imandra" ~suffix:".capture"
       (fun capture ->
          let fd = openfile capture [ O_RDWR; O_TRUNC; O_CREAT ] 0o600  in
