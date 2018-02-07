@@ -57,6 +57,7 @@ module Doc_render = struct
             (fun row -> H.tr (List.map (fun s -> H.td [aux ~depth s]) row))
             rows
         in
+        let a = H.a_style "border:1px" :: a in
         H.table ~a ?thead rows
     in
     H.div [aux ~depth:3 doc]
