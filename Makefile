@@ -26,10 +26,8 @@ watch:
 jupyterhub-docker-build:
 	docker build -f imandra/Dockerfile.ubuntu -t imandra-build --target build imandra
 	docker build -f jupyterhub/Dockerfile.singleuser -t eu.gcr.io/vocal-territory-126312/jupyterhub-imandra:$(tag) .
-	docker build -f jupyterhub/Dockerfile.landing-page -t eu.gcr.io/vocal-territory-126312/jupyterhub-landing-page:$(tag) jupyterhub
 	docker build -f jupyterhub/Dockerfile.k8s-hub -t eu.gcr.io/vocal-territory-126312/jupyterhub-k8s-hub:$(tag) jupyterhub
 
 jupyterhub-docker-push:
 	docker push eu.gcr.io/vocal-territory-126312/jupyterhub-imandra:$(tag)
-	docker push eu.gcr.io/vocal-territory-126312/jupyterhub-landing-page:$(tag)
 	docker push eu.gcr.io/vocal-territory-126312/jupyterhub-k8s-hub:$(tag)
