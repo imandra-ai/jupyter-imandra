@@ -5,5 +5,5 @@
       "{connection_file}"
     ],
     "display_name": "Imandra",
-    "language": "imandra"
+    "language": "ocaml"
 }

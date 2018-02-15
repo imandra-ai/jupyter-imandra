@@ -200,7 +200,7 @@ let kernel : C.Kernel.t =
     ~is_complete
     ~history:(fun _ -> Lwt.return [])
     ~inspect:(fun _ -> Lwt.return (Result.Error "not implemented"))
-    ~language:"Imandra"
+    ~language:"ocaml"
     ~language_version:[0;1;0]
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
