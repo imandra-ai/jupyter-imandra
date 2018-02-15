@@ -15,7 +15,7 @@ RUN opam config exec -- opam install jupyter-imandra
 FROM jupyter/minimal-notebook:9089b66a9813
 
 USER root
-RUN apt-get update && apt-get install -y git libzmq3-dev
+RUN apt-get update && apt-get install -y git libzmq3-dev libgmp3-dev libncurses-dev curl
 
 RUN rm -rf /opt/conda/pkgs/terminado*
 RUN rm -rf /opt/conda/lib/python3.6/site-packages/terminado*
@@ -23,6 +23,7 @@ RUN rm -rf /opt/conda/share/jupyter/kernels/python3
 RUN rm -rf /opt/conda/lib/python3.6/site-packages/ipykernel*
 
 ADD jupyter-imandra /opt/conda/share/jupyter/kernels/imandra/
+COPY --from=imandra-base /home/opam/.opam/4.03.0/  /home/opam/.opam/4.03.0/
 COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/ocamlrun  /home/opam/.opam/4.03.0/bin/ocamlrun
 COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/jymandra  /home/opam/.opam/4.03.0/bin/jymandra
 COPY --from=kernel-build /home/opam/.opam/4.03.0/lib  /home/opam/.opam/4.03.0/lib
