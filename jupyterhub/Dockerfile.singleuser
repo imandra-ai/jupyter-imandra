@@ -15,7 +15,7 @@ RUN opam config exec -- opam install jupyter-imandra
 FROM jupyter/minimal-notebook:9089b66a9813
 
 USER root
-RUN apt-get update && apt-get install -y git libzmq3-dev libgmp3-dev libncurses-dev curl
+RUN apt-get update && apt-get install -y git libzmq3-dev libgmp3-dev libncurses-dev curl graphviz
 
 RUN rm -rf /opt/conda/pkgs/terminado*
 RUN rm -rf /opt/conda/lib/python3.6/site-packages/terminado*
