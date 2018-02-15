@@ -5,6 +5,20 @@ module D = Imandra_lib.Document
 
 type 'a html = ([<Html_types.div] as 'a) H.elt
 
+(* render the graph as SVG *)
+let svg_of_graphiz (s:string) : string =
+  Jupyter_kernel.Log.log "get svg for graph...\n";
+  CCIO.File.with_temp ~prefix:"jymandra" ~suffix:"dot"
+    (fun dot_file ->
+       CCIO.with_out dot_file (fun oc -> output_string oc s);
+       let p = CCUnix.call_full "dot '%s' -Tsvg " dot_file in
+       let _ = p#errcode in
+       let data = p#stdout in
+       let data64 = Jupyter_kernel.Base64.encode data in
+       Jupyter_kernel.Log.logf "got svg (%d bytes, %d after base64)\n"
+         (String.length data) (String.length data64);
+       "data:image/svg+xml;base64," ^ data64)
+
 (* display a document as HTML *)
 let to_html (doc:D.t) : _ html =
   let mk_header ?a ~depth l = match depth with
@@ -56,7 +70,9 @@ let to_html (doc:D.t) : _ html =
       in
       let a = H.a_style "border:1px" :: a in
       H.table ~a ?thead rows
-    | D.Graphviz _ -> H.pcdata "<graph>" (* TODO *)
+    | D.Graphviz s ->
+      let svg_data = svg_of_graphiz s in
+      H.img ~src:svg_data ~alt:"svg of graph" ()
   in
   H.div [aux ~depth:3 doc]
 

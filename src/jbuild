@@ -3,7 +3,7 @@
    (public_name jymandra)
    (package jupyter-imandra)
    (modes (byte))
-   (libraries (jupyter-kernel containers unix
+   (libraries (jupyter-kernel containers containers.unix unix
                compiler-libs.common compiler-libs.toplevel
                imandra.lib z3 tyxml curly))
   ))
