@@ -37,7 +37,7 @@ ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.
 ENV CAML_LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/
 ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
-ADD jupyter-imandra/imandra-theme/base /opt/conda/pkgs/notebook-5.2.2-py36_1/lib/python3.6/site-packages/notebook/static/base
-ADD jupyter-imandra/imandra-theme/custom /opt/conda/pkgs/notebook-5.2.2-py36_1/lib/python3.6/site-packages/notebook/static/custom
+ADD jupyter-imandra/imandra-theme/base /opt/conda/lib/python3.6/site-packages/notebook/static/base
+ADD jupyter-imandra/imandra-theme/custom /opt/conda/lib/python3.6/site-packages/notebook/static/custom
 
 RUN rmdir work
