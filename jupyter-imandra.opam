@@ -8,11 +8,10 @@ bug-reports: "Simon <simon@aestheticintegration.com>"
 license: "Commercial/Restricted/Confidential"
 dev-repo: "https://github.com/AestheticIntegration/jupyter_imandra.git"
 build: [
-  [make "build"]
+  ["jbuilder" "build" "@install"]
 ]
 install: [
   ["jbuilder" "install"]
-  [make "install-kernel"]
 ]
 depends: [
   "jbuilder" {build}

@@ -1,0 +1,13 @@
+# https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/master/images/hub/Dockerfile
+
+FROM jupyterhub/k8s-hub:v0.6
+
+COPY k8s-hub/templates /usr/local/share/jupyter/hub/templates
+# COPY k8s-hub/imandra-authenticator/__init__.py /usr/local/lib/python3.5/dist-packages/tmpauthenticator/__init__.py
+
+# Include base_url in cull script - this is in the git version but this image doesnt include it :/
+# USER root
+# RUN sed -i "s#'--url=http://127.0.0.1:8081/hub/api'#'--url=http://127.0.0.1:8081/h/hub/api'#" /srv/jupyterhub_config.py
+# RUN sed -i "s#user = yield gen.maybe_future(self.process_user(raw_user, self))#user = gen.maybe_future(self.process_user(raw_user, self))#" /usr/local/lib/python3.5/dist-packages/tmpauthenticator/__init__.py
+#               user = yield gen.maybe_future(self.process_user(raw_user, self))
+# USER jovyan

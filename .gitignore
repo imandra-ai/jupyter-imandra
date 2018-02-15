@@ -3,3 +3,4 @@ _build
 .merlin
 *.install
 example_notebooks/
+.DS_Store
