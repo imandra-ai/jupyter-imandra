@@ -44,6 +44,7 @@ let to_html (doc:D.t) : _ html =
   and aux_content ~a ~depth doc =
     match D.view doc with
     | D.Section s -> mk_header ~a ~depth [H.pcdata s]
+    | D.String s -> H.pcdata s
     | D.Par s -> H.p ~a [H.pcdata s]
     | D.Pre s -> H.pre ~a [H.pcdata s]
     | D.List l ->
