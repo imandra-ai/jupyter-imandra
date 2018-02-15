@@ -26,6 +26,7 @@ module Doc_render = struct
         CCList.filter_map
           (function
             | D.A_color s -> Some (H.a_style ("color:"^s))
+            | D.A_class s -> Some (H.a_class [s])
             | D.A_custom _ -> None)
           (D.attrs doc)
       in
