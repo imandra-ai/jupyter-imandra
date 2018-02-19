@@ -67,19 +67,25 @@ var S5 = "\n\nPress here to consent and continue";
         var xhrLogin = new XMLHttpRequest();
         xhrLogin.onload = loggedIn;
 
+        console.log('logging in');
         xhrLogin.open('GET', '/h/hub/tmplogin');
         xhrLogin.send();
 
         function loggedIn () {
             if (xhrLogin.status == 200) {
+                console.log('logged in');
                 var xhrSpawn = new XMLHttpRequest();
                 xhrSpawn.onload = function () {
                     if (xhrSpawn.status == 200) {
                         var ru = xhrSpawn.responseUrl;
                         if (ru && (ru.substr(ru.length - 5) == '/tree')) {
+                            console.log('loaded');
                             window.location.path = ru;
                         } else {
                             setTimeout(function () {
+                                console.log(xhrSpawn);
+                                console.log('rechecking spawn');
+                                xhrSpawn.open('GET', '/h/hub/spawn');
                                 xhrSpawn.send();
                             }, 5000);
                         }
@@ -89,6 +95,7 @@ var S5 = "\n\nPress here to consent and continue";
                     }
                 };
 
+                console.log('spawning');
                 xhrSpawn.open('GET', '/h/hub/spawn');
                 xhrSpawn.send();
             } else {
