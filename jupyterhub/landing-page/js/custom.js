@@ -56,4 +56,45 @@ var S5 = "\n\nPress here to consent and continue";
 		.clearAll()
 		.start()
 
+    var tryPanel = document.querySelector('#Try_Panel');
+    tryPanel.addEventListener('click', function () {
+
+        document.querySelector('#Try_Terminal').remove();
+
+        var loader = document.querySelector('#Try_Loader');
+        loader.style.display = 'block';
+
+        var xhrLogin = new XMLHttpRequest();
+        xhrLogin.onreadystatechange = loggedIn;
+
+        xhrLogin.open('GET', '/h/hub/tmplogin');
+        xhrLogin.send();
+
+        function loggedIn () {
+            if (xhrLogin.status == 200) {
+                var xhrSpawn = new XMLHttpRequest();
+                xhrSpawn.onreadystatechange = function () {
+                    if (xhrSpawn.status == 200) {
+                        var ru = xhrSpawn.responseUrl;
+                        if (ru && (ru.substr(ru.length - 5) == '/tree')) {
+                            window.location.path = ru;
+                        } else {
+                            setTimeout(function () {
+                                xhrSpawn.send();
+                            }, 5000);
+                        }
+                    } else {
+                        console.error('Error spawning');
+                        console.error(xhrSpawn);
+                    }
+                };
+
+                xhrSpawn.open('GET', '/h/hub/spawn');
+                xhrSpawn.send();
+            } else {
+                console.error('Error logging in');
+                console.error(xhrLogin);
+            }
+        }
+    });
 });
