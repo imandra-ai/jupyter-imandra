@@ -67,6 +67,9 @@ var S5 = "\n\nPress here to consent and continue";
         var xhrLogin = new XMLHttpRequest();
         xhrLogin.onload = loggedIn;
 
+        xhrLogin.open('GET', '/h/hub/logout');
+        xhrLogin.send();
+
         console.log('logging in');
         xhrLogin.open('GET', '/h/hub/tmplogin');
         xhrLogin.send();
