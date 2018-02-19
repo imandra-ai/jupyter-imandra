@@ -78,9 +78,14 @@ var S5 = "\n\nPress here to consent and continue";
                 xhrSpawn.onload = function () {
                     if (xhrSpawn.status == 200) {
                         var ru = xhrSpawn.responseUrl;
-                        if (ru && (ru.substr(ru.length - 5) == '/tree')) {
-                            console.log('loaded');
-                            window.location.path = ru;
+                        console.log(ru);
+                        if (ru) {
+                            var ruParts = ru.split('/');
+                            console.log(ruParts);
+                            if (ruParts[ruParts.length - 1].substr(0,4) == 'tree') {
+                                console.log('loaded');
+                                window.location.path = ru;
+                            }
                         } else {
                             setTimeout(function () {
                                 console.log(xhrSpawn);
