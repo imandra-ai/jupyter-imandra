@@ -91,7 +91,7 @@ var S5 = "\n\nPress here to consent and continue";
                             }
                         }
 
-                        if (loaded) {
+                        if (notebookLoaded) {
                             console.log('loaded');
                             window.location.href = ru;
                         } else {
