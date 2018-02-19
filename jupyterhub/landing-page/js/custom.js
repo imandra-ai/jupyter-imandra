@@ -77,14 +77,14 @@ var S5 = "\n\nPress here to consent and continue";
                 var xhrSpawn = new XMLHttpRequest();
                 xhrSpawn.onload = function () {
                     if (xhrSpawn.status == 200) {
-                        var ru = xhrSpawn.responseUrl;
+                        var ru = xhrSpawn.responseURL;
                         console.log(ru);
                         if (ru) {
                             var ruParts = ru.split('/');
                             console.log(ruParts);
                             if (ruParts[ruParts.length - 1].substr(0,4) == 'tree') {
                                 console.log('loaded');
-                                window.location.path = ru;
+                                window.location.href = ru;
                             }
                         } else {
                             setTimeout(function () {
