@@ -65,7 +65,7 @@ var S5 = "\n\nPress here to consent and continue";
         loader.style.display = 'block';
 
         var xhrLogin = new XMLHttpRequest();
-        xhrLogin.onreadystatechange = loggedIn;
+        xhrLogin.onload = loggedIn;
 
         xhrLogin.open('GET', '/h/hub/tmplogin');
         xhrLogin.send();
@@ -73,7 +73,7 @@ var S5 = "\n\nPress here to consent and continue";
         function loggedIn () {
             if (xhrLogin.status == 200) {
                 var xhrSpawn = new XMLHttpRequest();
-                xhrSpawn.onreadystatechange = function () {
+                xhrSpawn.onload = function () {
                     if (xhrSpawn.status == 200) {
                         var ru = xhrSpawn.responseUrl;
                         if (ru && (ru.substr(ru.length - 5) == '/tree')) {
