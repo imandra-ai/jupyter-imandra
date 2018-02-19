@@ -1,0 +1,684 @@
+//Copyright by AI Team
+//Version 1.01
+// -----------------------------------------------------------------------
+// AI universal variables
+//  -----------------------------------------------------------------------
+
+$HeaderHeight: 50px
+$Color_AiBlue: #4A90E2
+$Color_AiBlack: #03080F
+$Color-AiMint: #21d8af
+$Color_BGTest: rgba(11,11,11,0.2)
+
+$Font_Share: 'Share Tech Mono', monospace
+$Font_Roboto: 'Roboto', sans-serif
+$Font_Lato: 'Lato', sans-serif
+$Font_Libre: 'Libre Baskerville', serif
+
+
+// -----------------------------------------------------------------------
+//	HTML Reset
+//  ----------------------------------------------------------------------- 
+
+blockquote,
+body,
+button,
+dd,
+dl,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5, 
+h6,
+ol,
+p,
+pre,
+ul
+	margin: 0
+	padding: 0
+	box-sizing: border-box
+	-webkit-padding-start: 0
+	-webkit-margin-after: 0
+	-webkit-margin-end: 0
+	-webkit-margin-before: 0
+
+
+
+//-----------------------------------------------------------------------
+//	Body 
+// ----------------------------------------------------------------------
+
+body 
+	font-family: $Font_Lato
+	background: $Color_AiBlack
+	min-height: 100%
+
+
+
+//-----------------------------------------------------------------------
+//	Header 
+// ----------------------------------------------------------------------
+
+
+.AiHeader
+	display: flex
+	flex: 1
+	flex-direction: column
+	width: 100%
+	background-color: #22eeee
+	justify-content: center
+	align-items: center
+
+
+.AiHeader_NavContainer 
+	display: flex
+	position: absolute
+	top: 0
+	left: 0	
+	flex-grow: 1
+	flex-shrink: 1
+	width: 100%
+	min-height: $HeaderHeight
+	z-index: 999
+	flex-direction: row
+	justify-content: space-between
+	align-items: center
+	font-family: $Font_Roboto
+	font-size: 16px
+	font-weight: 300
+
+@mixin AiHeader_NavContainer--Small()
+	.AiHeader_NavContainer
+		margin: auto
+		height: auto
+
+
+
+.AiHeader_InnerNavContainer 
+	display: flex
+	justify-content: center
+	align-items: center
+	height: 100%
+	width: 100%
+	margin: auto
+	padding: 26px 26px 11px 26px
+
+@mixin AiHeader_InnerNavContainer--Small()
+	.AiHeader_InnerNavContainer 
+		justify-content: space-between
+
+
+
+
+
+
+.AiHeader_LogoContainer
+	width: 24px
+	height: 24px
+
+
+.AiLogo
+	width: 100%
+
+
+.AiLogoFill
+	fill: $Color_AiBlue
+
+
+
+
+
+.AiHeader_NavListContainer
+	display: flex
+	flex: 9 1
+	height: 100%
+	justify-content: center
+	align-items: center
+
+@mixin AiHeader_NavListContainer--Small()
+	.AiHeader_NavListContainer
+		display: flex
+		position: absolute
+		height: auto
+		top: 60px
+		left: 0
+		width: 100%
+
+.ContainerHidden
+	display: visible !important
+
+@mixin ContainerVisible //Intentionally given a different name
+	.ContainerHidden
+		display: none !important
+
+
+
+
+.Menu
+	display: flex
+	flex-grow: 1
+	flex-shrink: 1 
+	flex-basis: 100%
+	justify-content: flex-end
+	height: 100%
+	align-items: center
+
+@mixin Menu__vertical()
+	.Menu 
+		justify-content: flex-start
+		height: 90vh
+		flex-wrap: wrap
+		flex-direction: column
+
+
+
+.MenuItem
+	display: flex
+	padding: 0 1rem
+	list-style: none
+	height: 100%
+	align-items: center
+	justify-content: center
+	font-weight: 400
+
+@mixin MenuItem__vertical()
+	.MenuItem 
+		margin: 0
+		padding: 0
+		height: 48px
+		display: flex
+		align-items: stretch
+		width: 100%
+		background: rgba(0, 0, 0, 0.6)
+
+
+.MenuItem:hover 
+	background: rgba(0, 0, 0, 0.9)
+
+
+.MenuItem_Link
+	display: flex
+	color: $Color_AiBlue
+	text-decoration: none
+	text-transform: uppercase
+	white-space: nowrap
+	height: 100%
+	cursor: pointer
+	align-items: center
+	font-family: $Font_Lato
+	font-size: 12.4px
+
+
+.MenuItem_Link__Active 
+	color: $Color-AiMint
+
+
+.MenuItem_Link:hover 
+	color: #21d8af
+
+
+.MenuItem_Link 
+	display: flex
+	flex: 1 1 100%
+	align-items: center
+	justify-content: center
+
+
+.AiHeader_MobileMenuIcon
+	display: none
+
+
+@mixin AiHeader_MobileMenuIcon--Small()
+	.AiHeader_MobileMenuIcon 
+		display: block
+		font-size: 33px
+		line-height: 24px
+		text-decoration: none
+		color: $Color_AiBlue
+
+
+
+//-----------------------------------------------------------------------
+//	Try Imandra Welcome Screen
+// ----------------------------------------------------------------------
+
+
+.Try_WelcomeScreenContainer
+	position: absolute
+	top: 0
+	right: 0
+	width: 100%
+	height: 100%
+	overflow: hidden
+	display: flex
+	justify-content: center
+
+
+.Try_BackgroundCanvasBG
+	z-index: 0
+	position: absolute
+	top: 0
+	right: 0
+	width: 100%
+	height: 100%
+	overflow: hidden
+	background: url('img/backg3d_0.svg') center center / cover no-repeat
+
+@mixin Try_BackgroundCanvasBG--Med()
+	.Try_BackgroundCanvasBG
+		background: url('img/backg3d_0.svg') 78% center / cover no-repeat
+
+@mixin Try_BackgroundCanvasBG--Small_Landscape()
+	.Try_BackgroundCanvasBG
+		background: url('img/backg3d_0.svg') 0% 0% / cover no-repeat
+
+@mixin Try_BackgroundCanvasBG--Small_Portrait()
+	//TO adjust horizontal alignment
+	.Try_BackgroundCanvasBG
+		background: url('img/backg3d_0.svg') 0% 0% / cover no-repeat
+
+@mixin Try_BackgroundCanvasBG--Tiny()
+	.Try_BackgroundCanvasBG
+		background: url('img/backg3d_0.svg') 30% center / cover no-repeat
+
+
+
+
+
+.Try_BackgroundMiddleBG
+	z-index: 1
+	position: absolute
+	top: 0
+	right: 0
+	width: 100%
+	height: 100%
+	overflow: hidden
+	opacity: 1
+	background: url('img/backg3d_1a.svg') center center / cover no-repeat
+
+@mixin Try_BackgroundMiddleBG--Med()
+	.Try_BackgroundMiddleBG
+		background: url('img/backg3d_1a.svg') 70% center / cover no-repeat
+
+@mixin Try_BackgroundMiddleBG--Small_Landscape()
+	.Try_BackgroundMiddleBG
+		background: url('img/backg3d_1a.svg') 78% center / cover no-repeat
+
+@mixin Try_BackgroundMiddleBG--Small_Portrait()
+	//TO adjust horizontal alignment
+	.Try_BackgroundMiddleBG
+		background: url('img/backg3d_1a.svg') 78% center / cover no-repeat
+
+@mixin Try_BackgroundMiddleBG--Tiny()
+	.Try_BackgroundMiddleBG
+		background: url('img/backg3d_1a.svg') 30% center / cover no-repeat
+
+
+
+
+.Try_FrontContainer
+	z-index: 2
+	display: flex
+	flex-direction: row
+	justify-content: center
+	align-items: center
+	flex-grow: 1
+	width: 100%
+	height: 100%
+	transform: translateX(-24px)
+
+@mixin Try_FrontContainer--Med()
+	.Try_FrontContainer
+		transform: translateX(-64px)
+
+@mixin Try_FrontContainer--Small_Landscape()
+	.Try_FrontContainer
+		transform: translateX(0px)
+	
+
+@mixin Try_FrontContainer--Small()
+	.Try_FrontContainer
+		transform: translateX(0)
+		flex-direction: column
+
+
+
+
+
+.Try_Ai3dLogo
+	z-index: 2
+	display: flex
+	width: 50%
+	max-width: 555px
+	height: 100%
+	transform: translateX(-36px)
+	background: url('img/logo_ai3d.svg') 50% center / 134% no-repeat
+
+@mixin Try_Ai3dLogo--Small_Lanscape()
+	.Try_Ai3dLogo
+		height: 50%
+		width: 100%
+		transform: translateX(0)
+		//background: url('img/logo_ai3d.svg') center center / 116% no-repeat1
+		background: url("img/logo_ai3d_c.svg") 50% / 90% no-repeat
+
+@mixin Try_Ai3dLogo--Smaller_Lanscape()
+	.Try_Ai3dLogo
+		height: 80%
+		width: 50%
+		transform: translateX(0)
+		//background: url('img/logo_ai3d.svg') center center / 116% no-repeat1
+		background: url("img/logo_ai3d_c.svg") 50% / 90% no-repeat
+
+
+@mixin Try_Ai3dLogo--Small()
+	.Try_Ai3dLogo
+		height: 55%
+		width: 100%
+		transform: translateX(0)
+		background: url("img/logo_ai3d_c.svg") 50% / 90% no-repeat
+
+@mixin Try_Ai3dLogo--Tiny()
+	.Try_Ai3dLogo
+		height: 55%
+		width: 100%
+		transform: translateX(0)
+		background: url("img/logo_ai3d_c.svg") 150% -30%  / 100% no-repeat
+
+
+
+
+
+.Try_Panel
+	z-index: 2
+	display: flex
+	width: 490px
+	height: 350px
+	padding: 30px 30px 10px 30px
+	transform: translateX(22px)
+	opacity: 0.88
+	background-image: radial-gradient(circle at 0 0, hsl(206, 70%, 10%), hsl(208, 74%, 3%))
+	border: solid 1px hsla(212, 100%, 50%, 0.22)
+	flex-direction: column
+	justify-content: flex-start
+	text-decoration: none
+	transition: background-color 0.25s ease-in-out, border 0.25s ease-in-out, border-radius 0.25s ease-in-out
+
+@mixin Try_Panel--Small()
+	.Try_Panel
+		height: 44%
+		width: 90%
+		transform: translateX(0)
+		max-width: 440px
+		
+		margin: 0
+		opacity: 1
+		background: rgba(0,0,0,0)
+		border: solid 1px rgba(0,0,0,0)
+
+	.Try_Panel:hover
+		border: solid 1px rgba(0,0,0,0)
+
+@mixin Try_Panel--Small_Lanscape()
+	.Try_Panel
+		background: rgba(0,0,0,0)
+		border: solid 1px rgba(0,0,0,0)
+		height: 40%
+		width: 60%
+		transform: translateX(0)
+		max-width: 440px
+
+@mixin Try_Panel--Smaller_Lanscape()
+	.Try_Panel
+		background: rgba(0,0,0,0)
+		border: solid 1px rgba(0,0,0,0)
+		height: 65%
+		width: 60%
+
+@mixin Try_Panel--Tiny()
+	.Try_Panel
+		height: 200px
+
+
+
+
+.Try_Panel:hover
+	border: solid 1px hsla(212, 100%, 60%, 1)
+	background: hsla(212, 100%, 60%, 0.1)
+	border-radius: 8px
+
+
+
+.Try_LogoImandraR
+	width: 490px
+	height: 84px
+	background: url('img/logo_imandra_reasoning.svg') 0 0 /100% no-repeat
+
+@mixin Try_LogoImandraR--Small()
+	.Try_LogoImandraR
+		height: 80px
+		width: 100%
+
+@mixin Try_LogoImandraR--Small_Landscape()
+	.Try_LogoImandraR
+		height: 80px
+		width: 100%
+
+@mixin Try_LogoImandraR--Smaller_Landscape()
+	.Try_LogoImandraR
+		height: 60px
+		width: 80%
+
+@mixin Try_LogoImandraR--Tiny()
+	.Try_LogoImandraR
+		height: 60px
+		width: 100%
+
+
+
+// Terminal
+
+.Try_TerminalContainer
+	padding-top: 13px
+	width: 490px
+@mixin Try_TerminalContainer--Small()
+	.Try_TerminalContainer
+		padding-top: 0
+
+@mixin Try_TerminalContainer--Micro()
+	.Try_TerminalContainer
+		padding-top: 0
+
+
+.Try_Terminal
+	font-size: 12px
+	line-height: 1.2
+	text-align: left
+	font-family: $Font_Share
+	width: 100%
+	color: white
+	white-space: pre
+
+@mixin Try_Terminal--Small()
+	.Try_Terminal
+		font-size: 10px
+
+@mixin Try_Terminal--Smaller()
+	.Try_Terminal
+		font-size: 9px
+
+@mixin Try_Terminal--Tiny()
+	.Try_Terminal
+		font-size: 8px
+
+@mixin Try_Terminal--Micro()
+	.Try_Terminal
+		font-size: 7px
+
+
+
+span.BasicTypewriterBlue
+	background: rgba(225,225,225,0.01)
+	color: #007EFF
+
+
+
+//	Footer
+
+.Try_Footer
+	position: absolute
+	z-index: 2
+	bottom: 15px
+	display: flex
+	justify-content: center
+	width: 100%
+
+@mixin Try_Footer--Small()
+	.Try_Footer
+		flex-direction: column
+		align-items: center
+		bottom: 5px
+
+
+
+.Try_LegalLink,
+.Try_Copyrights
+	z-index: 2
+	font-family: $Font-Libre
+	font-size: 11px
+	color: white
+	opacity: 0.8
+	text-decoration: none
+
+
+@mixin Try_LegalCopyrightAndLink_Tiny()
+	.Try_LegalLink,
+	.Try_Copyrights
+		font-size: 8px
+		
+
+a.Try_LegalLink
+	color: $Color_AiBlue
+	margin-left: 5px
+	font-size: 12px
+	line-height: 13px
+
+
+
+//-----------------------------------------------------------------------
+//	Media Queries Collection
+// ----------------------------------------------------------------------
+
+
+// Small screen size (--Med)
+@media screen and (max-width: 1112px) and (orientation : landscape)
+	@include Try_BackgroundCanvasBG--Med()
+	@include Try_BackgroundMiddleBG--Med()
+	@include Try_FrontContainer--Med()
+
+
+@media screen and (max-width: 960px)
+	@include AiHeader_NavContainer--Small()
+	@include AiHeader_InnerNavContainer--Small()
+	@include AiHeader_NavListContainer--Small()
+	@include AiHeader_MobileMenuIcon--Small()
+	@include ContainerVisible()
+	@include MenuItem__vertical()
+	@include Menu__vertical()
+
+	@include Try_Terminal--Small()
+	
+
+
+
+// Small screen size (--Small)
+@media screen and (max-width: 960px) and (orientation : portrait)
+	@include Try_BackgroundCanvasBG--Small_Portrait()
+	@include Try_BackgroundMiddleBG--Small_Portrait()
+	
+	@include Try_FrontContainer--Small()
+	@include Try_Ai3dLogo--Small()
+	@include Try_Panel--Small()
+	@include Try_LogoImandraR--Small()
+
+
+@media screen and (max-width: 640px) and (orientation : portrait)
+	@include Try_TerminalContainer--Small()
+	@include Try_Terminal--Smaller()
+
+
+
+@media screen and (max-width: 960px) and (orientation : landscape)
+	@include Try_BackgroundCanvasBG--Small_Landscape()
+	@include Try_BackgroundMiddleBG--Small_Landscape()
+
+	@include Try_FrontContainer--Small_Landscape()
+	@include Try_Ai3dLogo--Small_Lanscape()
+	@include Try_Panel--Small_Lanscape()
+	@include Try_LogoImandraR--Small_Landscape()
+
+
+@media screen and (max-width: 736px) and (orientation : landscape)
+	@include Try_Ai3dLogo--Smaller_Lanscape()
+	@include Try_Panel--Smaller_Lanscape()
+	@include Try_LogoImandraR--Smaller_Landscape()
+	@include Try_Terminal--Tiny()
+
+@media screen and (max-width: 380px)
+	@include Try_BackgroundCanvasBG--Tiny()
+	@include Try_BackgroundMiddleBG--Tiny()
+	@include Try_LogoImandraR--Tiny()
+	
+	@include Try_Terminal--Tiny()
+	@include Try_Ai3dLogo--Tiny()
+
+	@include Try_Footer--Small()
+	@include Try_LegalCopyrightAndLink_Tiny()
+
+@media screen and (max-width: 360px)
+	@include Try_TerminalContainer--Micro()
+	@include Try_Terminal--Micro()
+
+
+
+
+
+//-----------------------------------------------------------------------
+// Typewriter
+// ----------------------------------------------------------------------
+
+
+.typewriter-cursor
+	display: block
+	height: 11px
+	width: 11px
+	background: #fff
+	border-radius: 2px
+	position: relative
+	left: -15px
+	top: -13px
+
+
+.BlinkingCursor
+	background: #ffaaff
+
+
+.Pulse
+	color: $Color_AiBlue
+	animation-name: pulsar
+	animation-duration: 600ms
+	transition: opacity 0.50ms ease-in-out
+
+@keyframes pulsar
+	0%
+		opacity: 1
+	25%
+		opacity: 0
+	50%
+		opacity: 1
+	75%
+		opacity: 0
+	100%
+		opacity: 1
