@@ -59,20 +59,24 @@ var S5 = "\n\nPress here to consent and continue";
     var tryPanel = document.querySelector('#Try_Panel');
     tryPanel.addEventListener('click', function () {
 
-        document.querySelector('#Try_Terminal').remove();
+        document.querySelector('#Try_Terminal').style.display = 'none';
 
         var loader = document.querySelector('#Try_Loader');
         loader.style.display = 'block';
 
+        var xhrLogout = new XMLHttpRequest();
+        xhrLogout.onload = logIn;
+        xhrLogout.open('GET', '/h/hub/logout');
+        xhrLogout.send();
+
         var xhrLogin = new XMLHttpRequest();
-        xhrLogin.onload = loggedIn;
+        function logIn () {
+            xhrLogin.onload = loggedIn;
 
-        xhrLogin.open('GET', '/h/hub/logout');
-        xhrLogin.send();
-
-        console.log('logging in');
-        xhrLogin.open('GET', '/h/hub/tmplogin');
-        xhrLogin.send();
+            console.log('logging in');
+            xhrLogin.open('GET', '/h/hub/tmplogin');
+            xhrLogin.send();
+        }
 
         function loggedIn () {
             if (xhrLogin.status == 200) {
