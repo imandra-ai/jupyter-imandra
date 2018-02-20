@@ -148,6 +148,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transition: all 1s ease-out;
   background: url("img/backg3d_0.svg") center center/cover no-repeat; }
 
 .Try_BackgroundMiddleBG {
@@ -158,6 +159,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transition: all 1s ease-out;
   opacity: 1;
   background: url("img/backg3d_1a.svg") center center/cover no-repeat; }
 
@@ -170,7 +172,9 @@ body {
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  transform: translateX(-24px); }
+  transform: translateX(-24px);
+  transition: all 0.2s ease-out;
+  opacity: 1; }
 
 .Try_Ai3dLogo {
   z-index: 2;
@@ -278,9 +282,6 @@ a.Try_LegalLink {
     text-decoration: none;
     color: #4A90E2; }
 
-  .ContainerHidden {
-    display: none !important; }
-
   .MenuItem {
     margin: 0;
     padding: 0;
@@ -297,7 +298,10 @@ a.Try_LegalLink {
     flex-direction: column; }
 
   .Try_Terminal {
-    font-size: 10px; } }
+    font-size: 10px; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 960px) and (orientation: portrait) {
   .Try_BackgroundCanvasBG {
     background: url("img/backg3d_0.svg") 0% 0%/cover no-repeat; }
@@ -330,13 +334,19 @@ a.Try_LegalLink {
 
   .Try_LogoImandraR {
     height: 80px;
-    width: 100%; } }
+    width: 100%; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 640px) and (orientation: portrait) {
   .Try_TerminalContainer {
     padding-top: 0; }
 
   .Try_Terminal {
-    font-size: 9px; } }
+    font-size: 9px; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 960px) and (orientation: landscape) {
   .Try_BackgroundCanvasBG {
     background: url("img/backg3d_0.svg") 0% 0%/cover no-repeat; }
@@ -363,7 +373,10 @@ a.Try_LegalLink {
 
   .Try_LogoImandraR {
     height: 80px;
-    width: 100%; } }
+    width: 100%; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 736px) and (orientation: landscape) {
   .Try_Ai3dLogo {
     height: 80%;
@@ -382,7 +395,10 @@ a.Try_LegalLink {
     width: 80%; }
 
   .Try_Terminal {
-    font-size: 8px; } }
+    font-size: 8px; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 380px) {
   .Try_BackgroundCanvasBG {
     background: url("img/backg3d_0.svg") 30% center/cover no-repeat; }
@@ -410,13 +426,52 @@ a.Try_LegalLink {
 
   .Try_LegalLink,
   .Try_Copyrights {
-    font-size: 8px; } }
+    font-size: 8px; }
+
+  .ContainerHidden {
+    display: none !important; } }
 @media screen and (max-width: 360px) {
   .Try_TerminalContainer {
     padding-top: 0; }
 
   .Try_Terminal {
-    font-size: 7px; } }
+    font-size: 7px; }
+
+  .ContainerHidden {
+    display: none !important; } }
+.LoaderCover {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 0;
+  z-index: 0;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-out; }
+
+.LoaderCoverVisible {
+  display: flex;
+  z-index: 999;
+  opacity: 1; }
+
+.Try_BackgroundCanvasBGBlow {
+  transform: scale(11);
+  overflow: hidden; }
+
+.Try_BackgroundMiddleBGBlow {
+  transform: scale(11);
+  overflow: hidden; }
+
+.Try_FrontContainerBlow {
+  overflow: hidden;
+  transform: scale(33); }
+
+#imandraLoader {
+  width: 111px;
+  height: 111px; }
+
 .typewriter-cursor {
   display: block;
   height: 11px;
@@ -428,10 +483,10 @@ a.Try_LegalLink {
   top: -13px; }
 
 .BlinkingCursor {
-  background: #ffaaff; }
+  background: #fff; }
 
 .Pulse {
-  color: #4A90E2;
+  color: #21d8af !important;
   animation-name: pulsar;
   animation-duration: 600ms;
   transition: opacity 0.5ms ease-in-out; }
