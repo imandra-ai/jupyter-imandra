@@ -241,7 +241,8 @@
 		var self = this;
 		var pulsarE = document.getElementsByClassName('typewriter-wrapper');
 		var pClass = pulsarE[0];
-
+		//add class for each element and delete it after
+		
 		pClass.classList.add(pulseClass);
 		
 		setTimeout(function() {

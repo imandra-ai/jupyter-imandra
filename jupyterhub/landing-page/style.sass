@@ -149,7 +149,7 @@ body
 .ContainerHidden
 	display: visible !important
 
-@mixin ContainerVisible //Intentionally given a different name
+@mixin ContainerToggleVisible
 	.ContainerHidden
 		display: none !important
 
@@ -264,6 +264,7 @@ body
 	width: 100%
 	height: 100%
 	overflow: hidden
+	transition: all 1s ease-out
 	background: url('img/backg3d_0.svg') center center / cover no-repeat
 
 @mixin Try_BackgroundCanvasBG--Med()
@@ -295,6 +296,7 @@ body
 	width: 100%
 	height: 100%
 	overflow: hidden
+	transition: all 1s ease-out
 	opacity: 1
 	background: url('img/backg3d_1a.svg') center center / cover no-repeat
 
@@ -328,6 +330,8 @@ body
 	width: 100%
 	height: 100%
 	transform: translateX(-24px)
+	transition: all 0.2s ease-out
+	opacity: 1
 
 @mixin Try_FrontContainer--Med()
 	.Try_FrontContainer
@@ -584,13 +588,12 @@ a.Try_LegalLink
 	@include AiHeader_InnerNavContainer--Small()
 	@include AiHeader_NavListContainer--Small()
 	@include AiHeader_MobileMenuIcon--Small()
-	@include ContainerVisible()
 	@include MenuItem__vertical()
 	@include Menu__vertical()
 
 	@include Try_Terminal--Small()
-	
 
+	@include ContainerToggleVisible()
 
 
 // Small screen size (--Small)
@@ -602,12 +605,14 @@ a.Try_LegalLink
 	@include Try_Ai3dLogo--Small()
 	@include Try_Panel--Small()
 	@include Try_LogoImandraR--Small()
-
+	
+	@include ContainerToggleVisible
 
 @media screen and (max-width: 640px) and (orientation : portrait)
 	@include Try_TerminalContainer--Small()
 	@include Try_Terminal--Smaller()
 
+	@include ContainerToggleVisible
 
 
 @media screen and (max-width: 960px) and (orientation : landscape)
@@ -619,12 +624,15 @@ a.Try_LegalLink
 	@include Try_Panel--Small_Lanscape()
 	@include Try_LogoImandraR--Small_Landscape()
 
+	@include ContainerToggleVisible
 
 @media screen and (max-width: 736px) and (orientation : landscape)
 	@include Try_Ai3dLogo--Smaller_Lanscape()
 	@include Try_Panel--Smaller_Lanscape()
 	@include Try_LogoImandraR--Smaller_Landscape()
 	@include Try_Terminal--Tiny()
+
+	@include ContainerToggleVisible
 
 @media screen and (max-width: 380px)
 	@include Try_BackgroundCanvasBG--Tiny()
@@ -637,18 +645,55 @@ a.Try_LegalLink
 	@include Try_Footer--Small()
 	@include Try_LegalCopyrightAndLink_Tiny()
 
+	@include ContainerToggleVisible
+
 @media screen and (max-width: 360px)
 	@include Try_TerminalContainer--Micro()
 	@include Try_Terminal--Micro()
 
+	@include ContainerToggleVisible
 
 
+//-----------------------------------------------------------------------
+// Loader fx
+// ----------------------------------------------------------------------
 
+.LoaderCover
+	display: flex
+	position: absolute
+	width: 100%
+	height: 100%
+	background: #fff
+	opacity: 0
+	z-index: 0
+	justify-content: center
+	align-items: center
+	transition: all 0.5s ease-out
+	
+.LoaderCoverVisible
+	display: flex
+	z-index: 999
+	opacity: 1
+
+.Try_BackgroundCanvasBGBlow
+	transform: scale(11)
+	overflow: hidden
+
+.Try_BackgroundMiddleBGBlow
+	transform: scale(11)
+	overflow: hidden
+
+.Try_FrontContainerBlow
+	overflow: hidden
+	transform: scale(33)
+
+#imandraLoader
+	width: 111px
+	height: 111px
 
 //-----------------------------------------------------------------------
 // Typewriter
 // ----------------------------------------------------------------------
-
 
 .typewriter-cursor
 	display: block
@@ -662,11 +707,11 @@ a.Try_LegalLink
 
 
 .BlinkingCursor
-	background: #ffaaff
+	background: #fff
 
 
 .Pulse
-	color: $Color_AiBlue
+	color: $Color-AiMint !important
 	animation-name: pulsar
 	animation-duration: 600ms
 	transition: opacity 0.50ms ease-in-out
