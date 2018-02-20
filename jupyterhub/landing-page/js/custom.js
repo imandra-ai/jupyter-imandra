@@ -64,10 +64,11 @@ var S5 = "\n\nPress here to consent and continue";
         var loader = document.querySelector('#Try_Loader');
         loader.style.display = 'block';
 
-        var xhrLogout = new XMLHttpRequest();
-        xhrLogout.onload = logIn;
-        xhrLogout.open('GET', '/h/hub/logout');
-        xhrLogout.send();
+        // Is this a good idea? maybe we should try and reuse some sessions
+        // var xhrLogout = new XMLHttpRequest();
+        // xhrLogout.onload = logIn;
+        // xhrLogout.open('GET', '/h/hub/logout');
+        // xhrLogout.send();
 
         var xhrLogin = new XMLHttpRequest();
         function logIn () {
