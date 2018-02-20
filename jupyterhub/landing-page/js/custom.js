@@ -65,10 +65,12 @@ var S5 = "\n\nPress here to consent and continue";
         tryLoader.style.display = 'block';
 
         // Is this a good idea? maybe we should try and reuse some sessions
-        // var xhrLogout = new XMLHttpRequest();
-        // xhrLogout.onload = logIn;
-        // xhrLogout.open('GET', '/h/hub/logout');
-        // xhrLogout.send();
+        function logOut() {
+            var xhrLogout = new XMLHttpRequest();
+            xhrLogout.onload = logIn;
+            xhrLogout.open('GET', '/h/hub/logout');
+            xhrLogout.send();
+        }
 
         var xhrLogin = new XMLHttpRequest();
         function logIn () {
@@ -112,6 +114,7 @@ var S5 = "\n\nPress here to consent and continue";
                         console.error(xhrSpawn);
 
                         //TODO: show error
+                        logOut();
                         tryLoader.style.display = 'none';
                         tryTerminal.style.display = 'block';
                         tryPanel.addEventListener('click', loadTry);
@@ -126,6 +129,7 @@ var S5 = "\n\nPress here to consent and continue";
                 console.error(xhrLogin);
 
                 //TODO: show error
+                logOut();
                 tryLoader.style.display = 'none';
                 tryTerminal.style.display = 'block';
                 tryPanel.addEventListener('click', loadTry);
