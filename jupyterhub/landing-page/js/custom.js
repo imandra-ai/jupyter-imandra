@@ -57,12 +57,12 @@ var S5 = "\n\nPress here to consent and continue";
 		.start()
 
     var tryPanel = document.querySelector('#Try_Panel');
-    tryPanel.addEventListener('click', function () {
+    var tryTerminal = document.querySelector('#Try_Terminal');
+    var tryLoader = document.querySelector('#Try_Loader');
 
-        document.querySelector('#Try_Terminal').style.display = 'none';
-
-        var loader = document.querySelector('#Try_Loader');
-        loader.style.display = 'block';
+    function loadTry() {
+        tryTerminal.style.display = 'none';
+        tryLoader.style.display = 'block';
 
         // Is this a good idea? maybe we should try and reuse some sessions
         // var xhrLogout = new XMLHttpRequest();
@@ -110,6 +110,11 @@ var S5 = "\n\nPress here to consent and continue";
                     } else {
                         console.error('Error spawning');
                         console.error(xhrSpawn);
+
+                        //TODO: show error
+                        tryLoader.style.display = 'none';
+                        tryTerminal.style.display = 'block';
+                        tryPanel.addEventListener('click', loadTry);
                     }
                 };
 
@@ -119,7 +124,16 @@ var S5 = "\n\nPress here to consent and continue";
             } else {
                 console.error('Error logging in');
                 console.error(xhrLogin);
+
+                //TODO: show error
+                tryLoader.style.display = 'none';
+                tryTerminal.style.display = 'block';
+                tryPanel.addEventListener('click', loadTry);
             }
         }
-    });
+
+        tryPanel.removeEventListener('click', loadTry);
+    }
+
+    tryPanel.addEventListener('click', loadTry);
 });
