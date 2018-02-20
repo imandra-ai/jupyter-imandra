@@ -41,4 +41,6 @@ ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 ADD jupyter-imandra/imandra-theme/base /opt/conda/lib/python3.6/site-packages/notebook/static/base
 ADD jupyter-imandra/imandra-theme/custom /opt/conda/lib/python3.6/site-packages/notebook/static/custom
 
+RUN conda install -c conda-forge ipywidgets
+
 RUN rmdir work
