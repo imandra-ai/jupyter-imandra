@@ -15,6 +15,8 @@ RUN opam config exec -- opam install jupyter-imandra
 
 FROM jupyter/minimal-notebook:9089b66a9813
 
+RUN conda install -c conda-forge ipywidgets
+
 USER root
 RUN apt-get update && apt-get install -y git libzmq3-dev libgmp3-dev libncurses-dev curl graphviz
 
@@ -40,7 +42,5 @@ ENV PATH=/home/opam/.opam/4.03.0/bin:$PATH
 
 ADD jupyter-imandra/imandra-theme/base /opt/conda/lib/python3.6/site-packages/notebook/static/base
 ADD jupyter-imandra/imandra-theme/custom /opt/conda/lib/python3.6/site-packages/notebook/static/custom
-
-RUN conda install -c conda-forge ipywidgets
 
 RUN rmdir work
