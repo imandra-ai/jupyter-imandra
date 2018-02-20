@@ -64,22 +64,18 @@ var S5 = "\n\nPress here to consent and continue";
         tryTerminal.style.display = 'none';
         tryLoader.style.display = 'block';
 
-        // Is this a good idea? maybe we should try and reuse some sessions
         function logOut() {
             var xhrLogout = new XMLHttpRequest();
-            xhrLogout.onload = logIn;
             xhrLogout.open('GET', '/h/hub/logout');
             xhrLogout.send();
         }
 
         var xhrLogin = new XMLHttpRequest();
-        function logIn () {
-            xhrLogin.onload = loggedIn;
+        xhrLogin.onload = loggedIn;
 
-            console.log('logging in');
-            xhrLogin.open('GET', '/h/hub/tmplogin');
-            xhrLogin.send();
-        }
+        console.log('logging in');
+        xhrLogin.open('GET', '/h/hub/tmplogin');
+        xhrLogin.send();
 
         function loggedIn () {
             if (xhrLogin.status == 200) {
