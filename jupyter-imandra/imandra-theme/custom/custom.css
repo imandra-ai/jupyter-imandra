@@ -1,11 +1,61 @@
 /*  -----------------------------------------------------------------------
-	Basic Imandra Jupyter theme
-
-	Header
+	Basic Imandra Light Jupyter theme
     ----------------------------------------------------------------------- */
 
+
+body, p, li {
+	font-family: 'Merriweather', serif;
+	color: #405267;
+	font-size: 15px;
+	line-height: 21px;
+	font-weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Merriweather Sans', sans-serif !important;
+	font-weight: 400 !important;
+	color: #405267;
+	line-height: 1.1;
+	margin-bottom: 0;
+}
+
+h1 {
+	font-size: 2.52rem !important;
+	a,
+	a:visited {
+		text-decoration: none;
+	}
+}
+
+h2 {
+	font-size: 2.2rem !important;
+}
+
+h3 {
+	font-size: 1.5rem !important;
+	font-weight: 400 !important;
+}
+
+h4 {
+	font-size: 1.33rem !important;
+	font-weight: 400 !important;
+}
+
+a {
+	color: $link-color;
+	text-decoration: none;
+}
+.navbar-nav > li > a {
+	font-family: 'Merriweather Sans', sans-serif !important;
+}
+
+div.input_area {
+	border: none !important;
+}
+
 .notebook_app {
-	background: url('../static/base/images/ai_background_research.svg') 0 0 / 1440px 768px repeat;
+	background: rgb(178,178,178);
+	/*background: url('../static/base/images/ai_background_research.svg') 0 0 / 1440px 768px repeat;*/
 }
 .notebook_app > #header{
 		box-shadow: none;
@@ -35,7 +85,8 @@ body > #header {
 
 }
 
-#ipython_notebook img {
+#site {
+	margin-top: -10px;
 }
 
 #logout{
@@ -75,37 +126,64 @@ span#notification_area {
 	display: none;
 }
 
+#tab_content {
+	padding-top: 70px;
+}
 
 #notebook {
 	background: rgba(0,0,0,0);
+	padding-top: 10px !important;
 }
+
+#notebook-container {
+	background: #feffff;
+}
+
 .navbar-collapse {
 	padding: 5px;
-
 }
+
 .navbar-nav > li > a {
 	padding-top: 6px;
 	padding-bottom: 9px;
 }
 
-.container-fluid {}
-
+#maintoolbar {
+	background: #feffff;
+}
 
 .toolbar {
 	padding: 0;
 	margin: 0;
 	display: flex;
 	justify-content: center;
+
 }
 
 #menubar .navbar {
     border: none;
     border-radius: 4px 4px;
     margin-bottom: 0px;
+    z-index: 999;
 }
 
+.Logo_Container{
+	display: flex;
+	justify-content: center;
+	margin-left: -80px;
+}
 
+img.Logo_PoweredByImandra {
+	display: block;
+	height: 150px;
+	margin: 40px 0
+}
 
+div.text_cell_render.rendered_html {
+	overflow: visible !important;
+}
+
+/*---------------------------------*/
 
 [dir="rtl"] .modal-footer {
 	text-align : left !important;
@@ -118,5 +196,3 @@ span#notification_area {
 [dir="rtl"] .fa-step-forward::before {
     content: "\f048";
 }
-
-
