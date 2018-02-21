@@ -106,9 +106,11 @@ var S5 = "\n\nPress here to consent and continue";
 						var ru = xhrSpawn.responseURL;
 						console.log(ru);
 
-						if (ru && ru.match(/\/notebooks\//)) {
+						if (ru && ru.match(/\/tree/)) {
 							console.log('loaded');
-							if (ru.match(/\?/)) {
+							if (ru.match(/\?$/)) {
+								window.location.href = ru + 'fadeIn=t';
+							} else if (ru.match(/\?/)){
 								window.location.href = ru + '&fadeIn=t';
 							} else {
 								window.location.href = ru + '?fadeIn=t';

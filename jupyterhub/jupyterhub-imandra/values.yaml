@@ -27,7 +27,6 @@ jupyterhub:
     memory:
        limit: 250M
        guarantee: 250M
-    defaultUrl: '/notebooks/imandra_intro.ipynb'
   
   cull:
     timeout: 300
