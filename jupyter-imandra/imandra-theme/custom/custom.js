@@ -73,5 +73,8 @@
  * @static
  */
 
-$('#header-container').addClass('reveal');
-$('#tab_content').addClass('reveal');
+
+define([], function(events) {
+    $('#header-container').addClass('reveal');
+    $('#tab_content').addClass('reveal');
+});
