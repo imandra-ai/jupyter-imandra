@@ -18,7 +18,9 @@ function menuToggler() {
 document.querySelector('#AiHeader_MobileMenuIcon').addEventListener('click', menuToggler );
 
 
-function awakeTheLight() {
+function awakeTheLight(e) {
+		e.preventDefault();
+
 		console.log('here comes The Light');
 		classToggle('.Try_FrontContainer','Try_FrontContainerBlow');
 		classToggle('.Try_BackgroundCanvasBG','Try_BackgroundCanvasBGBlow');
