@@ -47,5 +47,7 @@ ADD jupyter-imandra/imandra-theme/custom ~/.jupyter/custom
 
 RUN rmdir work
 RUN mkdir example-notebooks
+
 WORKDIR example-notebooks
 ADD example_notebooks/* ./
+RUN chown -R jovyan:users *
