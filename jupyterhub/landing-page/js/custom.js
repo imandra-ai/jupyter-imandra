@@ -4,7 +4,6 @@ function classToggle( toggleElementName , toggleClassName) {
 	var tElement = toggleElementName;
 	var menuContainer = document.querySelector(tElement)
 	var tClass = toggleClassName;
-	console.log()
 		if ( menuContainer.classList.contains(tClass) ) {
 			menuContainer.classList.remove(tClass);
 			} else {
@@ -15,6 +14,7 @@ function classToggle( toggleElementName , toggleClassName) {
 function menuToggler() {
 		classToggle('.AiHeader_NavListContainer','ContainerHidden') 
 	};
+
 document.querySelector('#AiHeader_MobileMenuIcon').addEventListener('click', menuToggler );
 
 
@@ -24,6 +24,12 @@ function awakeTheLight() {
 		classToggle('.Try_BackgroundCanvasBG','Try_BackgroundCanvasBGBlow');
 		classToggle('.Try_BackgroundMiddleBG','Try_BackgroundMiddleBGBlow');
 		classToggle('.LoaderCover','LoaderCoverVisible');
+		classToggle('.AiHeader_NavContainer','HiddenBlock'); 
+		classToggle('#imandraLoader','VisibleBlock');
+		setTimeout(function() {
+			classToggle('#imandraLoader','RevealBlock');
+		}, 650);
+
 	};
 
 
@@ -71,7 +77,7 @@ var S5 = "\n\nPress here to consent and continue";
 		.clearAll()
 		.start()
 
-    var tryPanel = document.querySelector('#Try_Panel');
+	var tryPanel = document.querySelector('#Try_Panel');
     var tryTerminal = document.querySelector('#Try_Terminal');
     var tryLoader = document.querySelector('#Try_Loader');
 

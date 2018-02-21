@@ -51,7 +51,9 @@ body {
   align-items: center;
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-weight: 300; }
+  font-weight: 300;
+  opacity: 1;
+  transition: all 0.2s ease-out; }
 
 .AiHeader_InnerNavContainer {
   display: flex;
@@ -148,6 +150,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transform: translateX(0);
   transition: all 1s ease-out;
   background: url("img/backg3d_0.svg") center center/cover no-repeat; }
 
@@ -173,7 +176,7 @@ body {
   width: 100%;
   height: 100%;
   transform: translateX(-24px);
-  transition: all 0.2s ease-out;
+  transition: all 1.11s ease-out;
   opacity: 1; }
 
 .Try_Ai3dLogo {
@@ -452,25 +455,36 @@ a.Try_LegalLink {
   transition: all 0.5s ease-out; }
 
 .LoaderCoverVisible {
-  display: flex;
   z-index: 999;
   opacity: 1; }
 
 .Try_BackgroundCanvasBGBlow {
-  transform: scale(11);
+  transform: scale(1.3);
   overflow: hidden; }
 
 .Try_BackgroundMiddleBGBlow {
-  transform: scale(11);
+  transform: scale(1.3);
   overflow: hidden; }
 
 .Try_FrontContainerBlow {
   overflow: hidden;
-  transform: scale(33); }
+  transform: scale(22); }
 
 #imandraLoader {
+  display: none;
   width: 111px;
-  height: 111px; }
+  height: 111px;
+  opacity: 0;
+  transition: all 1s ease-in-out; }
+
+.VisibleBlock {
+  display: block !important; }
+
+.RevealBlock {
+  opacity: 1 !important; }
+
+.HiddenBlock {
+  opacity: 0; }
 
 .typewriter-cursor {
   display: block;
