@@ -80,12 +80,9 @@ var S5 = "\n\nPress here to consent and continue";
     .start();
 
 	var tryPanel = document.querySelector('#Try_Panel');
-	var tryTerminal = document.querySelector('#Try_Terminal');
-	var tryLoader = document.querySelector('#Try_Loader');
 
 	function loadTry() {
-		tryTerminal.style.display = 'none';
-		tryLoader.style.display = 'block';
+		tryPanel.removeEventListener('click', loadTry);
 
 		function logOut() {
 				var xhrLogout = new XMLHttpRequest();
@@ -134,9 +131,6 @@ var S5 = "\n\nPress here to consent and continue";
 
 						//TODO: show error
 						logOut();
-						tryLoader.style.display = 'none';
-						tryTerminal.style.display = 'block';
-						tryPanel.addEventListener('click', loadTry);
 					}
 				};
 
@@ -149,13 +143,8 @@ var S5 = "\n\nPress here to consent and continue";
 
 				//TODO: show error
 				logOut();
-				tryLoader.style.display = 'none';
-				tryTerminal.style.display = 'block';
-				tryPanel.addEventListener('click', loadTry);
 			}
 		}
-
-		tryPanel.removeEventListener('click', loadTry);
 	}
 
 	tryPanel.addEventListener('click', loadTry);
