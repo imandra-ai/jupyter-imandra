@@ -1,19 +1,40 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-function classToggle() {
-	var menuContainer = document.querySelector('.AiHeader_NavListContainer')
-		if ( menuContainer.classList.contains('ContainerHidden') ) {
-			console.log('true')
-			menuContainer.classList.remove('ContainerHidden');
-			console.log(' class removed')
+function classToggle( toggleElementName , toggleClassName) {
+	var tElement = toggleElementName;
+	var menuContainer = document.querySelector(tElement)
+	var tClass = toggleClassName;
+		if ( menuContainer.classList.contains(tClass) ) {
+			menuContainer.classList.remove(tClass);
 			} else {
-			menuContainer.classList.add('ContainerHidden');
-			console.log(' class added');
+			menuContainer.classList.add(tClass);
 			}
 	};
 
+function menuToggler() {
+		classToggle('.AiHeader_NavListContainer','ContainerHidden') 
+	};
 
- document.querySelector('#AiHeader_MobileMenuIcon ').addEventListener('click', classToggle);
+document.querySelector('#AiHeader_MobileMenuIcon').addEventListener('click', menuToggler );
+
+
+function awakeTheLight() {
+		console.log('here comes The Light');
+		classToggle('.Try_FrontContainer','Try_FrontContainerBlow');
+		classToggle('.Try_BackgroundCanvasBG','Try_BackgroundCanvasBGBlow');
+		classToggle('.Try_BackgroundMiddleBG','Try_BackgroundMiddleBGBlow');
+		classToggle('.LoaderCover','LoaderCoverVisible');
+		classToggle('.AiHeader_NavContainer','HiddenBlock'); 
+		classToggle('#imandraLoader','VisibleBlock');
+		setTimeout(function() {
+			classToggle('#imandraLoader','RevealBlock');
+		}, 650);
+
+	};
+
+
+document.querySelector('.Try_Panel').addEventListener('click', awakeTheLight);
+
 
 var S0 = "ai/imandra> ";
 var S1 = "#about";
@@ -56,7 +77,7 @@ var S5 = "\n\nPress here to consent and continue";
 		.clearAll()
 		.start()
 
-    var tryPanel = document.querySelector('#Try_Panel');
+	var tryPanel = document.querySelector('#Try_Panel');
     var tryTerminal = document.querySelector('#Try_Terminal');
     var tryLoader = document.querySelector('#Try_Loader');
 

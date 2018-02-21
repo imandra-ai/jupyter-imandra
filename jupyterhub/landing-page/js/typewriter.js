@@ -239,13 +239,21 @@
 	//e: text speciall effect
 	TypewriterPrototype._pulseEffect = function(pulseClass) {
 		var self = this;
-		var pulsarE = document.getElementsByClassName('typewriter-wrapper');
-		var pClass = pulsarE[0];
-
-		pClass.classList.add(pulseClass);
+		var pulsarA = Array.prototype.slice.call(document.getElementsByClassName('typewriter-wrapper'), 0);
+		var pulsarB = Array.prototype.slice.call(document.getElementsByClassName('BasicTypewriterBlue'), 0);
+		var pClass = pulsarA.concat(pulsarB);
+		var pClassLength = pClass.length;
+		
+		for (var i = 0; i < pClassLength; i++) {
+   			pClass[i].classList.add(pulseClass);
+		};
 		
 		setTimeout(function() {
-			pClass.classList.remove(pulseClass);
+
+			for (var i = 0; i < pClassLength; i++) {
+    		pClass[i].classList.remove(pulseClass);
+			};
+
 		}, 1050);
 		self._resetEventLoop('pulseEffect');
 
