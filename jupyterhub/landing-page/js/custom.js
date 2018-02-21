@@ -75,86 +75,86 @@ var S5 = "\n\nPress here to consent and continue";
 		.pauseFor(666)
 		.changeSettings({blinkSpeed: 0})
 		.clearAll()
-		.start()
+    .start();
 
 	var tryPanel = document.querySelector('#Try_Panel');
-    var tryTerminal = document.querySelector('#Try_Terminal');
-    var tryLoader = document.querySelector('#Try_Loader');
+	var tryTerminal = document.querySelector('#Try_Terminal');
+	var tryLoader = document.querySelector('#Try_Loader');
 
-    function loadTry() {
-        tryTerminal.style.display = 'none';
-        tryLoader.style.display = 'block';
+	function loadTry() {
+		tryTerminal.style.display = 'none';
+		tryLoader.style.display = 'block';
 
-        function logOut() {
-            var xhrLogout = new XMLHttpRequest();
-            xhrLogout.open('GET', '/h/hub/logout');
-            xhrLogout.send();
-        }
+		function logOut() {
+				var xhrLogout = new XMLHttpRequest();
+				xhrLogout.open('GET', '/h/hub/logout');
+				xhrLogout.send();
+		}
 
-        var xhrLogin = new XMLHttpRequest();
-        xhrLogin.onload = loggedIn;
+		var xhrLogin = new XMLHttpRequest();
+		xhrLogin.onload = loggedIn;
 
-        console.log('logging in');
-        xhrLogin.open('GET', '/h/hub/tmplogin');
-        xhrLogin.send();
+		console.log('logging in');
+		xhrLogin.open('GET', '/h/hub/tmplogin');
+		xhrLogin.send();
 
-        function loggedIn () {
-            if (xhrLogin.status == 200) {
-                console.log('logged in');
-                var xhrSpawn = new XMLHttpRequest();
-                xhrSpawn.onload = function () {
-                    if (xhrSpawn.status == 200) {
-                        var ru = xhrSpawn.responseURL;
-                        console.log(ru);
-                        var notebookLoaded = false;
+		function loggedIn () {
+			if (xhrLogin.status == 200) {
+				console.log('logged in');
+				var xhrSpawn = new XMLHttpRequest();
+				xhrSpawn.onload = function () {
+					if (xhrSpawn.status == 200) {
+						var ru = xhrSpawn.responseURL;
+						console.log(ru);
+						var notebookLoaded = false;
 
-                        if (ru) {
-                            var ruParts = ru.split('/');
-                            if (ruParts[ruParts.length - 1].substr(0,4) == 'tree') {
-                                notebookLoaded = true;
-                            }
-                        }
+						if (ru) {
+							var ruParts = ru.split('/');
+							if (ruParts[ruParts.length - 1].substr(0,4) == 'tree') {
+								notebookLoaded = true;
+							}
+						}
 
-                        if (notebookLoaded) {
-                            console.log('loaded');
-                            window.location.href = ru;
-                        } else {
-                            setTimeout(function () {
-                                console.log(xhrSpawn);
-                                console.log('rechecking spawn');
-                                xhrSpawn.open('GET', '/h/hub/spawn');
-                                xhrSpawn.send();
-                            }, 5000);
-                        }
-                    } else {
-                        console.error('Error spawning');
-                        console.error(xhrSpawn);
+						if (notebookLoaded) {
+							console.log('loaded');
+							window.location.href = ru;
+						} else {
+							setTimeout(function () {
+								console.log(xhrSpawn);
+								console.log('rechecking spawn');
+								xhrSpawn.open('GET', '/h/hub/spawn');
+								xhrSpawn.send();
+							}, 5000);
+						}
+					} else {
+						console.error('Error spawning');
+						console.error(xhrSpawn);
 
-                        //TODO: show error
-                        logOut();
-                        tryLoader.style.display = 'none';
-                        tryTerminal.style.display = 'block';
-                        tryPanel.addEventListener('click', loadTry);
-                    }
-                };
+						//TODO: show error
+						logOut();
+						tryLoader.style.display = 'none';
+						tryTerminal.style.display = 'block';
+						tryPanel.addEventListener('click', loadTry);
+					}
+				};
 
-                console.log('spawning');
-                xhrSpawn.open('GET', '/h/hub/spawn');
-                xhrSpawn.send();
-            } else {
-                console.error('Error logging in');
-                console.error(xhrLogin);
+				console.log('spawning');
+				xhrSpawn.open('GET', '/h/hub/spawn');
+				xhrSpawn.send();
+			} else {
+				console.error('Error logging in');
+				console.error(xhrLogin);
 
-                //TODO: show error
-                logOut();
-                tryLoader.style.display = 'none';
-                tryTerminal.style.display = 'block';
-                tryPanel.addEventListener('click', loadTry);
-            }
-        }
+				//TODO: show error
+				logOut();
+				tryLoader.style.display = 'none';
+				tryTerminal.style.display = 'block';
+				tryPanel.addEventListener('click', loadTry);
+			}
+		}
 
-        tryPanel.removeEventListener('click', loadTry);
-    }
+		tryPanel.removeEventListener('click', loadTry);
+	}
 
-    tryPanel.addEventListener('click', loadTry);
+	tryPanel.addEventListener('click', loadTry);
 });
