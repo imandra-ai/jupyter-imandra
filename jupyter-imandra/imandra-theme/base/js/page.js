@@ -19,9 +19,6 @@ define([
         this.site_div_element = $(site_div_selector || 'div#site');
 
         this.bind_events();
-
-        $('#header-container').addClass('reveal');
-        $('#tab_content').addClass('reveal');
     };
 
     Page.prototype.bind_events = function () {

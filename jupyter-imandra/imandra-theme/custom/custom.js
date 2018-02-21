@@ -72,3 +72,6 @@
  * @class customjs
  * @static
  */
+
+$('#header-container').addClass('reveal');
+$('#tab_content').addClass('reveal');
