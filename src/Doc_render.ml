@@ -80,3 +80,7 @@ let to_html (doc:D.t) : _ html =
 let mime_of_html (h:_ H.elt) : C.mime_data =
   let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
   {C.mime_type="text/html"; mime_content=s; mime_b64=false}
+
+
+let mime_of_txt (s:string) : C.mime_data =
+  {C.mime_type="text/plain"; mime_content=s; mime_b64=false}
