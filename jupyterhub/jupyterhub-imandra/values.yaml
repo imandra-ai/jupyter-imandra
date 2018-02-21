@@ -16,7 +16,7 @@ jupyterhub:
 
     baseUrl: /h/
     extraConfig: |
-      c.JupyterHub.logo_file = '/srv/ai_logo.svg'
+      c.JupyterHub.logo_file = '/srv/logo.png'
 
   singleuser:
     image:
