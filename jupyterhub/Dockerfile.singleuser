@@ -32,6 +32,9 @@ COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/ocamlrun  /home/opam/.opam/
 COPY --from=kernel-build /home/opam/.opam/4.03.0/bin/jymandra  /home/opam/.opam/4.03.0/bin/jymandra
 COPY --from=kernel-build /home/opam/.opam/4.03.0/lib  /home/opam/.opam/4.03.0/lib
 
+ADD example_notebooks ./notebooks
+RUN chown -R jovyan:users ./notebooks
+
 USER jovyan
 RUN mkdir ~/.jupyter
 ENV LD_LIBRARY_PATH=/home/opam/.opam/4.03.0/lib/stublibs/:/home/opam/.opam/4.03.0/lib/z3/:$LD_LIBRARY_PATH
@@ -46,8 +49,4 @@ ADD jupyter-imandra/imandra-theme/custom /opt/conda/lib/python3.6/site-packages/
 ADD jupyter-imandra/imandra-theme/custom ~/.jupyter/custom
 
 RUN rmdir work
-RUN mkdir example-notebooks
-
-WORKDIR example-notebooks
-ADD example_notebooks/* ./
-RUN chown -R jovyan:users *
+WORKDIR notebooks
