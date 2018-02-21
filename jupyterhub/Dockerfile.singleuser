@@ -10,7 +10,7 @@ RUN sudo chown opam: /build/jupyter-imandra
 ADD src jupyter-imandra.opam ./
 
 RUN opam config exec -- opam pin add jupyter-imandra . --no-action
-RUN opam config exec -- opam pin add jupyter-kernel git://github.com/ocaml-jupyter/jupyter-kernel.git#0acac4d4c03a7582486cf1842aef64ca16169ddd
+RUN opam config exec -- opam pin add jupyter-kernel git://github.com/ocaml-jupyter/jupyter-kernel.git#d497a447e632b73f3a97f454066d0aa9ec263b21
 RUN opam config exec -- opam install jupyter-imandra
 
 FROM jupyter/minimal-notebook:9089b66a9813
