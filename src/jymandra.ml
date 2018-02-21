@@ -68,6 +68,7 @@ let kernel : C.Kernel.t =
     ~language:"ocaml"
     ~language_version:[0;1;0]
     ~codemirror_mode:"mllike"
+    ~file_extension:".ml"
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
