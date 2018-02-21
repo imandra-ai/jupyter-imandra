@@ -119,7 +119,7 @@ var S5 = "\n\nPress here to consent and continue";
 								console.log('rechecking spawn');
 								xhrSpawn.open('GET', '/h/hub/spawn');
 								xhrSpawn.send();
-							}, 5000);
+							}, 500);
 						}
 					} else {
 						console.error('Error spawning');
