@@ -62,9 +62,12 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
     | Some ev ->
-      let doc = History.event_to_doc ev in
-      let txt = Doc_render.mime_of_txt @@ Document.to_string doc in
-      let html = doc |> Doc_render.to_html |> Doc_render.mime_of_html in
+      let txt = Doc_render.mime_of_txt @@
+        Document.to_string @@ History.event_to_doc ~txt:true ev
+      and html =
+        Doc_render.mime_of_html @@ Doc_render.to_html @@
+        History.event_to_doc ~txt:false ev
+      in
       Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt;html]}
   with e ->
     let bt = Printexc.get_backtrace() in
