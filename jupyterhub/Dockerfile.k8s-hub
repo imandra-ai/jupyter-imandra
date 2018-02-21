@@ -2,7 +2,6 @@
 
 FROM jupyterhub/k8s-hub:v0.6
 
-COPY k8s-hub/templates /usr/local/share/jupyter/hub/templates
 COPY k8s-hub/tmpauthenticator/__init__.py /usr/local/lib/python3.6/dist-packages/tmpauthenticator/__init__.py
 
 # Include base_url in cull script - this is in the git version but this image doesnt include it :/
