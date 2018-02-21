@@ -73,22 +73,37 @@ div.input_area {
 	background-image: -webkit-linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
 	background-image: -o-linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
 	background-image: linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
-	transition: all 0.3s ease-in-out;
 	transform: translateY(-96px);
 	opacity: 0;
 }
 
+#header-container.reveal {
+	  transition: all 0.3s ease-in-out;
+	  transform: translateY(0) !important;
+	  opacity: 1 !important;
+}
+
+#header-container.skip-reveal {
+	  transform: translateY(0) !important;
+	  opacity: 1 !important;
+}
+
 #tab_content{
-	transform: translateY(-90px);
-    transition: all 0.3s ease-out;
-    transition-delay: 0.3s ease-out;;
+    transform: translateY(-90px);
     opacity: 0
 
 }
 
-.reveal {
+#tab_content.reveal {
+  transition: all 0.3s ease-out;
+  transition-delay: 0.3s ease-out;;
 	transform: translateY(0) !important;
 	opacity: 1 !important;
+}
+
+#tab_content.skip-reveal {
+	  transform: translateY(0) !important;
+	  opacity: 1 !important;
 }
 
 

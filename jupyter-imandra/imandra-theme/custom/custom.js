@@ -75,6 +75,11 @@
 
 
 define([], function(events) {
-    $('#header-container').addClass('reveal');
-    $('#tab_content').addClass('reveal');
+    if (window.location.search && window.location.search.match(/fadeIn/)) {
+        $('#header-container').addClass('reveal');
+        $('#tab_content').addClass('reveal');
+    } else {
+        $('#header-container').addClass('skip-reveal');
+        $('#tab_content').addClass('skip-reveal');
+    }
 });
