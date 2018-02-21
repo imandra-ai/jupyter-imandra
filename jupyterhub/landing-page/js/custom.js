@@ -105,18 +105,14 @@ var S5 = "\n\nPress here to consent and continue";
 					if (xhrSpawn.status == 200) {
 						var ru = xhrSpawn.responseURL;
 						console.log(ru);
-						var notebookLoaded = false;
 
-						if (ru) {
-							var ruParts = ru.split('/');
-							if (ruParts[ruParts.length - 1].substr(0,4) == 'tree') {
-								notebookLoaded = true;
-							}
-						}
-
-						if (notebookLoaded) {
+						if (ru && ru.match(/tree/)) {
 							console.log('loaded');
-							window.location.href = ru;
+							if (ru.match(/\?/)) {
+								window.location.href = ru + '&fadeIn=t';
+							} else {
+								window.location.href = ru + '?fadeIn=t';
+							}
 						} else {
 							setTimeout(function () {
 								console.log(xhrSpawn);
