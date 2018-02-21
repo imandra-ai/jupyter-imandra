@@ -73,7 +73,25 @@ div.input_area {
 	background-image: -webkit-linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
 	background-image: -o-linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
 	background-image: linear-gradient(311deg, #0E294C 0%, #02569E 21%, #1C80CA 40%, #2E9EEA 61%, #8CCFFC 81%, #7EC7F7 100%);
+	transition: all 0.3s ease-in-out;
+	transform: translateY(-96px);
+	opacity: 0;
 }
+
+#tab_content{
+	transform: translateY(-90px);
+    transition: all 0.3s ease-out;
+    transition-delay: 0.3s ease-out;;
+    opacity: 0
+
+}
+
+.reveal {
+	transform: translateY(0) !important;
+	opacity: 1 !important;
+}
+
+
 body > #header #header-container {
 	padding: 22px;
 	margin-bottom: -14px;

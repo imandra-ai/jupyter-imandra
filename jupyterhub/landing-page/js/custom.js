@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function classToggle( toggleElementName , toggleClassName) {
 	var tElement = toggleElementName;
-	var menuContainer = document.querySelector(tElement)
+	var menuContainer = document.querySelector(tElement);
 	var tClass = toggleClassName;
 		if ( menuContainer.classList.contains(tClass) ) {
 			menuContainer.classList.remove(tClass);
