@@ -74,6 +74,9 @@ let to_html (doc:D.t) : _ html =
     | D.Graphviz s ->
       let svg_data = svg_of_graphiz s in
       H.img ~src:svg_data ~alt:"svg of graph" ()
+    | _ ->
+      (* protect against fast moving changes to {!Document.t} *)
+      H.pcdata @@ D.to_string doc
   in
   H.div [aux ~depth:3 doc]
 
