@@ -1,7 +1,0 @@
-true: warn(+a-4-44-48@8)
-# true: safe_string
-
-true: package(ZMQ), package(nocrypto), package(yojson), package(hex), \
-      package(unix), package(compiler-libs), package(compiler-libs.toplevel), \
-      package(uuidm)
-
