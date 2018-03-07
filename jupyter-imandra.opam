@@ -21,5 +21,6 @@ depends: [
   "jupyter-kernel"
   "tyxml"
   "curly"
+  "octavius"
 ]
 
