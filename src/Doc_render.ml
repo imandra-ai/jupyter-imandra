@@ -47,7 +47,7 @@ let to_html (doc:D.t) : _ html =
     | D.String s -> H.pcdata s
     | D.Par s -> H.p ~a [H.pcdata s]
     | D.Pre s -> H.pre ~a [H.pcdata s]
-    | D.List l ->
+    | D.List {l;_} ->
       H.ul ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
     | D.Block l ->
       H.div ~a (List.map (aux ~depth) l)
@@ -74,6 +74,14 @@ let to_html (doc:D.t) : _ html =
     | D.Graphviz s ->
       let svg_data = svg_of_graphiz s in
       H.img ~src:svg_data ~alt:"svg of graph" ()
+    | D.Enum l ->
+      H.ol ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
+    | D.Bold d -> H.b ~a [H.pcdata @@ D.to_string d]
+    | D.Italic d -> H.i ~a [H.pcdata @@ D.to_string d]
+    | D.Newline -> H.div[]
+    | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
+    | D.OCamldoc_ref _ 
+    | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
