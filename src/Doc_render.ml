@@ -45,12 +45,15 @@ let to_html (doc:D.t) : _ html =
     match D.view doc with
     | D.Section s -> mk_header ~a ~depth [H.pcdata s]
     | D.String s -> H.pcdata s
-    | D.Par s -> H.p ~a [H.pcdata s]
+    | D.Text s -> H.pcdata s
     | D.Pre s -> H.pre ~a [H.pcdata s]
     | D.List {l;_} ->
       H.ul ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
     | D.Block l ->
       H.div ~a (List.map (aux ~depth) l)
+    | D.V_block l ->
+      (* insert paragraphs for skipping lines *)
+      H.div ~a (CCList.flat_map (fun d -> [aux ~depth d; H.p []]) l)
     | D.Indented (s,sub) ->
       let depth = depth+1 in
       H.div ~a [
@@ -78,7 +81,6 @@ let to_html (doc:D.t) : _ html =
       H.ol ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
     | D.Bold d -> H.b ~a [H.pcdata @@ D.to_string d]
     | D.Italic d -> H.i ~a [H.pcdata @@ D.to_string d]
-    | D.Newline -> H.div[]
     | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
     | D.OCamldoc_ref _ 
     | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
