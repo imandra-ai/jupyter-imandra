@@ -1,2 +1,0 @@
-FROM nginx:1.13
-COPY landing-page /usr/share/nginx/html
