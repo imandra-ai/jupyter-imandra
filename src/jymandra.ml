@@ -99,12 +99,17 @@ let kernel : C.Kernel.t =
     ()
 
 let () =
-  Main.init ~args:["--lockdown", Arg.Set_int(lockdown_uuid), " Lockdown mode to the given user id"] ~usage:"jupyter-imandra";
-  if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
-  (* initialize before starting lwt *)
-  Evaluator.init();
-  ignore (Imandra.eval_string  "#redef;; ");
-  Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourself *)
-  print_endline "init done";
+  let imandra_init () =
+    if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
+    Evaluator.init();
+    ignore (Imandra.eval_string  "#redef;; ");
+    Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourselves *)
+    print_endline "init done";
+    Lwt.return ()
+  in
   Lwt_main.run
-    (Main.main kernel)
+    (Main.main
+       ~args:["--lockdown", Arg.Set_int(lockdown_uuid), " Lockdown mode to the given user id"]
+       ~usage:"jupyter-imandra"
+       ~post_init:imandra_init
+       kernel)
