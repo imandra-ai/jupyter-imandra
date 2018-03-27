@@ -63,7 +63,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
     | None ->
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
-    | Some ev ->
+    | Some (ev,_) ->
       let txt = Doc_render.mime_of_txt @@
         Document.to_string @@ History.event_to_doc ~txt:true ev
       and html =
