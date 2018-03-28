@@ -2,7 +2,8 @@
 open Imandra_lib
 
 let init () =
-  Pconfig.State.Set.top_results true;
+  Pconfig.State.Set.push_top_results true;
+  Pconfig.State.Set.console_print false;
   Imandra.do_init ()
 
 let bigflush () =

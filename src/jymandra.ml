@@ -103,7 +103,6 @@ let () =
     if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
     Evaluator.init();
     ignore (Imandra.eval_string  "#redef;; ");
-    Imandra_lib.Pconfig.State.Set.top_print false; (* we'll print results ourselves *)
     print_endline "init done";
     Lwt.return ()
   in
