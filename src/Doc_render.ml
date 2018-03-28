@@ -84,8 +84,13 @@ let to_html (doc:D.t) : _ html =
     | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
     | D.OCamldoc_ref _ 
     | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
-    | D.Fold _ (* TODO *)
-    | D.Alternatives _ (* TODO *)
+    | D.Fold { folded_by_default=_; summary=_; sub } ->
+      (* wrap in a special "div" *)
+      H.div ~a:[H.a_class ["imandra-fold"]] [aux ~depth sub]
+    | D.Alternatives {views=l; _} ->
+      (* wrap in a special "div" *)
+      H.div ~a:[H.a_class ["imandra-alternatives"]]
+        (List.map (fun (_,sub) -> aux ~depth sub) l)
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
