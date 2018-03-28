@@ -84,6 +84,8 @@ let to_html (doc:D.t) : _ html =
     | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
     | D.OCamldoc_ref _ 
     | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
+    | D.Fold _ (* TODO *)
+    | D.Alternatives _ (* TODO *)
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
