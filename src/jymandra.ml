@@ -26,7 +26,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   Log.logf "parse %S\n%!" str;
   Lwt.catch
     (fun res ->
-       Evaluator.exec_lwt str >|= fun (out,res_l) ->
+       Evaluator.exec_lwt ~count str >|= fun (out,res_l) ->
        let actions = List.map Res.to_action res_l in
        Result.Ok (C.Kernel.ok ~actions @@ Some out))
     (function

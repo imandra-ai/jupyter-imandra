@@ -62,12 +62,13 @@ let wrap_exec_exn default f =
 
 module Res = Imandra_lib.Top_result
 
-let exec code (callback:string -> unit) : Res.t list =
+let exec ~count code (callback:string -> unit) : Res.t list =
   wrap_capture callback @@ fun () ->
   wrap_exec_exn []      @@ fun () ->
-  Imandra.eval_string code
+  let loc = Printf.sprintf "jupyter cell %d" count in
+  Imandra.eval_string ~loc code
 
-let exec_lwt (code:string) : (string * Res.t list) Lwt.t =
+let exec_lwt ~count (code:string) : (string * Res.t list) Lwt.t =
   let out = ref "" in
-  let r_l = exec code (fun s -> out := s) in
+  let r_l = exec ~count code (fun s -> out := s) in
   Lwt.return (!out,r_l)

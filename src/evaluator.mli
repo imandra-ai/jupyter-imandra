@@ -6,6 +6,6 @@ module Res : sig
   val to_doc : t -> Imandra_lib.Document.t
 end
 
-val exec : string -> (string -> unit) -> Res.t list
+val exec : count:int -> string -> (string -> unit) -> Res.t list
 
-val exec_lwt : string -> (string * Res.t list) Lwt.t
+val exec_lwt : count:int -> string -> (string * Res.t list) Lwt.t
