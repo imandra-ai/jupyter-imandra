@@ -24,9 +24,10 @@ let coredump_dir = ref (None)
 let handle_coredump () =
   match !coredump_dir with
   | Some d ->
-    let ts = (Unix.time () |> int_of_float |> string_of_int) in
-    print_endline "coredumping";
-    Imandra.coredump_file := d ^ "/imandra-coredump-" ^ ts ^ ".json";
+    let ts = (Unix.time () |> Printf.sprintf "%0.f") in
+    let path = d ^ "/imandra-coredump-" ^ ts ^ ".json" in
+    Log.logf "Writing coredump to %s" path;
+    Imandra.coredump_file := path;
     Imandra.coredump ();
   | None -> ()
 
@@ -34,18 +35,22 @@ let handle_coredump () =
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
   Log.logf "parse %S\n%!" str;
-  Lwt.catch
-    (fun res ->
-       Evaluator.exec_lwt ~count str >|= fun (out,res_l) ->
-       let actions = List.map Res.to_action res_l in
-       Result.Ok (C.Kernel.ok ~actions @@ Some out))
-    (function
-      | Stack_overflow ->
-        Lwt.return @@ Result.Error "stack overflow."
-      | e ->
-        Result.Error
-          (CCFormat.sprintf "error: %s@." (Printexc.to_string e))
-        |> Lwt.return )
+  if str = "##coredump" then
+    let () = handle_coredump () in
+    (Result.Ok (C.Kernel.ok (Some "Coredump written."))) |> Lwt.return
+  else
+    Lwt.catch
+      (fun res ->
+         Evaluator.exec_lwt ~count str >|= fun (out,res_l) ->
+         let actions = List.map Res.to_action res_l in
+         Result.Ok (C.Kernel.ok ~actions @@ Some out))
+      (function
+        | Stack_overflow ->
+          Lwt.return @@ Result.Error "stack overflow."
+        | e ->
+          Result.Error
+            (CCFormat.sprintf "error: %s@." (Printexc.to_string e))
+          |> Lwt.return)
 
 (* auto-completion *)
 let complete pos str =
@@ -126,8 +131,9 @@ let () =
     if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
     begin
       match !coredump_dir with
-      | Some _ ->
-          Imandra_lib.Pconfig.State.Set.coredump true;
+      | Some d ->
+        Log.logf "Writing coredumps to %s" d;
+        Imandra_lib.Pconfig.State.Set.coredump true
       | None -> ()
     end;
     Evaluator.init();
