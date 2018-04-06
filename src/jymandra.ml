@@ -37,7 +37,8 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   Log.logf "parse %S\n%!" str;
   if str = "##coredump" then
     let () = handle_coredump () in
-    (Result.Ok (C.Kernel.ok (Some "Coredump written."))) |> Lwt.return
+    (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
+    |> Lwt.return
   else
     Lwt.catch
       (fun res ->
