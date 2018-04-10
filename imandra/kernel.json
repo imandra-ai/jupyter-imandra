@@ -1,8 +1,8 @@
 {
     "argv": [
-      "jymandra",
-      "--connection-file",
-      "{connection_file}"
+        "jymandra",
+        "--connection-file",
+        "{connection_file}"
     ],
     "display_name": "Imandra",
     "language": "ocaml"
