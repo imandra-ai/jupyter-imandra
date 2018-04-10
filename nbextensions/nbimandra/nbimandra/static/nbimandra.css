@@ -1,0 +1,20 @@
+.imandra-fold.imandra-fold-folded {
+    padding-left: 20px;
+    border-left: 5px grey solid;
+    border-top: 5px transparent solid;
+    border-bottom: 5px transparent solid;
+}
+
+.imandra-fold .imandra-fold-body {
+    display: block;
+}
+.imandra-fold.imandra-fold-folded .imandra-fold-body {
+    display: none;
+}
+
+.imandra-fold .imandra-fold-summary {
+    display: none;
+}
+.imandra-fold.imandra-fold-folded .imandra-fold-summary {
+    display: block;
+}

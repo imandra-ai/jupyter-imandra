@@ -82,11 +82,15 @@ let to_html (doc:D.t) : _ html =
     | D.Bold d -> H.b ~a [H.pcdata @@ D.to_string d]
     | D.Italic d -> H.i ~a [H.pcdata @@ D.to_string d]
     | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
-    | D.OCamldoc_ref _ 
+    | D.OCamldoc_ref _
     | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
-    | D.Fold { folded_by_default=_; summary=_; sub } ->
+    | D.Fold { folded_by_default; summary; sub } ->
       (* wrap in a special "div" *)
-      H.div ~a:[H.a_class ["imandra-fold"]] [aux ~depth sub]
+      let classes = (["imandra-fold"] @ (if folded_by_default then ["imandra-fold-folded"] else []) ) in
+      H.div ~a:[H.a_class classes]
+        [H.div ~a:[H.a_class ["imandra-fold-summary"]] [H.pcdata (if summary = "" then "(collapsed)" else summary)]
+        ;H.div ~a:[H.a_class ["imandra-fold-body"]] [aux ~depth sub]
+        ]
     | D.Alternatives {views=l; _} ->
       (* wrap in a special "div" *)
       H.div ~a:[H.a_class ["imandra-alternatives"]]
