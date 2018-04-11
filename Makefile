@@ -10,7 +10,7 @@ clean:
 	jbuilder clean
 
 install-kernel:
-	jupyter kernelspec install `pwd`/jupyter-imandra/ --user
+	jupyter kernelspec install `pwd`/share/kernelspec/imandra --user
 
 reindent:
 	@which ocp-indent || ( echo "require ocp-indent" ; exit 1 )

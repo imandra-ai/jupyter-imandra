@@ -7,3 +7,11 @@
                compiler-libs.common compiler-libs.toplevel
                imandra.lib z3 tyxml curly octavius))
   ))
+
+(install
+ ((section share)
+  (files ((../share/kernelspec/imandra/kernel.json as jupyter/kernelspec/imandra/kernel.json)
+          (../share/nbextensions/nbimandra/nbimandra/static/main.js as jupyter/nbextensions/nbimandra/nbimandra/static/main.js)
+          (../share/nbextensions/nbimandra/nbimandra/static/nbimandra.css as jupyter/nbextensions/nbimandra/nbimandra/static/nbimandra.css)
+          (../share/nbextensions/nbimandra/nbimandra/__init__.py as jupyter/nbextensions/nbimandra/nbimandra/__init__.py)
+          (../share/nbextensions/nbimandra/setup.py as jupyter/nbextensions/nbimandra/setup.py)))))
