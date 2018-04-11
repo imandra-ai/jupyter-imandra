@@ -84,17 +84,35 @@ let to_html (doc:D.t) : _ html =
     | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
     | D.OCamldoc_ref _
     | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
+
     | D.Fold { folded_by_default; summary; sub } ->
-      (* wrap in a special "div" *)
-      let classes = (["imandra-fold"] @ (if folded_by_default then ["imandra-fold-folded"] else []) ) in
-      H.div ~a:[H.a_class classes]
-        [H.div ~a:[H.a_class ["imandra-fold-summary"]] [H.pcdata (if summary = "" then "(collapsed)" else summary)]
-        ;H.div ~a:[H.a_class ["imandra-fold-body"]] [aux ~depth sub]
+      let body_class = if folded_by_default then ["collapse"] else [] in
+      let down_icon_class = if folded_by_default then ["hidden"] else [] in
+      let right_icon_class = if folded_by_default then [] else ["hidden"] in
+      H.div ~a:[H.a_class ["imandra-fold panel panel-default"]]
+        [ H.div ~a:[H.a_class ["panel-heading"]]
+            [ H.div
+                [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
+                ; H.i ~a:[H.a_class (["fa fa-chevron-right"] @ right_icon_class)] []
+                ; H.span [H.pcdata (if summary = "" then "Expand" else summary)]
+                ]
+            ]
+        ; H.div ~a:[H.a_class (["panel-body"] @ body_class)] [aux ~depth sub]
         ]
+
     | D.Alternatives {views=l; _} ->
-      (* wrap in a special "div" *)
       H.div ~a:[H.a_class ["imandra-alternatives"]]
-        (List.map (fun (_,sub) -> aux ~depth sub) l)
+        [ H.ul ~a:[H.a_class ["nav nav-tabs"]]
+            (List.mapi (fun i (name, _) ->
+                 let selected = if i = 0 then ["active"] else [] in
+                 H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
+                   [H.a [H.pcdata name]]) l)
+
+        ; H.div ~a:[H.a_class ["tab-content"]]
+            (List.mapi (fun i (_, sub) ->
+                 let selected = if i = 0 then ["active"] else [] in
+                 H.div ~a:[H.a_class (["tab-pane"] @ selected)] [aux ~depth sub]) l)
+        ]
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
@@ -108,3 +126,4 @@ let mime_of_html (h:_ H.elt) : C.mime_data =
 
 let mime_of_txt (s:string) : C.mime_data =
   {C.mime_type="text/plain"; mime_content=s; mime_b64=false}
+ 

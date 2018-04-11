@@ -1,20 +1,16 @@
-.imandra-fold.imandra-fold-folded {
-    padding-left: 20px;
-    border-left: 5px grey solid;
-    border-top: 5px transparent solid;
-    border-bottom: 5px transparent solid;
+.u-margin-left {
+    margin-left: 1em;
 }
 
-.imandra-fold .imandra-fold-body {
-    display: block;
-}
-.imandra-fold.imandra-fold-folded .imandra-fold-body {
-    display: none;
+.imandra-fold .panel-heading i {
+    min-width: 20px;
 }
 
-.imandra-fold .imandra-fold-summary {
-    display: none;
+.imandra-alternatives a {
+    text-decoration: none;
+    font-weight: bold;
 }
-.imandra-fold.imandra-fold-folded .imandra-fold-summary {
-    display: block;
+
+.imandra-alternatives ul.nav-tabs {
+    padding-left: 0;
 }
