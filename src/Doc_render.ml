@@ -148,7 +148,7 @@ let to_html (doc:D.t) : _ html =
       let id = Uuidm.v `V4 |> Uuidm.to_string in
       H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
         [ H.script (H.pcdata (fold_js id))
-        ; H.style  (H.pcdata fold_css)
+        ; H.style [H.pcdata fold_css]
         ; H.div ~a:[H.a_class ["panel-heading"]]
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
@@ -163,7 +163,7 @@ let to_html (doc:D.t) : _ html =
       let id = Uuidm.v `V4 |> Uuidm.to_string in
       H.div ~a:[H.a_class ["imandra-alternatives"]]
         [ H.script (H.pcdata (alternatives_js id))
-        ; H.style (H.pcdata alternatives_css)
+        ; H.style [H.pcdata alternatives_css]
         ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
             (List.mapi (fun i (name, _) ->
                  let selected = if i = 0 then ["active"] else [] in
