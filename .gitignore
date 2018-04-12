@@ -5,3 +5,4 @@ _build
 example_notebooks/
 .DS_Store
 _opam
+.ipynb_checkpoints
