@@ -22,5 +22,6 @@ depends: [
   "tyxml"
   "curly"
   "octavius"
+  "uuidm"
 ]
 

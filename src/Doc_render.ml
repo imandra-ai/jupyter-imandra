@@ -19,6 +19,62 @@ let svg_of_graphiz (s:string) : string =
          (String.length data) (String.length data64);
        "data:image/svg+xml;base64," ^ data64)
 
+let fold_js elId = Printf.sprintf {|
+        $('#%s.imandra-fold .panel-heading').on('click', function (e) {
+            e.preventDefault();
+            $panelHeading = $(this);
+            $fold = $panelHeading.closest('.imandra-fold');
+
+            $panelBody = $fold.find('.panel-body');
+            $panelBody.toggleClass('collapse');
+
+            if ($panelBody.hasClass('collapse')) {
+                $fold.children('.panel-heading').find('.fa-chevron-down').addClass('hidden');
+                $fold.children('.panel-heading').find('.fa-chevron-right').removeClass('hidden');
+            } else {
+                $fold.children('.panel-heading').find('.fa-chevron-down').removeClass('hidden');
+                $fold.children('.panel-heading').find('.fa-chevron-right').addClass('hidden');
+            }
+        });
+|}  elId
+
+let fold_css = {| .imandra-fold .panel-heading i { min-width: 20px; } |}
+
+let alternatives_js elId = Printf.sprintf {|
+        $('#%s.imandra-alternatives .nav li').on('click', function (e) {
+            e.preventDefault();
+            $li = $(this);
+
+            $alternatives = $li.closest('.imandra-alternatives');
+
+            var selectedIdx;
+
+            $alternatives.find('.nav li').each(function (i, item) {
+                if ($(item).is($li)) {
+                    selectedIdx = i;
+                }
+            });
+
+            $alternatives.find('.tab-pane').each(function (i, item) {
+                var $item = $(item);
+                $item.removeClass('active');
+                if (i == selectedIdx) {
+                    $item.addClass('active');
+                }
+            });
+        });
+|} elId
+
+let alternatives_css = {|
+.imandra-alternatives a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.imandra-alternatives ul.nav-tabs {
+    padding-left: 0;
+}|}
+
 (* display a document as HTML *)
 let to_html (doc:D.t) : _ html =
   let mk_header ?a ~depth l = match depth with
@@ -89,8 +145,11 @@ let to_html (doc:D.t) : _ html =
       let body_class = if folded_by_default then ["collapse"] else [] in
       let down_icon_class = if folded_by_default then ["hidden"] else [] in
       let right_icon_class = if folded_by_default then [] else ["hidden"] in
-      H.div ~a:[H.a_class ["imandra-fold panel panel-default"]]
-        [ H.div ~a:[H.a_class ["panel-heading"]]
+      let id = Uuidm.v `V4 |> Uuidm.to_string in
+      H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
+        [ H.script (H.pcdata (fold_js id))
+        ; H.style  (H.pcdata fold_css)
+        ; H.div ~a:[H.a_class ["panel-heading"]]
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
                 ; H.i ~a:[H.a_class (["fa fa-chevron-right"] @ right_icon_class)] []
@@ -101,8 +160,11 @@ let to_html (doc:D.t) : _ html =
         ]
 
     | D.Alternatives {views=l; _} ->
+      let id = Uuidm.v `V4 |> Uuidm.to_string in
       H.div ~a:[H.a_class ["imandra-alternatives"]]
-        [ H.ul ~a:[H.a_class ["nav nav-tabs"]]
+        [ H.script (H.pcdata (alternatives_js id))
+        ; H.style (H.pcdata alternatives_css)
+        ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
             (List.mapi (fun i (name, _) ->
                  let selected = if i = 0 then ["active"] else [] in
                  H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
