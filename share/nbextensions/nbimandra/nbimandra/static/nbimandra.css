@@ -1,10 +1,4 @@
-.u-margin-left {
-    margin-left: 1em;
-}
-
-.imandra-fold .panel-heading i {
-    min-width: 20px;
-}
+.imandra-fold .panel-heading i { min-width: 20px; }
 
 .imandra-alternatives a {
     text-decoration: none;
