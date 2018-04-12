@@ -161,7 +161,7 @@ let to_html (doc:D.t) : _ html =
 
     | D.Alternatives {views=l; _} ->
       let id = Uuidm.v `V4 |> Uuidm.to_string in
-      H.div ~a:[H.a_class ["imandra-alternatives"]]
+      H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
         [ H.script (H.pcdata (alternatives_js id))
         ; H.style [H.pcdata alternatives_css]
         ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
