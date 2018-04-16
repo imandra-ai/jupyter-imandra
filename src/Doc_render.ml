@@ -75,6 +75,11 @@ let alternatives_css elId = Printf.sprintf {|
     padding-left: 0;
 }|} elId elId
 
+let table_css elId = Printf.sprintf {|
+.imandra-table#%s table td {
+  text-align: left;
+}|} elId
+
 (* display a document as HTML *)
 let to_html (doc:D.t) : _ html =
   let mk_header ?a ~depth l = match depth with
@@ -128,8 +133,11 @@ let to_html (doc:D.t) : _ html =
           (fun row -> H.tr (List.map (fun s -> H.td [aux ~depth s]) row))
           rows
       in
-      let a = H.a_style "border:1px" :: a in
-      H.table ~a ?thead rows
+      let id = Uuidm.v `V4 |> Uuidm.to_string in
+      H.div ~a:[H.a_class ["imandra-table"]; H.a_id id]
+        [ H.style [H.pcdata (table_css id)]
+        ; H.table ~a:[] ?thead rows]
+
     | D.Graphviz s ->
       let svg_data = svg_of_graphiz s in
       H.img ~src:svg_data ~alt:"svg of graph" ()
