@@ -38,7 +38,7 @@ let fold_js elId = Printf.sprintf {|
         });
 |}  elId
 
-let fold_css = {| .imandra-fold .panel-heading i { min-width: 20px; } |}
+let fold_css elId = Printf.sprintf {| .imandra-fold#%s .panel-heading i { min-width: 20px; } |} elId
 
 let alternatives_js elId = Printf.sprintf {|
         $('#%s.imandra-alternatives .nav li').on('click', function (e) {
@@ -65,15 +65,15 @@ let alternatives_js elId = Printf.sprintf {|
         });
 |} elId
 
-let alternatives_css = {|
-.imandra-alternatives a {
+let alternatives_css elId = Printf.sprintf {|
+.imandra-alternatives#%s a {
     text-decoration: none;
     font-weight: bold;
 }
 
-.imandra-alternatives ul.nav-tabs {
+.imandra-alternatives#%s ul.nav-tabs {
     padding-left: 0;
-}|}
+}|} elId elId
 
 (* display a document as HTML *)
 let to_html (doc:D.t) : _ html =
@@ -148,7 +148,7 @@ let to_html (doc:D.t) : _ html =
       let id = Uuidm.v `V4 |> Uuidm.to_string in
       H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
         [ H.script (H.pcdata (fold_js id))
-        ; H.style [H.pcdata fold_css]
+        ; H.style [H.pcdata (fold_css id)]
         ; H.div ~a:[H.a_class ["panel-heading"]]
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
@@ -163,7 +163,7 @@ let to_html (doc:D.t) : _ html =
       let id = Uuidm.v `V4 |> Uuidm.to_string in
       H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
         [ H.script (H.pcdata (alternatives_js id))
-        ; H.style [H.pcdata alternatives_css]
+        ; H.style [H.pcdata (alternatives_css id)]
         ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
             (List.mapi (fun i (name, _) ->
                  let selected = if i = 0 then ["active"] else [] in
