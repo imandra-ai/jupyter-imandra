@@ -115,6 +115,10 @@ let kernel : C.Kernel.t =
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
+let j_prelude =
+  {j| #redef;;
+       #timeout 60;;
+  |j}
 
 let () =
   Lwt.async_exception_hook := (fun exc ->
@@ -138,7 +142,7 @@ let () =
       | None -> ()
     end;
     Evaluator.init();
-    ignore (Imandra.eval_string  "#redef;; ");
+    ignore (Imandra.eval_string  j_prelude);
     print_endline "init done";
     Lwt.return ()
   in
