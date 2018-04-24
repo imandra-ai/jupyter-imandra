@@ -45,13 +45,12 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
          Evaluator.exec_lwt ~count str >|= fun (out,res_l) ->
          let actions = List.map Res.to_action res_l in
          Result.Ok (C.Kernel.ok ~actions @@ Some out))
-      (function
-        | Stack_overflow ->
-          Lwt.return @@ Result.Error "stack overflow."
-        | e ->
-          Result.Error
-            (CCFormat.sprintf "error: %s@." (Printexc.to_string e))
-          |> Lwt.return)
+      (fun e ->
+         (* Any exception that reaches here from imandra should indicate a
+         problem, so we want to know about it *)
+         handle_coredump ();
+         Lwt.fail C.Restart
+      )
 
 (* auto-completion *)
 let complete pos str =
