@@ -121,17 +121,6 @@ let j_prelude =
   |j}
 
 let () =
-  Lwt.async_exception_hook := (fun exc ->
-      begin
-        match !coredump_dir with
-        | Some d ->
-          let ts = (Unix.time () |> int_of_float |> string_of_int) in
-          Imandra.coredump_file := d ^ "/imandra-coredump-" ^ ts ^ ".json";
-          Imandra.coredump ();
-        | None -> ()
-      end;
-      exit 1);
-
   let imandra_init () =
     if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
     begin
