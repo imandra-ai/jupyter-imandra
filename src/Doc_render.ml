@@ -25,15 +25,15 @@ let fold_js elId = Printf.sprintf {|
             $panelHeading = $(this);
             $fold = $panelHeading.closest('.imandra-fold');
 
-            $panelBody = $fold.find('.panel-body');
+            $panelBody = $fold.find('.panel-body').first();
             $panelBody.toggleClass('collapse');
 
             if ($panelBody.hasClass('collapse')) {
-                $fold.children('.panel-heading').find('.fa-chevron-down').addClass('hidden');
-                $fold.children('.panel-heading').find('.fa-chevron-right').removeClass('hidden');
+                $panelHeading.find('.fa-chevron-down').addClass('hidden');
+                $panelHeading.find('.fa-chevron-right').removeClass('hidden');
             } else {
-                $fold.children('.panel-heading').find('.fa-chevron-down').removeClass('hidden');
-                $fold.children('.panel-heading').find('.fa-chevron-right').addClass('hidden');
+                $panelHeading.find('.fa-chevron-down').removeClass('hidden');
+                $panelHeading.find('.fa-chevron-right').addClass('hidden');
             }
         });
 |}  elId
@@ -49,13 +49,13 @@ let alternatives_js elId = Printf.sprintf {|
 
             var selectedIdx;
 
-            $alternatives.find('.nav li').each(function (i, item) {
+            $alternatives.find('.nav').first().find('li').each(function (i, item) {
                 if ($(item).is($li)) {
                     selectedIdx = i;
                 }
             });
 
-            $alternatives.find('.tab-pane').each(function (i, item) {
+            $alternatives.find('.tab-content').first().find('.tab-pane').each(function (i, item) {
                 var $item = $(item);
                 $item.removeClass('active');
                 if (i == selectedIdx) {
