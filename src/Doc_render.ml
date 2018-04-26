@@ -20,7 +20,7 @@ let svg_of_graphiz (s:string) : string =
        "data:image/svg+xml;base64," ^ data64)
 
 let fold_js elId = Printf.sprintf {|
-        $('#%s.imandra-fold .panel-heading').on('click', function (e) {
+        $('#%s.imandra-fold').find('.panel-heading').first().on('click', function (e) {
             e.preventDefault();
             $panelHeading = $(this);
             $fold = $panelHeading.closest('.imandra-fold');
@@ -41,7 +41,7 @@ let fold_js elId = Printf.sprintf {|
 let fold_css elId = Printf.sprintf {| .imandra-fold#%s .panel-heading i { min-width: 20px; } |} elId
 
 let alternatives_js elId = Printf.sprintf {|
-        $('#%s.imandra-alternatives .nav li').on('click', function (e) {
+        $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', function (e) {
             e.preventDefault();
             $li = $(this);
 
@@ -133,7 +133,7 @@ let to_html (doc:D.t) : _ html =
           (fun row -> H.tr (List.map (fun s -> H.td [aux ~depth s]) row))
           rows
       in
-      let id = Uuidm.v `V4 |> Uuidm.to_string in
+      let id = "table-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-table"]; H.a_id id]
         [ H.style [H.pcdata (table_css id)]
         ; H.table ~a:[] ?thead rows]
@@ -153,7 +153,7 @@ let to_html (doc:D.t) : _ html =
       let body_class = if folded_by_default then ["collapse"] else [] in
       let down_icon_class = if folded_by_default then ["hidden"] else [] in
       let right_icon_class = if folded_by_default then [] else ["hidden"] in
-      let id = Uuidm.v `V4 |> Uuidm.to_string in
+      let id = "fold-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
         [ H.script (H.pcdata (fold_js id))
         ; H.style [H.pcdata (fold_css id)]
@@ -168,7 +168,7 @@ let to_html (doc:D.t) : _ html =
         ]
 
     | D.Alternatives {views=l; _} ->
-      let id = Uuidm.v `V4 |> Uuidm.to_string in
+      let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
         [ H.script (H.pcdata (alternatives_js id))
         ; H.style [H.pcdata (alternatives_css id)]
