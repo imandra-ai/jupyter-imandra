@@ -1,5 +1,8 @@
 {
     "argv": [
+        "jbuilder",
+        "exec",
+        "--",
         "jymandra",
         "--connection-file",
         "{connection_file}"
