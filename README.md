@@ -21,3 +21,9 @@ Start a web notebook with:
 ## Examples
 
 - [decompose1](example_notebooks/decompose1.ipynb)
+
+## Using the notebook in a virtualenv
+
+    virtualenv venv -p python3
+    pip install -r requirements.txt
+    pip install jupyter_nbextensions_configurator --sys-prefix
