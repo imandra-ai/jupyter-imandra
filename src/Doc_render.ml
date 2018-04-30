@@ -3,7 +3,7 @@ module C = Jupyter_kernel.Client
 module H = Tyxml.Html
 module D = Imandra_lib.Document
 
-type 'a html = ([<Html_types.div] as 'a) H.elt
+type 'a html = ([> Html_types.div] as 'a) H.elt
 
 (* render the graph as SVG *)
 let svg_of_graphiz (s:string) : string =
@@ -80,9 +80,26 @@ let table_css elId = Printf.sprintf {|
   text-align: left;
 }|} elId
 
+let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) list) : _ html =
+  let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
+  H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
+    [ H.script (H.pcdata (alternatives_js id))
+    ; H.style [H.pcdata (alternatives_css id)]
+    ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
+        (children |> List.mapi (fun i (name, _) ->
+             let selected = if i = 0 then ["active"] else [] in
+             H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
+               [H.a [H.pcdata name]]))
+
+    ; H.div ~a:[H.a_class ["tab-content"]]
+        (children |> List.mapi (fun i (_, sub) ->
+          let selected = if i = 0 then ["active"] else [] in
+          H.div ~a:[H.a_class (["tab-pane"] @ selected)] [sub]))
+    ]
+
 (* display a document as HTML *)
-let to_html (doc:D.t) : _ html =
-  let mk_header ?a ~depth l = match depth with
+let to_html (doc:D.t) : [> Html_types.div] html =
+  let mk_header ?a ~depth l : _ html = match depth with
     | 1 -> H.h1 ?a l
     | 2 -> H.h2 ?a l
     | 3 -> H.h3 ?a l
@@ -91,7 +108,7 @@ let to_html (doc:D.t) : _ html =
     | n when n>=6 -> H.h6 ?a l
     | _ -> assert false
   in
-  let rec aux ~depth (doc:D.t) =
+  let rec aux ~depth (doc:D.t) : _ html =
     (* obtain HTML attributes *)
     let a =
       CCList.filter_map
@@ -102,7 +119,7 @@ let to_html (doc:D.t) : _ html =
         (D.attrs doc)
     in
     aux_content ~a ~depth doc
-  and aux_content ~a ~depth doc =
+  and aux_content ~a ~depth doc : _ html=
     match D.view doc with
     | D.Section s -> mk_header ~a ~depth [H.pcdata s]
     | D.String s -> H.pcdata s
@@ -167,22 +184,10 @@ let to_html (doc:D.t) : _ html =
         ; H.div ~a:[H.a_class (["panel-body"] @ body_class)] [aux ~depth sub]
         ]
 
-    | D.Alternatives {views=l; _} ->
-      let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
-      H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
-        [ H.script (H.pcdata (alternatives_js id))
-        ; H.style [H.pcdata (alternatives_css id)]
-        ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
-            (List.mapi (fun i (name, _) ->
-                 let selected = if i = 0 then ["active"] else [] in
-                 H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
-                   [H.a [H.pcdata name]]) l)
+    | D.Alternatives {views=vs; _} ->
+      alternatives (vs |> List.map (fun (name, sub) ->
+          (name, aux ~depth sub)))
 
-        ; H.div ~a:[H.a_class ["tab-content"]]
-            (List.mapi (fun i (_, sub) ->
-                 let selected = if i = 0 then ["active"] else [] in
-                 H.div ~a:[H.a_class (["tab-pane"] @ selected)] [aux ~depth sub]) l)
-        ]
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
@@ -196,4 +201,3 @@ let mime_of_html (h:_ H.elt) : C.mime_data =
 
 let mime_of_txt (s:string) : C.mime_data =
   {C.mime_type="text/plain"; mime_content=s; mime_b64=false}
- 

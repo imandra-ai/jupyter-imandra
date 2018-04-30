@@ -9,11 +9,17 @@ module Res = struct
   module R = Evaluator.Res
   type 'a html = 'a Doc_render.html
 
-  let to_action (r:R.t) : C.Kernel.exec_action =
+  let to_action (r : R.t) : C.Kernel.exec_action =
+    let open Top_result in
     let m =
-      R.to_doc r
-      |> Doc_render.to_html
-      |> Doc_render.mime_of_html
+      match (view r) with
+      | Decompose d ->
+        Decompose_render.to_html r d
+        |> Doc_render.mime_of_html
+      | _ ->
+        R.to_doc r
+        |> Doc_render.to_html
+        |> Doc_render.mime_of_html
     in
     C.Kernel.Mime [m]
 end
