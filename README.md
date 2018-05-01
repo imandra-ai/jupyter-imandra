@@ -27,3 +27,7 @@ Start a web notebook with:
     pip install -r requirements.txt
     jupyter nbextensions_configurator enable --sys-prefix
     jupyter-kernelspec install share/kernelspec/imandra --sys-prefix
+
+    pip install share/nbextensions/nbimandra
+    jupyter nbextension install --py --sys-prefix nbimandra
+    jupyter nbextension enable --py --sys-prefix nbimandra
