@@ -75,19 +75,31 @@ let regions_to_json (regions: Top_result.decompose_region list) : J.json  =
            ]
   ) |> fun regions -> `Assoc [("regions", `List regions)]
 
-let regions_js regions = Printf.sprintf {|
+let regions_js id regions = Printf.sprintf {|
 (function () {
-  var regions = '%s';
-})()
-|} regions |> H.Unsafe.data
+  var data = %s;
+  console.log(data);
+  var foamtree = new window.CarrotSearchFoamTree({
+    id: '%s',
+    dataObject: {
+      groups: _.map(data.regions, function (r) {
+
+      });
+    }
+  });
+  foamtree.set(window.foamTreeStyles);
+})();
+|} regions id |> H.Unsafe.data
 
 let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
-    [ ("Table"
-      , (res |> Top_result.to_doc |> Doc_render.to_html))
-    ; ("Veroni"
-      , H.div
-          [ H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js)
+    [("Veroni"
+     , (let id = "foamtree-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
+        H.div
+          [ H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js id)
+          ; H.div ~a:[H.a_id id; H.a_style "width: 100%; min-width: 100%; height: 200px;"] []
           ]
-      )
+       )      )
+    ; ("Table"
+      , (res |> Top_result.to_doc |> Doc_render.to_html))
     ]
