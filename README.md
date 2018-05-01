@@ -17,7 +17,6 @@ Start a web notebook with:
 
     $ jupyter notebook
 
-
 ## Examples
 
 - [decompose1](example_notebooks/decompose1.ipynb)
@@ -27,4 +26,4 @@ Start a web notebook with:
     virtualenv venv -p python3
     pip install -r requirements.txt
     jupyter nbextensions_configurator enable --sys-prefix
-    jupyter-kernelspec install share/kernelspec/imandra
+    jupyter-kernelspec install share/kernelspec/imandra --sys-prefix
