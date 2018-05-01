@@ -93,7 +93,7 @@ let regions_js id regions = Printf.sprintf {|
 
 let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
-    [("Veroni"
+    [("Voronoi"
      , (let id = "foamtree-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
         H.div
           [ H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js id)
