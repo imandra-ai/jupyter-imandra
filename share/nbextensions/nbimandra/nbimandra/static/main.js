@@ -1,9 +1,5 @@
 define(['nbextensions/nbimandra/carrotsearch.foamtree'], function () {
 
-
-
-    window.foamTreeStyles = foamTreeStyles;
-
     function load_ipython_extension () {
     }
 

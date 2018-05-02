@@ -20,49 +20,49 @@ let svg_of_graphiz (s:string) : string =
        "data:image/svg+xml;base64," ^ data64)
 
 let fold_js elId = Printf.sprintf {|
-        $('#%s.imandra-fold').find('.panel-heading').first().on('click', function (e) {
-            e.preventDefault();
-            $panelHeading = $(this);
-            $fold = $panelHeading.closest('.imandra-fold');
+$('#%s.imandra-fold').find('.panel-heading').first().on('click', function (e) {
+    e.preventDefault();
+    $panelHeading = $(this);
+    $fold = $panelHeading.closest('.imandra-fold');
 
-            $panelBody = $fold.find('.panel-body').first();
-            $panelBody.toggleClass('collapse');
+    $panelBody = $fold.find('.panel-body').first();
+    $panelBody.toggleClass('collapse');
 
-            if ($panelBody.hasClass('collapse')) {
-                $panelHeading.find('.fa-chevron-down').addClass('hidden');
-                $panelHeading.find('.fa-chevron-right').removeClass('hidden');
-            } else {
-                $panelHeading.find('.fa-chevron-down').removeClass('hidden');
-                $panelHeading.find('.fa-chevron-right').addClass('hidden');
-            }
-        });
+    if ($panelBody.hasClass('collapse')) {
+        $panelHeading.find('.fa-chevron-down').addClass('hidden');
+        $panelHeading.find('.fa-chevron-right').removeClass('hidden');
+    } else {
+        $panelHeading.find('.fa-chevron-down').removeClass('hidden');
+        $panelHeading.find('.fa-chevron-right').addClass('hidden');
+    }
+});
 |}  elId
 
 let fold_css elId = Printf.sprintf {| .imandra-fold#%s .panel-heading i { min-width: 20px; } |} elId
 
 let alternatives_js elId = Printf.sprintf {|
-        $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', function (e) {
-            e.preventDefault();
-            $li = $(this);
+$('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', function (e) {
+    e.preventDefault();
+    $li = $(this);
 
-            $alternatives = $li.closest('.imandra-alternatives');
+    $alternatives = $li.closest('.imandra-alternatives');
 
-            var selectedIdx;
+    var selectedIdx;
 
-            $alternatives.find('.nav').first().find('li').each(function (i, item) {
-                if ($(item).is($li)) {
-                    selectedIdx = i;
-                }
-            });
+    $alternatives.find('.nav').first().find('li').each(function (i, item) {
+        if ($(item).is($li)) {
+            selectedIdx = i;
+        }
+    });
 
-            $alternatives.find('.tab-content').first().find('.tab-pane').each(function (i, item) {
-                var $item = $(item);
-                $item.removeClass('active');
-                if (i == selectedIdx) {
-                    $item.addClass('active');
-                }
-            });
-        });
+    $alternatives.find('.tab-content').first().find('.tab-pane').each(function (i, item) {
+        var $item = $(item);
+        $item.removeClass('active');
+        if (i == selectedIdx) {
+            $item.addClass('active');
+        }
+    });
+});
 |} elId
 
 let alternatives_css elId = Printf.sprintf {|
