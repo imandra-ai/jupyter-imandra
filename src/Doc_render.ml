@@ -83,8 +83,7 @@ let table_css elId = Printf.sprintf {|
 let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) list) : _ html =
   let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
   H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
-    [ H.script (H.pcdata (alternatives_js id))
-    ; H.style [H.pcdata (alternatives_css id)]
+    [ H.style [H.pcdata (alternatives_css id)]
     ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
         (children |> List.mapi (fun i (name, _) ->
              let selected = if i = 0 then ["active"] else [] in
@@ -95,6 +94,7 @@ let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) 
         (children |> List.mapi (fun i (_, sub) ->
           let selected = if i = 0 then ["active"] else [] in
           H.div ~a:[H.a_class (["tab-pane"] @ selected)] [sub]))
+    ; H.script (H.Unsafe.data (alternatives_js id))
     ]
 
 (* display a document as HTML *)
@@ -172,8 +172,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
       let right_icon_class = if folded_by_default then [] else ["hidden"] in
       let id = "fold-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
-        [ H.script (H.pcdata (fold_js id))
-        ; H.style [H.pcdata (fold_css id)]
+        [ H.style [H.pcdata (fold_css id)]
         ; H.div ~a:[H.a_class ["panel-heading"]]
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
@@ -182,6 +181,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
                 ]
             ]
         ; H.div ~a:[H.a_class (["panel-body"] @ body_class)] [aux ~depth sub]
+        ; H.script (H.Unsafe.data (fold_js id))
         ]
 
     | D.Alternatives {views=vs; _} ->
