@@ -60,7 +60,7 @@ let regions_to_json (regions: Top_result.decompose_region list) : J.json  =
     regions
     |> CCList.map (fun x ->
         let open Top_result in
-        (x.reg_constraints |> CCList.map Term.to_string) @ [Term.to_string x.reg_invariant])
+        (x.reg_constraints |> CCList.map Term.to_string |> List.sort (String.compare)) @ [Term.to_string x.reg_invariant])
   in
   LabelTree.label label_input |> List.map ( fun (name, constraints) ->
     let invariant = List.hd constraints in
@@ -70,34 +70,32 @@ let regions_to_json (regions: Top_result.decompose_region list) : J.json  =
       |> List.rev
     in
     `Assoc [ ("name"       , `String name      )
+           ; ("label"      , `String invariant )
            ; ("constraints", `List constraints )
            ; ("invariant"  , `String invariant )
            ]
   ) |> fun regions -> `Assoc [("regions", `List regions)]
 
-let regions_js id regions = Printf.sprintf {|
+let regions_js ft_id details_id regions = Printf.sprintf {|
 (function () {
-  var data = %s;
-  console.log(data);
-  var foamtree = new window.CarrotSearchFoamTree({
-    id: '%s',
-    dataObject: {
-      groups: _.map(data.regions, function (r) {
 
-      });
-    }
-  });
-  foamtree.set(window.foamTreeStyles);
+require(['nbextensions/nbimandra/regions'], function (regions) {
+  regions.draw('%s', %s);
+});
+
 })();
-|} regions id |> H.Unsafe.data
+|} ft_id regions |> H.Unsafe.data
 
 let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
     [("Voronoi"
-     , (let id = "foamtree-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
-        H.div
-          [ H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js id)
-          ; H.div ~a:[H.a_id id; H.a_style "width: 100%; min-width: 100%; height: 200px;"] []
+     , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
+        let ft_id = "decompose-foamtree-" ^ uuid  in
+        let details_id = "decompose-details-" ^ uuid in
+        H.div ~a:[H.a_style "display: flex;"]
+          [ H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js ft_id details_id)
+          ; H.div ~a:[H.a_id ft_id; H.a_style "width: 50%; height: 300px;"] []
+          ; H.div ~a:[H.a_id details_id; H.a_style "width: 50%; height: 300px;"] []
           ]
        )      )
     ; ("Table"
