@@ -19,6 +19,7 @@ type region_group =
   ; label_path : int list
   ; region: region option
   ; children : region_group list
+  ; weight: int
   }
 
 let to_region (decompose_region : Top_result.decompose_region) : region =
@@ -59,6 +60,7 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
             ; region = if CCList.length has = 1 then Some (List.hd has) else None
             ; children = group_regions label_path (konstraint :: constraint_path) has
             ; label_path = label_path
+            ; weight = CCList.length has
             } :: groups
            , without)
          else
@@ -81,6 +83,7 @@ let rec region_group_to_json (rg : region_group) : J.json =
          ; ("region", match rg.region with Some r -> region_to_json r | None -> `Null)
          ; ("groups", `List (CCList.map region_group_to_json rg.children))
          ; ("label", `String label)
+         ; ("weight", `Int rg.weight)
          ]
 
 let regions_to_json (decompose_regions: Top_result.decompose_region list) : J.json  =
