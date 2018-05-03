@@ -3,13 +3,9 @@ define(['nbextensions/nbimandra/carrotsearch.foamtree', 'nbextensions/nbimandra/
     return {
         draw: function (id, data) {
             console.log(data);
-            var foamtree = new window.CarrotSearchFoamTree({
-                id: id,
-                dataObject: {
-                    groups: data.regions
-                }
-            });
+            var foamtree = new window.CarrotSearchFoamTree({id: id});
             foamtree.set(styles);
+            foamtree.set({ dataObject: { groups: data.regions }});
         }
     };
 });
