@@ -109,8 +109,6 @@ let regions_js ft_id details_id regions = Printf.sprintf {|
         $('#' + detailsId + ' .decompose-details-selection').removeClass('hidden');
 
         var g = info.groups[0];
-        console.log(info);
-        console.log(g);
 
         var constraints = _.map(g.constraints, function (c) {
             return '<pre class="decompose-details-constraint">' + c + '</pre>';
@@ -189,22 +187,18 @@ let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
 
               ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
                   [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Direct sub-regions: "]
-                                 ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.pcdata "3"]
-                                 ]
+                                ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.pcdata "-"]
+                                ]
                   ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Contained regions: "]
-                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.pcdata "3"]
+                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.pcdata "-"]
                                 ]
                   ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Constraints"]
                   ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
-                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "<constraint>"]
                        ]
                   ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
                        [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Invariant"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.pcdata "F = alphabetty spaghetti"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.pcdata "<invariant>"]
                        ]
 
                   ]]
