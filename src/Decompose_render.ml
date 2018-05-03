@@ -93,21 +93,121 @@ let regions_to_json (decompose_regions: Top_result.decompose_region list) : J.js
 
 let regions_js ft_id details_id regions = Printf.sprintf {|
 (function () {
-  require(['nbextensions/nbimandra/regions'], function (regions) {
-    regions.draw('%s', '%s', %s);
+  require(['nbextensions/nbimandra/regions', 'underscore'], function (regions, _) {
+    var foamtreeId = '%s';
+    var detailsId = '%s';
+    var ft = regions.draw(foamtreeId, detailsId, %s);
+
+    ft.set({ onGroupSelectionChanged: function (info) {
+
+    if (!info.groups.length) {
+        $('#' + detailsId + ' .decompose-details-selection').addClass('hidden');
+        $('#' + detailsId + ' .decompose-details-no-selection').removeClass('hidden');
+
+    } else {
+        $('#' + detailsId + ' .decompose-details-no-selection').addClass('hidden');
+        $('#' + detailsId + ' .decompose-details-selection').removeClass('hidden');
+
+        var g = info.groups[0];
+        console.log(info);
+        console.log(g);
+
+        var constraints = _.map(g.constraints, function (c) {
+            return '<pre class="decompose-details-constraint">' + c + '</pre>';
+        });
+
+        $('#' + detailsId + ' .decompose-details-constraints').html(constraints.join('\n'));
+        $('#' + detailsId + ' .decompose-details-direct-sub-regions-text').html(g.groups.length);
+        $('#' + detailsId + ' .decompose-details-contained-regions-text').html(g.weight);
+
+        if (!g.region) {
+            $('#' + detailsId + ' .decompose-details-invariant').addClass('hidden');
+        } else {
+            $('#' + detailsId + ' .decompose-details-invariant').removeClass('hidden');
+            $('#' + detailsId + ' .decompose-details-invariant-text').html(g.region.invariant);
+        }
+    }
+    }});
   });
 })();
 |} ft_id details_id regions |> H.Unsafe.data
+
+let decompose_css (main_id : string) : string = Printf.sprintf {|
+.decompose#%s {
+    display: flex;
+    justify-content: space-between;
+}
+.decompose#%s .decompose-foamtree {
+    width: 50%%;
+    height: 400px;
+}
+.decompose#%s .decompose-details {
+    width: 50%%;
+    height: 400px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+.decompose#%s .decompose-details-header {
+    font-weight: bold;
+    font-size: 1.4em;
+    margin: 0 0 0.5em 0;
+}
+.decompose#%s .decompose-details-section-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 1em 0 0.5em 0;
+}
+.decompose#%s .decompose-details-constraint {
+    font-size: 0.8em;
+    border-bottom: 1px black dotted;
+}
+.decompose#%s .decompose-details-invariant-text {
+    font-size: 0.8em;
+    font-weight: bold;
+    border: 1px black solid;
+    padding: 1em;
+}
+|} main_id main_id main_id main_id main_id main_id main_id
 
 let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
     [("Voronoi"
      , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
+        let main_id = "decompose-" ^ uuid in
         let ft_id = "decompose-foamtree-" ^ uuid  in
         let details_id = "decompose-details-" ^ uuid in
-        H.div ~a:[H.a_style "display: flex; justify-content: space-between;"]
-          [ H.div ~a:[H.a_id ft_id; H.a_style "width: 50%; height: 400px;"] []
-          ; H.div ~a:[H.a_id details_id; H.a_style "width: 45%; height: 400px;"] []
+        H.div ~a:[H.a_id main_id; H.a_class ["decompose"]]
+          [ H.style [H.Unsafe.data (decompose_css main_id)]
+          ; H.div ~a:[H.a_id ft_id; H.a_class ["decompose-foamtree"]] []
+          ; H.div ~a:[H.a_id details_id; H.a_class ["decompose-details"]]
+              [ H.div ~a:[H.a_class ["decompose-details-header"]]
+                  [H.pcdata "Regions details"]
+
+              ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
+                  H.pcdata "No group selected."
+                ]
+
+              ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
+                  [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Direct sub-regions: "]
+                                 ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.pcdata "3"]
+                                 ]
+                  ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Contained regions: "]
+                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.pcdata "3"]
+                                ]
+                  ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Constraints"]
+                  ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
+                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "not (alphabetty spaghetti)"]
+                       ]
+                  ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
+                       [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Invariant"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.pcdata "F = alphabetty spaghetti"]
+                       ]
+
+                  ]]
           ; H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js ft_id details_id)
           ]
        )
