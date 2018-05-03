@@ -105,8 +105,8 @@ let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
         let ft_id = "decompose-foamtree-" ^ uuid  in
         let details_id = "decompose-details-" ^ uuid in
         H.div ~a:[H.a_style "display: flex;"]
-          [ H.div ~a:[H.a_id ft_id; H.a_style "width: 100%; height: 300px;"] []
-          (* ; H.div ~a:[H.a_id details_id; H.a_style "width: 50%; height: 300px;"] [] *)
+          [ H.div ~a:[H.a_id ft_id; H.a_style "width: 50%; height: 400px;"] []
+          ; H.div ~a:[H.a_id details_id; H.a_style "width: 50%; height: 400px;"] []
           ; H.script (regions_to_json regions |> Yojson.Basic.pretty_to_string |> regions_js ft_id details_id)
           ]
        )
