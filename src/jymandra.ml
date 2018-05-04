@@ -24,25 +24,12 @@ module Res = struct
     C.Kernel.Mime [m]
 end
 
-let lockdown_uuid = ref ~-1
-let coredump_dir = ref (None)
-
-let handle_coredump () =
-  match !coredump_dir with
-  | Some d ->
-    let ts = (Unix.time () |> Printf.sprintf "%0.f") in
-    let path = d ^ "/imandra-coredump-" ^ ts ^ ".json" in
-    Log.logf "Writing coredump to %s" path;
-    Imandra.coredump_file := path;
-    Imandra.coredump ();
-  | None -> ()
-
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
   Log.logf "parse %S\n%!" str;
   if str = "##coredump" then
-    let () = handle_coredump () in
+    let () = Imandra.coredump () in
     (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
     |> Lwt.return
   else
@@ -54,7 +41,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
       (fun e ->
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
-         handle_coredump ();
+         Imandra.coredump ();
          Lwt.fail C.Restart
       )
 
@@ -127,14 +114,6 @@ let j_prelude =
 
 let () =
   let imandra_init () =
-    if !lockdown_uuid >= 0 then Imandra_lib.Pconfig.State.Set.lockdown (Some !lockdown_uuid);
-    begin
-      match !coredump_dir with
-      | Some d ->
-        Log.logf "Writing coredumps to %s" d;
-        Imandra_lib.Pconfig.State.Set.coredump true
-      | None -> ()
-    end;
     Evaluator.init();
     ignore (Imandra.eval_string  j_prelude);
     print_endline "init done";
@@ -143,8 +122,8 @@ let () =
   Lwt_main.run
     (Main.main
        ~args:[
-         ("--lockdown", Arg.Set_int(lockdown_uuid), " Lockdown mode to the given user id");
-         ("--coredump", Arg.String(fun dir -> coredump_dir := Some dir), "Enable coredumps and write them to given dir")
+         ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
+         ("--coredump-dir", Arg.String(fun dir -> Imandra_lib.Pconfig.State.Set.coredump_dir (Some dir)), "Enable coredumps and write them to given dir")
        ]
        ~usage:"jupyter-imandra"
        ~post_init:imandra_init
