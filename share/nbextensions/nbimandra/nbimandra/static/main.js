@@ -6,7 +6,7 @@ define(['jquery', 'nbextensions/nbimandra/carrotsearch.foamtree'], function ($) 
 
         //Add clear button for terminal
         if (window.terminal) {
-            $('#terminado-container').prepend('<div><button id="terminado-clear" class="btn btn-primary" style="margin-bottom: 1em;">Clear terminal</button></div>');
+            $('#terminado-container').before('<div><button id="terminado-clear" class="btn btn-primary" style="margin-bottom: 1em;">Clear terminal</button></div>');
             $('#terminado-container').on('click', '#terminado-clear', function () {
                 window.terminal.term.clear();
                 window.terminal.term.focus();
