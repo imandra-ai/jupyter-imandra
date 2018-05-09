@@ -107,10 +107,11 @@ let kernel : C.Kernel.t =
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
-let j_prelude =
-  {j| #redef;;
-       #timeout 60;;
-  |j}
+let j_prelude = {j|
+  #console_print false;;
+  #redef;;
+  #timeout 60;;
+|j}
 
 let () =
   let imandra_init () =
