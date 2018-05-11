@@ -2,8 +2,6 @@ define(['jquery', 'nbextensions/nbimandra/carrotsearch.foamtree'], function ($) 
 
     function load_ipython_extension () {
 
-        console.log('load_ipyt');
-
         //Add clear button for terminal
         if (window.terminal) {
             $('#site').css('margin-top', 50);
