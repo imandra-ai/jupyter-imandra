@@ -45,17 +45,20 @@ $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', functi
     e.preventDefault();
     $li = $(this);
 
-    $alternatives = $li.closest('.imandra-alternatives');
-
+    var $alternatives = $li.parents('.imandra-alternatives').first();
     var selectedIdx;
 
-    $alternatives.find('.nav').first().find('li').each(function (i, item) {
+    var $nav = $alternatives.find('.nav').first();
+    $nav.children('li').each(function (i, item) {
+    console.log(i);
         if ($(item).is($li)) {
+    console.log('== ' + i);
             selectedIdx = i;
         }
     });
 
-    $alternatives.find('.tab-content').first().find('.tab-pane').each(function (i, item) {
+    var $tabContent = $alternatives.find('.tab-content').first();
+    $tabContent.children('.tab-pane').each(function (i, item) {
         var $item = $(item);
         $item.removeClass('active');
         if (i == selectedIdx) {
