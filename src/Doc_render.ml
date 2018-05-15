@@ -50,9 +50,7 @@ $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', functi
 
     var $nav = $alternatives.find('.nav').first();
     $nav.children('li').each(function (i, item) {
-    console.log(i);
         if ($(item).is($li)) {
-    console.log('== ' + i);
             selectedIdx = i;
         }
     });
