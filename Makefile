@@ -22,3 +22,6 @@ watch:
 		echo "============ at `date` ==========" ; \
 		make all; \
 	done
+
+watch-share:
+	chokidar "share/nbextensions/nbimandra/**/*" -c "pip install share/nbextensions/nbimandra && jupyter nbextension install --py --sys-prefix nbimandra && jupyter nbextension enable --py --sys-prefix nbimandra"
