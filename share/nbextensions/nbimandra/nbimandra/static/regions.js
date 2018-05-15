@@ -1,8 +1,11 @@
-define(['nbextensions/nbimandra/carrotsearch.foamtree', 'nbextensions/nbimandra/styles'], function (ft, styles) {
+define([
+    'nbextensions/nbimandra/lib/carrotsearch.foamtree',
+    'nbextensions/nbimandra/regions-styles'
+], function (ft, styles) {
 
     return {
         draw: function (id, detailsId, data) {
-            var foamtree = new window.CarrotSearchFoamTree({id: id});
+            var foamtree = new ft({id: id});
             foamtree.set(styles);
             foamtree.set({ dataObject: { groups: data.regions } });
 

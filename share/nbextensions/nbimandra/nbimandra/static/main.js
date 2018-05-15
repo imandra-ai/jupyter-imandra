@@ -1,4 +1,18 @@
-define(['jquery', 'nbextensions/nbimandra/carrotsearch.foamtree'], function ($) {
+require.config({
+    shim: {
+        'nbextensions/nbimandra/lib/carrotsearch.foamtree': {
+            exports: 'CarrotSearchFoamTree'
+        },
+        'nbextensions/nbimandra/lib/viz': {
+            exports: 'Viz'
+        }
+    }
+});
+
+
+define([
+    'jquery'
+], function ($) {
 
     function load_ipython_extension () {
     }
