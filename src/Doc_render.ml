@@ -1,23 +1,8 @@
-
 module C = Jupyter_kernel.Client
 module H = Tyxml.Html
 module D = Imandra_lib.Document
 
 type 'a html = ([> Html_types.div] as 'a) H.elt
-
-(* render the graph as SVG *)
-let svg_of_graphiz (s:string) : string =
-  Jupyter_kernel.Log.log "get svg for graph...\n";
-  CCIO.File.with_temp ~prefix:"jymandra" ~suffix:"dot"
-    (fun dot_file ->
-       CCIO.with_out dot_file (fun oc -> output_string oc s);
-       let p = CCUnix.call_full "dot '%s' -Tsvg " dot_file in
-       let _ = p#errcode in
-       let data = p#stdout in
-       let data64 = Jupyter_kernel.Base64.encode data in
-       Jupyter_kernel.Log.logf "got svg (%d bytes, %d after base64)\n"
-         (String.length data) (String.length data64);
-       "data:image/svg+xml;base64," ^ data64)
 
 let fold_js elId = Printf.sprintf {|
 require(['nbextensions/nbimandra/fold'], function (fold) {
@@ -33,6 +18,12 @@ require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
 });
 |} elId
 
+let graphviz_js elId = Printf.sprintf {|
+require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
+  var target = '#%s';
+  graphviz.hydrate(target);
+});
+|} elId
 
 let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) list) : _ html =
   let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
@@ -108,8 +99,14 @@ let to_html (doc:D.t) : [> Html_types.div] html =
         [ H.table ~a:[] ?thead rows]
 
     | D.Graphviz s ->
-      let svg_data = svg_of_graphiz s in
-      H.img ~src:svg_data ~alt:"svg of graph" ()
+      let id = "graphviz-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
+      H.div ~a:[H.a_class ["imandra-graphviz"]; H.a_id id]
+        [ H.textarea ~a:[H.a_style "display: none"] (H.pcdata s)
+        ; H.button ~a:[H.a_class ["btn"; "btn-primary"]] [(H.pcdata "Load graph")]
+        ; H.div ~a:[H.a_class ["imandra-graphviz-loading"; "display-none"]] [(H.pcdata "Loading..")]
+        ; H.div ~a:[H.a_class ["imandra-graphviz-target"]] []
+        ; H.script (H.Unsafe.data (graphviz_js id))
+        ]
     | D.Enum l ->
       H.ol ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
     | D.Bold d -> H.b ~a [H.pcdata @@ D.to_string d]
