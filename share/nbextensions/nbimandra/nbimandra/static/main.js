@@ -11,11 +11,13 @@ require.config({
 
 
 define([
-    'jquery'
-], function ($) {
+    'jquery',
+    'base/js/utils'
+], function ($, utils) {
 
     function load_ipython_extension () {
-        $('head').append('<link rel="stylesheet" href="/nbextensions/nbimandra/styles.css" type="text/css">');
+        var baseUrl = utils.get_body_data("baseUrl");
+        $('head').append('<link rel="stylesheet" href="' + baseUrl + 'nbextensions/nbimandra/styles.css" type="text/css">');
     }
 
     return {
