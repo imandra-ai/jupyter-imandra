@@ -38,8 +38,6 @@ $('#%s.imandra-fold').find('.panel-heading').first().on('click', function (e) {
 });
 |}  elId
 
-let fold_css elId = Printf.sprintf {| .imandra-fold#%s .panel-heading i { min-width: 20px; } |} elId
-
 let alternatives_js elId = Printf.sprintf {|
 $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', function (e) {
     e.preventDefault();
@@ -66,26 +64,11 @@ $('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', functi
 });
 |} elId
 
-let alternatives_css elId = Printf.sprintf {|
-.imandra-alternatives#%s a {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.imandra-alternatives#%s ul.nav-tabs {
-    padding-left: 0;
-}|} elId elId
-
-let table_css elId = Printf.sprintf {|
-.imandra-table#%s table td {
-  text-align: left;
-}|} elId
 
 let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) list) : _ html =
   let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
   H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
-    [ H.style [H.pcdata (alternatives_css id)]
-    ; H.ul ~a:[H.a_class ["nav nav-tabs"]]
+    [ H.ul ~a:[H.a_class ["nav nav-tabs"]]
         (children |> List.mapi (fun i (name, _) ->
              let selected = if i = 0 then ["active"] else [] in
              H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
@@ -153,8 +136,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
       in
       let id = "table-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-table"]; H.a_id id]
-        [ H.style [H.pcdata (table_css id)]
-        ; H.table ~a:[] ?thead rows]
+        [ H.table ~a:[] ?thead rows]
 
     | D.Graphviz s ->
       let svg_data = svg_of_graphiz s in
@@ -173,8 +155,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
       let right_icon_class = if folded_by_default then [] else ["hidden"] in
       let id = "fold-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
-        [ H.style [H.pcdata (fold_css id)]
-        ; H.div ~a:[H.a_class ["panel-heading"]]
+        [ H.div ~a:[H.a_class ["panel-heading"]]
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
                 ; H.i ~a:[H.a_class (["fa fa-chevron-right"] @ right_icon_class)] []
