@@ -20,47 +20,16 @@ let svg_of_graphiz (s:string) : string =
        "data:image/svg+xml;base64," ^ data64)
 
 let fold_js elId = Printf.sprintf {|
-$('#%s.imandra-fold').find('.panel-heading').first().on('click', function (e) {
-    e.preventDefault();
-    $panelHeading = $(this);
-    $fold = $panelHeading.closest('.imandra-fold');
-
-    $panelBody = $fold.find('.panel-body').first();
-    $panelBody.toggleClass('collapse');
-
-    if ($panelBody.hasClass('collapse')) {
-        $panelHeading.find('.fa-chevron-down').addClass('hidden');
-        $panelHeading.find('.fa-chevron-right').removeClass('hidden');
-    } else {
-        $panelHeading.find('.fa-chevron-down').removeClass('hidden');
-        $panelHeading.find('.fa-chevron-right').addClass('hidden');
-    }
+require(['nbextensions/nbimandra/fold'], function (fold) {
+  var target = '#%s';
+  fold.hydrate(target);
 });
 |}  elId
 
 let alternatives_js elId = Printf.sprintf {|
-$('#%s.imandra-alternatives').find('.nav').first().find('li').on('click', function (e) {
-    e.preventDefault();
-    $li = $(this);
-
-    var $alternatives = $li.parents('.imandra-alternatives').first();
-    var selectedIdx;
-
-    var $nav = $alternatives.find('.nav').first();
-    $nav.children('li').each(function (i, item) {
-        if ($(item).is($li)) {
-            selectedIdx = i;
-        }
-    });
-
-    var $tabContent = $alternatives.find('.tab-content').first();
-    $tabContent.children('.tab-pane').each(function (i, item) {
-        var $item = $(item);
-        $item.removeClass('active');
-        if (i == selectedIdx) {
-            $item.addClass('active');
-        }
-    });
+require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
+  var target = '#%s';
+  alternatives.hydrate(target);
 });
 |} elId
 
