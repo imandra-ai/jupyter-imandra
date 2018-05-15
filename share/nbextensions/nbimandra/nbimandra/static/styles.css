@@ -1,0 +1,12 @@
+.display-none {
+    display: none;
+}
+
+.imandra-graphviz {
+    padding-top: 1em;
+    width: 100%;
+}
+
+.imandra-graphviz-target {
+    width: 100%;
+}

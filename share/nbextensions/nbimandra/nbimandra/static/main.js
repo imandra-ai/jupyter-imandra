@@ -15,6 +15,7 @@ define([
 ], function ($) {
 
     function load_ipython_extension () {
+        $('head').append('<link rel="stylesheet" href="/nbextensions/nbimandra/styles.css" type="text/css">');
     }
 
     return {
