@@ -20,11 +20,10 @@ define([
         $(target + ' button').click(function () {
             $(target + ' button').hide();
             $(target + ' .imandra-graphviz-loading').removeClass('display-none');
-            require(['nbextensions/nbimandra/graph'], function () {
-                var src = $(target + ' textarea').val();
-                renderFromDot(target, src);
-                $(target + ' .imandra-graphviz-loading').addClass('display-none');
-            });
+
+            var src = $(target + ' textarea').val();
+            renderFromDot(target, src);
+            $(target + ' .imandra-graphviz-loading').addClass('display-none');
         });
     }
 
