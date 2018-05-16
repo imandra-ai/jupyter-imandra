@@ -12,6 +12,16 @@ clean:
 install-kernel:
 	jupyter kernelspec install `pwd`/share/kernelspec/imandra --user
 
+install-nbimandra:
+	pip install --user -r requirements.txt
+	jupyter nbextensions_configurator enable
+	jupyter-kernelspec install share/kernelspec/imandra --user
+	
+	pip install --user share/nbextensions/nbimandra
+	jupyter nbextension install --py nbimandra --user
+	jupyter nbextension enable --py nbimandra
+
+
 reindent:
 	@which ocp-indent || ( echo "require ocp-indent" ; exit 1 )
 	@find src/ '(' -name '*.ml' -or -name '*.mli' ')' -type f -print0 | xargs -0 echo "reindenting: "
