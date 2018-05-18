@@ -76,9 +76,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
         Document.to_string @@ History.event_to_doc ~txt:true ev
       and html =
         Doc_render.mime_of_html @@ Doc_render.to_html @@
-        History.event_to_doc ~txt:true ev
-        (* FIXME: use once we have a good rendering of terms in HTML
-           History.event_to_doc ~txt:true ev *)
+        History.event_to_doc ~txt:false ev
       in
       Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt;html]}
   with e ->
