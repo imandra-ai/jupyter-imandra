@@ -1,10 +1,10 @@
 require.config({
+    paths: {
+        'svg-pan-zoom': '/nbextensions/nbimandra/lib/svg-pan-zoom'
+    },
     shim: {
         'nbextensions/nbimandra/lib/carrotsearch.foamtree': {
             exports: 'CarrotSearchFoamTree'
-        },
-        'nbextensions/nbimandra/lib/viz': {
-            exports: 'Viz'
         }
     }
 });

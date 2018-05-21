@@ -34,4 +34,4 @@ watch:
 	done
 
 watch-share:
-	chokidar "share/nbextensions/nbimandra/**/*" -c "pip install share/nbextensions/nbimandra && jupyter nbextension install --py --sys-prefix nbimandra && jupyter nbextension enable --py --sys-prefix nbimandra"
+	chokidar "share/nbextensions/nbimandra/**/*" -c "source venv/bin/activate && pip install share/nbextensions/nbimandra && jupyter nbextension install --py --sys-prefix nbimandra && jupyter nbextension enable --py --sys-prefix nbimandra"
