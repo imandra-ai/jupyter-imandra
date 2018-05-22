@@ -10,5 +10,5 @@ setuptools.setup(
     install_requires=[
         'notebook',
     ],
-    package_data={'nbimandra': ['static/*', 'static/**/*']},
+    package_data={'nbimandra': ['static/*', 'static/**/*', 'static/**/**/*']},
 )

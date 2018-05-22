@@ -2,6 +2,16 @@
     display: none;
 }
 
+.grab {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+.grabbing {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+}
+
 .imandra-graphviz {
     padding-top: 1em;
     width: 100%;
@@ -9,6 +19,10 @@
 
 .imandra-graphviz-target {
     width: 100%;
+}
+
+.imandra-graphviz-target #svg-pan-zoom-controls {
+    transform: translate(10px,10px) scale(0.75, 0.75);
 }
 
 .imandra-fold .panel-heading i {
