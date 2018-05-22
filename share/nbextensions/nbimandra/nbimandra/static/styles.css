@@ -2,6 +2,16 @@
     display: none;
 }
 
+.grab {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+.grabbing {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+}
+
 .imandra-graphviz {
     padding-top: 1em;
     width: 100%;

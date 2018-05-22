@@ -21,7 +21,14 @@ define([
 
                 $(svgElement)
                     .css('height', '70vh')
-                    .css('cursor', 'move');
+                    .addClass('grab');
+
+                $(svgElement).on("mousedown touchstart", function(e) {
+                    $(this).addClass('grabbing').removeClass('grab');
+                });
+                $(svgElement).on("mouseup touchend", function(e) {
+                    $(this).addClass('grab').removeClass('grabbing');
+                });
 
                 $(target + ' .imandra-graphviz-loading').addClass('display-none');
 
