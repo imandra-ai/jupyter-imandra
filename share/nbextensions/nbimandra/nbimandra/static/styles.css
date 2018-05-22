@@ -21,6 +21,10 @@
     width: 100%;
 }
 
+.imandra-graphviz-target #svg-pan-zoom-controls {
+    transform: translate(10px,10px) scale(0.75, 0.75);
+}
+
 .imandra-fold .panel-heading i {
     min-width: 20px;
 }
