@@ -11,11 +11,13 @@ clean:
 
 install-kernel:
 	jupyter kernelspec install `pwd`/share/kernelspec/imandra --user
+	jupyter kernelspec install `pwd`/share/kernelspec/imandra-reason --user
 
 install-nbimandra:
 	pip install --user -r requirements.txt
 	jupyter nbextensions_configurator enable
 	jupyter-kernelspec install share/kernelspec/imandra --user
+	jupyter-kernelspec install share/kernelspec/imandra-reason --user
 	
 	pip install --user share/nbextensions/nbimandra
 	jupyter nbextension install --py nbimandra --user

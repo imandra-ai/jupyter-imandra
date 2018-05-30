@@ -1,0 +1,13 @@
+{
+    "argv": [
+        "jbuilder",
+        "exec",
+        "--",
+        "jymandra",
+        "--connection-file",
+        "{connection_file}",
+        "--reason"
+    ],
+    "display_name": "Imandra-reason",
+    "language": "reason"
+}
