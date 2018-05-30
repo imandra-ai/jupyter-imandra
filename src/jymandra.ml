@@ -112,9 +112,10 @@ let j_prelude = {j|
 |j}
 
 let () =
+  let use_reason = ref false in
   let imandra_init () =
-    Evaluator.init();
-    ignore (Imandra.eval_string  j_prelude);
+    Evaluator.init ~reason:!use_reason ();
+    ignore (Imandra.eval_string j_prelude);
     print_endline "init done";
     Lwt.return ()
   in
@@ -122,7 +123,8 @@ let () =
     (Main.main
        ~args:[
          ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
-         ("--coredump-dir", Arg.String(fun dir -> Imandra_lib.Pconfig.State.Set.coredump_dir (Some dir)), "Enable coredumps and write them to given dir")
+         ("--coredump-dir", Arg.String(fun dir -> Imandra_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
+         ("--reason", Arg.Set use_reason, " Use reason syntax");
        ]
        ~usage:"jupyter-imandra"
        ~post_init:imandra_init

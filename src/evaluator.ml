@@ -1,10 +1,11 @@
 
 open Imandra_lib
 
-let init () =
+let init ?(reason=false) () =
   Pconfig.State.Set.push_top_results true;
   Pconfig.State.Set.console_print false;
-  Imandra.do_init ~linenoise:false ()
+  let syntax = if reason then Syntax.Reason else Syntax.OCaml in
+  Imandra.do_init ~syntax ~linenoise:false ()
 
 let bigflush () =
   Format.pp_print_flush Format.std_formatter ();

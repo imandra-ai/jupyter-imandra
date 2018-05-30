@@ -1,5 +1,5 @@
 
-val init : unit -> unit
+val init : ?reason:bool -> unit -> unit
 
 module Res : sig
   type t = Imandra_lib.Top_result.t
