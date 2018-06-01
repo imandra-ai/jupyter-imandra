@@ -7,3 +7,10 @@
                compiler-libs.common compiler-libs.toplevel
                imandra.lib z3 tyxml curly octavius uuidm))
   ))
+
+(install
+  ((section share)
+   (package jupyter-imandra)
+   (files ((../share/kernelspec/imandra/kernel.json as kernelspec/imandra/kernel.json)
+           (../share/kernelspec/imandra-reason/kernel.json as kernelspec/imandra-reason/kernel.json)))
+   ))
