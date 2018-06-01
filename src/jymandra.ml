@@ -105,17 +105,10 @@ let kernel : C.Kernel.t =
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
-let j_prelude = {j|
-  #console_print false;;
-  #redef;;
-  #timeout 60;;
-|j}
-
 let () =
   let use_reason = ref false in
   let imandra_init () =
     Evaluator.init ~reason:!use_reason ();
-    ignore (Imandra.eval_string j_prelude);
     print_endline "init done";
     Lwt.return ()
   in
