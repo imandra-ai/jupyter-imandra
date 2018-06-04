@@ -91,7 +91,7 @@ let is_complete s =
   Lwt.return r
 
 
-let kernel : C.Kernel.t =
+let ocaml_kernel : C.Kernel.t =
   C.Kernel.make
     ~banner:"Imandra"
     ~exec:(fun ~count msg -> run_ count msg)
@@ -105,12 +105,27 @@ let kernel : C.Kernel.t =
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
+let reason_kernel : C.Kernel.t =
+  C.Kernel.make
+    ~banner:"Imandra (ReasonML)"
+    ~exec:(fun ~count msg -> run_ count msg)
+    ~is_complete
+    ~history:(fun _ -> Lwt.return [])
+    ~inspect:(fun ir -> Lwt.return @@ inspect ir)
+    ~language:"reasonml"
+    ~language_version:[0;1;0]
+    ~codemirror_mode:"javascript"
+    ~file_extension:".re"
+    ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
+    ()
+
 let () =
   let use_reason = ref false in
   let imandra_init () =
     Evaluator.init ~reason:!use_reason ();
     print_endline "init done";
-    Lwt.return ()
+    let kernel = if !use_reason then reason_kernel else ocaml_kernel in
+    Lwt.return kernel
   in
   Lwt_main.run
     (Main.main
@@ -120,5 +135,4 @@ let () =
          ("--reason", Arg.Set use_reason, " Use reason syntax");
        ]
        ~usage:"jupyter-imandra"
-       ~post_init:imandra_init
-       kernel)
+       ~kernel_init:imandra_init)
