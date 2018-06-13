@@ -56,17 +56,22 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
         let idx_path = i :: idx_path in
         let constraint_path = konstraint :: constraint_path in
 
-        (if CCList.length has > 0 then
-           ({ rg_constraints = (CCList.rev constraint_path)
-            ; rg_region = if CCList.length has = 1 then Some (List.hd has) else None
-            ; rg_children = group_regions idx_path (constraint_path) has
-            ; rg_label_path = idx_path
-            ; rg_weight = CCList.length has
-            } :: groups
-           , without)
-         else
-           groups
-         , without)
+        if CCList.length has > 0 then
+          let rg_children = group_regions idx_path (constraint_path) has in
+          let group =
+            match rg_children with
+            | [child] -> child (* collapse groups with a single child. *)
+            | _ ->
+              { rg_constraints = (CCList.rev constraint_path)
+              ; rg_region = if CCList.length has = 1 then Some (List.hd has) else None
+              ; rg_children
+              ; rg_label_path = idx_path
+              ; rg_weight = CCList.length has
+              }
+          in
+          (group :: groups, without)
+        else
+          (groups, without)
 
       ) ([], regions)
   in
