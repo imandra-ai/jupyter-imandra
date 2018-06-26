@@ -132,6 +132,7 @@ let () =
        ~args:[
          ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
          ("--coredump-dir", Arg.String(fun dir -> Imandra_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
+         ("--require", Arg.String Imandra_lib.Imandra.require_lib_at_init, " Require given library");
          ("--reason", Arg.Set use_reason, " Use reason syntax");
        ]
        ~usage:"jupyter-imandra"
