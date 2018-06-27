@@ -23,7 +23,8 @@ type region_group =
   }
 
 let to_region (decompose_region : Top_result.decompose_region) : region =
-  { r_constraints = CCList.map Term.to_string decompose_region.reg_constraints
+  let r_constraints = CCList.map Term.to_string decompose_region.reg_constraints in
+  { r_constraints = if r_constraints = [] then ["true"] else r_constraints
   ; r_invariant = Term.to_string decompose_region.reg_invariant
   }
 
