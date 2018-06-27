@@ -47,12 +47,12 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
 
 (* auto-completion *)
 let complete pos str =
-  let module HC = History.Completion in
+  let module IC = Completion in
   let start, stop, l =
     if pos > String.length str then 0,0, []
     else (
-      let {HC.start;stop;l} = HC.complete ~cursor_pos:pos str in
-      start, stop, List.map (fun c -> c.HC.text) l
+      let {IC.start;stop;x=l} = IC.complete ~cursor_pos:pos str in
+      start, stop, List.map (fun c -> c.IC.text) l
     )
   in
   let c = {
@@ -64,7 +64,7 @@ let complete pos str =
 (* inspection *)
 let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) result =
   try
-    let module Isp = History.Inspect in
+    let module Isp = Completion.Inspect in
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
     Log.logf "inspection request %s :pos %d :lvl %d\n%!" c pos lvl;
     match Isp.inspect c ~cursor_pos:pos with
@@ -72,11 +72,11 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
     | Some (ev,_) ->
+      let d = Event.to_doc ev in
       let txt = Doc_render.mime_of_txt @@
-        Document.to_string @@ History.event_to_doc ~txt:true ev
+        Document.to_string d
       and html =
-        Doc_render.mime_of_html @@ Doc_render.to_html @@
-        History.event_to_doc ~txt:true ev
+        Doc_render.mime_of_html @@ Doc_render.to_html d
       in
       Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt;html]}
   with e ->
