@@ -99,7 +99,7 @@ let regions_to_json (decompose_regions: Top_result.decompose_region list) : J.js
 
 let regions_js ft_id = Printf.sprintf {|
 (function () {
-  require(['nbextensions/nbimandra/regions', 'underscore'], function (regions, _) {
+  require(['nbextensions/nbimandra/regions'], function (regions) {
     var target = '#%s';
     regions.hydrate(target);
   });
