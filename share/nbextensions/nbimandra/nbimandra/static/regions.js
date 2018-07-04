@@ -28,7 +28,7 @@ define([
 
                 var g = info.groups[0];
 
-                var constraints = _.map(g.constraints, function (c) {
+                var constraints = g.constraints.map(function (c) {
                     return '<pre class="decompose-details-constraint">' + c + '</pre>';
                 });
 
