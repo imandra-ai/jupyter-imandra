@@ -17,7 +17,7 @@ let bigflush () =
   Format.pp_print_flush Format.err_formatter ();
   flush_all ()
 
-let wrap_capture callback f =
+let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
   let open Unix in
   Unix.putenv "TERM" ""; (* ensure that upon errors, invalid input is repeated *)
   CCIO.File.with_temp ~prefix:"jupyter-imandra" ~suffix:".capture"
@@ -46,7 +46,7 @@ let wrap_capture callback f =
        let _ = lseek fd 0 SEEK_SET in
        let _ = read  fd buffer 0 sz in
        close fd;
-       callback buffer;
+       callback (Bytes.unsafe_to_string buffer);
        result)
 
 (* TODO: wow ??? *)
