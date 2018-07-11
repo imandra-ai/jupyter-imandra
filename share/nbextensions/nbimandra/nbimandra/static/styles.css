@@ -29,6 +29,9 @@
     min-width: 20px;
 }
 
+.imandra-alternatives {
+    padding-top: 1em;
+}
 
 .imandra-alternatives a {
     text-decoration: none;
