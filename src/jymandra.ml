@@ -16,6 +16,11 @@ module Res = struct
       | Decompose d ->
         Decompose_render.to_html r d
         |> Doc_render.mime_of_html
+
+      | Verify vr ->
+        Doc_render.html_of_verify_result vr
+        |> Doc_render.mime_of_html
+
       | _ ->
         R.to_doc r
         |> Doc_render.to_html

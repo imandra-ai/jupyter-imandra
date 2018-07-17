@@ -142,6 +142,50 @@ let to_html (doc:D.t) : [> Html_types.div] html =
   in
   H.div [aux ~depth:3 doc]
 
+let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
+  let open Imandra_lib.Top_result in
+  match (vr) with
+  | (V_proved {proof=p; callgraph; _}) ->
+    H.div [
+      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-proved"]] [
+        H.i ~a:[H.a_class ["fa"; "fa-check-circle"]] [];
+        H.span [H.pcdata "Proved"]
+      ];
+      (to_html
+         (D.alternatives @@ List.flatten
+            [["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [p]];
+             (match callgraph with
+              | None -> []
+              | Some (lazy c) ->
+                ["call graph", D.graphviz @@ c]);
+            ]))
+    ]
+  | (V_refuted {model;proof;callgraph}) ->
+    H.div [
+      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-refuted"]] [
+        H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]] [];
+        H.span [H.pcdata "Refuted"]
+      ];
+      (to_html
+         (D.alternatives
+            [ "call graph", D.graphviz @@ Lazy.force callgraph;
+              "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+            ]))
+    ]
+  | (V_unknown {proof;callgraph;instances;reason}) ->
+    H.div [
+      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-unknown"]] [
+        H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]] [];
+        H.span [H.pcdata (Printf.sprintf "Unknown (%s)" reason)]
+      ];
+      (to_html
+         (D.alternatives
+            [ "instances", D.fold ~folded_by_default:true @@ instances;
+              "call graph", D.graphviz @@ Lazy.force callgraph;
+              "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+            ]));
+    ]
+
 let mime_of_html (h:_ H.elt) : C.mime_data =
   let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
   {C.mime_type="text/html"; mime_content=s; mime_b64=false}
