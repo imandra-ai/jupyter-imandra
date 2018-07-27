@@ -142,49 +142,81 @@ let to_html (doc:D.t) : [> Html_types.div] html =
   in
   H.div [aux ~depth:3 doc]
 
+let success_result text =
+  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-proved"]] [
+    H.i ~a:[H.a_class ["fa"; "fa-check-circle"]] [];
+    H.span [H.pcdata text]
+  ]
+
+let fail_result text =
+  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-refuted"]] [
+    H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]] [];
+    H.span [H.pcdata text]
+  ]
+
+let unknown_result reason =
+  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-unknown"]] [
+    H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]] [];
+    H.span [H.pcdata (Printf.sprintf "Unknown (%s)" reason)]
+  ]
+
+let proof_alternatives proof callgraph =
+  to_html
+     (D.alternatives @@ List.flatten
+        [["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]];
+         (match callgraph with
+          | None -> []
+          | Some (lazy c) ->
+            ["call graph", D.graphviz @@ c]);
+        ])
+
+let proof_attempt_alternatives callgraph proof =
+  to_html
+     (D.alternatives
+        [ "call graph", D.graphviz @@ Lazy.force callgraph;
+          "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+        ])
+
+let proof_attempt_instances_alternatives instances callgraph proof =
+  to_html
+     (D.alternatives
+        [ "instances", D.fold ~folded_by_default:true @@ instances;
+          "call graph", D.graphviz @@ Lazy.force callgraph;
+          "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+        ])
+
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
   match (vr) with
-  | (V_proved {proof=p; callgraph; _}) ->
-    H.div [
-      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-proved"]] [
-        H.i ~a:[H.a_class ["fa"; "fa-check-circle"]] [];
-        H.span [H.pcdata "Proved"]
-      ];
-      (to_html
-         (D.alternatives @@ List.flatten
-            [["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [p]];
-             (match callgraph with
-              | None -> []
-              | Some (lazy c) ->
-                ["call graph", D.graphviz @@ c]);
-            ]))
-    ]
+  | (V_proved {proof; callgraph; _}) ->
+    H.div [ success_result "Proved"
+          ; proof_alternatives proof callgraph
+          ]
   | (V_refuted {model;proof;callgraph}) ->
-    H.div [
-      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-refuted"]] [
-        H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]] [];
-        H.span [H.pcdata "Refuted"]
-      ];
-      (to_html
-         (D.alternatives
-            [ "call graph", D.graphviz @@ Lazy.force callgraph;
-              "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
-            ]))
-    ]
+    H.div [ fail_result "Refuted"
+          ; proof_attempt_alternatives callgraph proof
+          ]
   | (V_unknown {proof;callgraph;instances;reason}) ->
-    H.div [
-      H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-unknown"]] [
-        H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]] [];
-        H.span [H.pcdata (Printf.sprintf "Unknown (%s)" reason)]
-      ];
-      (to_html
-         (D.alternatives
-            [ "instances", D.fold ~folded_by_default:true @@ instances;
-              "call graph", D.graphviz @@ Lazy.force callgraph;
-              "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
-            ]));
-    ]
+    H.div [ unknown_result reason
+          ; proof_attempt_instances_alternatives instances callgraph proof
+          ]
+
+let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> Html_types.div] html =
+  let open Imandra_lib.Top_result in
+  match (ir) with
+  | (I_sat {model;proof;callgraph}) ->
+    H.div [ success_result "Instance"
+          ; proof_attempt_alternatives callgraph proof
+          ]
+  | (I_unsat {proof; callgraph; _}) ->
+    H.div [ fail_result "Unsatisfiable"
+          ; proof_alternatives proof callgraph
+          ]
+  | (I_unknown {proof;callgraph;instances;reason}) ->
+    H.div [ unknown_result reason
+          ; proof_attempt_instances_alternatives instances callgraph proof
+          ]
+
 
 let mime_of_html (h:_ H.elt) : C.mime_data =
   let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
