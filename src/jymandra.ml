@@ -130,6 +130,7 @@ let reason_kernel : C.Kernel.t =
 
 let () =
   let use_reason = ref false in
+  Imandra_lib.init();
   let imandra_init () =
     Evaluator.init ~reason:!use_reason ();
     print_endline "init done";
