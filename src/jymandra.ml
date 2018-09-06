@@ -123,7 +123,7 @@ let reason_kernel : C.Kernel.t =
     ~inspect:(fun ir -> Lwt.return @@ inspect ir)
     ~language:"reasonml"
     ~language_version:[0;1;0]
-    ~codemirror_mode:"javascript"
+    ~codemirror_mode:"rust" (* rust mode highlights reason files surprisingly well *)
     ~file_extension:".re"
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
