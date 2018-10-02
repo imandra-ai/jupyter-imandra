@@ -133,6 +133,7 @@ let () =
   Imandra_lib.init();
   let imandra_init () =
     Evaluator.init ~reason:!use_reason ();
+    Imandra_batbmc.register (); (* external solvers *)
     print_endline "init done";
     let kernel = if !use_reason then reason_kernel else ocaml_kernel in
     Lwt.return kernel
