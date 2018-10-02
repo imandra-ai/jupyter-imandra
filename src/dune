@@ -6,7 +6,7 @@
   (flags :standard -safe-string -warn-error -a+8)
   (libraries jupyter-kernel containers containers.unix unix
              compiler-libs.common compiler-libs.toplevel
-             imandra.lib z3 tyxml curly bytes octavius uuidm)
+             imandra.lib imandra.hbmc z3 tyxml curly bytes octavius uuidm)
   )
 
 (install

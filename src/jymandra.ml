@@ -43,11 +43,11 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
     |> Lwt.return
   else
     Lwt.catch
-      (fun res ->
+      (fun _res ->
          Evaluator.exec_lwt ~count str >|= fun (out,res_l) ->
          let actions = List.map Res.to_action res_l in
          Result.Ok (C.Kernel.ok ~actions @@ Some out))
-      (fun e ->
+      (fun _e ->
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
          Imandra.coredump ();
@@ -133,6 +133,7 @@ let () =
   Imandra_lib.init();
   let imandra_init () =
     Evaluator.init ~reason:!use_reason ();
+    Imandra_hbmc.register (); (* external solvers *)
     print_endline "init done";
     let kernel = if !use_reason then reason_kernel else ocaml_kernel in
     Lwt.return kernel
