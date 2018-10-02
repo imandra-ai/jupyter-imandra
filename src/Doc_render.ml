@@ -139,6 +139,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.pcdata @@ D.to_string doc
+    [@@ocaml.warning "-11"]
   in
   H.div [aux ~depth:3 doc]
 
@@ -192,7 +193,7 @@ let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_
     H.div [ success_result "Proved"
           ; proof_alternatives proof callgraph
           ]
-  | (V_refuted {model;proof;callgraph}) ->
+  | (V_refuted {proof;callgraph;_}) ->
     H.div [ fail_result "Refuted"
           ; proof_attempt_alternatives callgraph proof
           ]
@@ -204,7 +205,7 @@ let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_
 let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
   match (ir) with
-  | (I_sat {model;proof;callgraph}) ->
+  | (I_sat {proof;callgraph;_}) ->
     H.div [ success_result "Instance"
           ; proof_attempt_alternatives callgraph proof
           ]
