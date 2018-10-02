@@ -2,12 +2,12 @@
 all: build
 
 build:
-	jbuilder build @install
+	@dune build @install
 
 BIN?=/usr/bin/
 
 clean:
-	jbuilder clean
+	@dune clean
 
 install-kernel:
 	jupyter kernelspec install `pwd`/share/kernelspec/imandra --user
