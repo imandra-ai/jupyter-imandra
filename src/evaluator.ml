@@ -9,7 +9,7 @@ let init ?(reason=false) () =
   (* setup some params *)
   Pconfig.State.Set.console_print false;
   Pconfig.State.Set.redef true;
-  Pconfig.State.Set.timeout 60;
+  Pconfig.State.Set.timeout 60_000;
   ()
 
 let bigflush () =
