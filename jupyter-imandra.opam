@@ -1,12 +1,13 @@
-opam-version: "1.2"
+opam-version: "2.0"
 name: "jupyter_imandra"
 version: "0.0.1"
+synopsis: "A very simple Jupyter kernel for Imandra"
 maintainer: "Simon Cruanes <smon@aestheticintegration.com>"
 authors: ["Simon Cruanes <simon@aestheticintegration.com>" "Kostya"]
 homepage: "http://www.imandra.ai/"
 bug-reports: "Simon <simon@aestheticintegration.com>"
 license: "Commercial/Restricted/Confidential"
-dev-repo: "https://github.com/AestheticIntegration/jupyter_imandra.git"
+dev-repo: "git+https://github.com/AestheticIntegration/jupyter_imandra.git"
 build: [
   ["dune" "build" "@install"]
 ]
