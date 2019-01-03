@@ -32,7 +32,7 @@ let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) 
         (children |> List.mapi (fun i (name, _) ->
              let selected = if i = 0 then ["active"] else [] in
              H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
-               [H.a [H.pcdata name]]))
+               [H.a [H.txt name]]))
 
     ; H.div ~a:[H.a_class ["tab-content"]]
         (children |> List.mapi (fun i (_, sub) ->
@@ -65,10 +65,10 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     aux_content ~a ~depth doc
   and aux_content ~a ~depth doc : _ html=
     match D.view doc with
-    | D.Section s -> mk_header ~a ~depth [H.pcdata s]
-    | D.String s -> H.pcdata s
-    | D.Text s -> H.pcdata s
-    | D.Pre s -> H.pre ~a [H.pcdata s]
+    | D.Section s -> mk_header ~a ~depth [H.txt s]
+    | D.String s -> H.txt s
+    | D.Text s -> H.txt s
+    | D.Pre s -> H.pre ~a [H.txt s]
     | D.List {l;_} ->
       H.ul ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
     | D.Block l ->
@@ -79,14 +79,14 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | D.Indented (s,sub) ->
       let depth = depth+1 in
       H.div ~a [
-        mk_header ~a ~depth [H.pcdata s];
+        mk_header ~a ~depth [H.txt s];
         aux ~depth sub;
       ]
     | D.Tbl {headers;rows} ->
       let thead = match headers with
         | None -> None
         | Some l ->
-          let l = List.map (fun s -> H.th [H.pcdata s]) l in
+          let l = List.map (fun s -> H.th [H.txt s]) l in
           Some (H.thead [H.tr l])
       and rows =
         let depth=depth+1 in
@@ -101,19 +101,19 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | D.Graphviz s ->
       let id = "graphviz-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
       H.div ~a:[H.a_class ["imandra-graphviz"]; H.a_id id]
-        [ H.textarea ~a:[H.a_style "display: none"] (H.pcdata s)
-        ; H.button ~a:[H.a_class ["btn"; "btn-primary"]] [(H.pcdata "Load graph")]
-        ; H.div ~a:[H.a_class ["imandra-graphviz-loading"; "display-none"]] [(H.pcdata "Loading..")]
+        [ H.textarea ~a:[H.a_style "display: none"] (H.txt s)
+        ; H.button ~a:[H.a_class ["btn"; "btn-primary"]] [(H.txt "Load graph")]
+        ; H.div ~a:[H.a_class ["imandra-graphviz-loading"; "display-none"]] [(H.txt "Loading..")]
         ; H.div ~a:[H.a_class ["imandra-graphviz-target"]] []
         ; H.script (H.Unsafe.data (graphviz_js id))
         ]
     | D.Enum l ->
       H.ol ~a (List.map (fun sub -> H.li [aux ~depth sub]) l)
-    | D.Bold d -> H.b ~a [H.pcdata @@ D.to_string d]
-    | D.Italic d -> H.i ~a [H.pcdata @@ D.to_string d]
-    | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.pcdata txt]
+    | D.Bold d -> H.b ~a [H.txt @@ D.to_string d]
+    | D.Italic d -> H.i ~a [H.txt @@ D.to_string d]
+    | D.Url {url;txt} -> H.a ~a:[H.a_href url] [H.txt txt]
     | D.OCamldoc_ref _
-    | D.OCamldoc_tag _ -> H.pcdata @@ D.to_string doc
+    | D.OCamldoc_tag _ -> H.txt @@ D.to_string doc
 
     | D.Fold { folded_by_default; summary; sub } ->
       let body_class = if folded_by_default then ["collapse"] else [] in
@@ -125,7 +125,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
             [ H.div
                 [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
                 ; H.i ~a:[H.a_class (["fa fa-chevron-right"] @ right_icon_class)] []
-                ; H.span [H.pcdata (if summary = "" then "Expand" else summary)]
+                ; H.span [H.txt (if summary = "" then "Expand" else summary)]
                 ]
             ]
         ; H.div ~a:[H.a_class (["panel-body"] @ body_class)] [aux ~depth sub]
@@ -138,7 +138,7 @@ let to_html (doc:D.t) : [> Html_types.div] html =
 
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
-      H.pcdata @@ D.to_string doc
+      H.txt @@ D.to_string doc
     [@@ocaml.warning "-11"]
   in
   H.div [aux ~depth:3 doc]
@@ -146,19 +146,19 @@ let to_html (doc:D.t) : [> Html_types.div] html =
 let success_result text =
   H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-proved"]] [
     H.i ~a:[H.a_class ["fa"; "fa-check-circle"]] [];
-    H.span [H.pcdata text]
+    H.span [H.txt text]
   ]
 
 let fail_result text =
   H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-refuted"]] [
     H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]] [];
-    H.span [H.pcdata text]
+    H.span [H.txt text]
   ]
 
 let unknown_result reason =
   H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-unknown"]] [
     H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]] [];
-    H.span [H.pcdata (Printf.sprintf "Unknown (%s)" reason)]
+    H.span [H.txt (Printf.sprintf "Unknown (%s)" reason)]
   ]
 
 let proof_alternatives proof callgraph =

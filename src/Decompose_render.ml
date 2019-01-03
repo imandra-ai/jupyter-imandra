@@ -31,7 +31,6 @@ let to_region (decompose_region : Top_result.decompose_region) : region =
 module StringSet = CCSet.Make(String)
 
 let rec group_regions (idx_path : int list) (constraint_path: string list) (regions: region list) : region_group list =
-  let open Top_result in
   let all_constraints_with_dup =
     regions
     |> CCList.flat_map (fun r -> r.r_constraints)
@@ -45,7 +44,7 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
     |> StringMap.to_list
     |> CCList.sort (fun (_, count_a) (_, count_b) -> compare count_a count_b)
     |> CCList.rev
-    |> CCList.map (fun (c, count) -> c)
+    |> CCList.map (fun (c, _) -> c)
   in
   let grouped =
     constraints_by_most_frequent
@@ -85,7 +84,7 @@ let region_to_json (r : region) : J.json =
 
 let rec region_group_to_json (rg : region_group) : J.json =
   let label_path = (rg.rg_label_path |> CCList.rev |> CCList.map string_of_int |> CCString.concat ".") in
-  let label = match rg.rg_region with Some r -> "R[" ^ label_path ^ "]" | None -> "(" ^ label_path ^ ")"in
+  let label = match rg.rg_region with Some _ -> "R[" ^ label_path ^ "]" | None -> "(" ^ label_path ^ ")"in
   `Assoc [ ("constraints", `List (CCList.map (fun s -> `String s) rg.rg_constraints))
          ; ("region", match rg.rg_region with Some r -> region_to_json r | None -> `Null)
          ; ("groups", `List (CCList.map region_group_to_json rg.rg_children))
@@ -112,30 +111,30 @@ let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
      , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
         let id = "decompose-" ^ uuid in
         H.div ~a:[H.a_id id; H.a_class ["decompose"]]
-          [ H.textarea ~a:[H.a_class ["display-none"]] (H.pcdata (regions_to_json regions |> Yojson.Basic.pretty_to_string))
+          [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json regions |> Yojson.Basic.pretty_to_string))
           ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
           ; H.div ~a:[H.a_class ["decompose-details"]]
               [ H.div ~a:[H.a_class ["decompose-details-header"]]
-                  [H.pcdata "Regions details"]
+                  [H.txt "Regions details"]
 
               ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
-                  H.pcdata "No group selected."
+                  H.txt "No group selected."
                 ]
 
               ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
-                  [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Direct sub-regions: "]
-                                ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.pcdata "-"]
+                  [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Direct sub-regions: "]
+                                ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.txt "-"]
                                 ]
-                  ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.pcdata "Contained regions: "]
-                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.pcdata "-"]
+                  ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Contained regions: "]
+                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.txt "-"]
                                 ]
-                  ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Constraints"]
+                  ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Constraints"]
                   ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
-                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.pcdata "<constraint>"]
+                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.txt "<constraint>"]
                        ]
                   ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
-                       [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.pcdata "Invariant"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.pcdata "<invariant>"]
+                       [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Invariant"]
+                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
                        ]
 
                   ]]
