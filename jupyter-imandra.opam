@@ -9,7 +9,7 @@ bug-reports: "Simon <simon@aestheticintegration.com>"
 license: "Commercial/Restricted/Confidential"
 dev-repo: "git+https://github.com/AestheticIntegration/jupyter_imandra.git"
 build: [
-  ["dune" "build" "@install"]
+  ["dune" "build" "@install" "-p" name "-j" jobs]
 ]
 depends: [
   "dune" {build}
