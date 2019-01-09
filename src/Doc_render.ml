@@ -164,7 +164,10 @@ let unknown_result reason =
 let proof_alternatives proof callgraph =
   to_html
      (D.alternatives @@ List.flatten
-        [["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]];
+        [(match proof with
+          | None -> []
+          | Some proof ->
+             ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]]);
          (match callgraph with
           | None -> []
           | Some (lazy c) ->
@@ -173,17 +176,23 @@ let proof_alternatives proof callgraph =
 
 let proof_attempt_alternatives callgraph proof =
   to_html
-     (D.alternatives
-        [ "call graph", D.graphviz @@ Lazy.force callgraph;
-          "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+     (D.alternatives @@ List.flatten
+        [[ "call graph", D.graphviz @@ Lazy.force callgraph];
+         (match proof with
+          | None -> []
+          | Some proof ->
+             ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]])
         ])
 
 let proof_attempt_instances_alternatives instances callgraph proof =
   to_html
-     (D.alternatives
-        [ "instances", D.fold ~folded_by_default:true @@ instances;
-          "call graph", D.graphviz @@ Lazy.force callgraph;
-          "proof-attempt", D.block ~a:[D.A.cls "imandra-proof-top"] [proof];
+     (D.alternatives @@ List.flatten
+        [[ "instances", D.fold ~folded_by_default:true @@ instances;
+           "call graph", D.graphviz @@ Lazy.force callgraph];
+         (match proof with
+          | None -> []
+          | Some proof ->
+             ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]])
         ])
 
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
