@@ -25,20 +25,19 @@ require(['nbextensions/nbimandra/graphviz'], function (graphviz) {
 });
 |} elId
 
-let alternatives (children : ( string * [< Html_types.div_content_fun ] H.elt ) list) : _ html =
+let alternatives (children : (string * [< Html_types.div_content_fun] H.elt) list) : _ html =
   let id = "alt-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
   H.div ~a:[H.a_class ["imandra-alternatives"]; H.a_id id]
     [ H.ul ~a:[H.a_class ["nav nav-tabs"]]
         (children |> List.mapi (fun i (name, _) ->
              let selected = if i = 0 then ["active"] else [] in
              H.li ~a:[H.a_class selected; H.a_user_data "toggle" "tab"]
-               [H.a [H.txt name]]))
-
-    ; H.div ~a:[H.a_class ["tab-content"]]
+               [H.a [H.txt name]]));
+      H.div ~a:[H.a_class ["tab-content"]]
         (children |> List.mapi (fun i (_, sub) ->
           let selected = if i = 0 then ["active"] else [] in
-          H.div ~a:[H.a_class (["tab-pane"] @ selected)] [sub]))
-    ; H.script (H.Unsafe.data (alternatives_js id))
+          H.div ~a:[H.a_class (["tab-pane"] @ selected)] [sub]));
+      H.script (H.Unsafe.data (alternatives_js id))
     ]
 
 (* display a document as HTML *)
@@ -167,10 +166,11 @@ let proof_alternatives proof callgraph =
         [(match proof with
           | None -> []
           | Some proof ->
-             ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]]);
+            ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]]);
          (match callgraph with
           | None -> []
           | Some (lazy c) ->
+            Format.printf "callgraph: %S@." c;
             ["call graph", D.graphviz @@ c]);
         ])
 
@@ -206,24 +206,25 @@ let proof_attempt_instances_alternatives instances callgraph proof =
 
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
-  match (vr) with
-  | (V_proved {proof; callgraph; _}) ->
-    H.div [ success_result "Proved"
-          ; proof_alternatives proof callgraph
+  Format.printf "html-of-verify-result %a@." pp_view (Verify vr);
+  match vr with
+  | V_proved {proof; callgraph; _} ->
+    H.div [ success_result "Proved";
+            proof_alternatives proof callgraph
           ]
-  | (V_refuted {proof;callgraph;_}) ->
-    H.div [ fail_result "Refuted"
-          ; proof_attempt_alternatives callgraph proof
+  | V_refuted {proof; callgraph;_} ->
+    H.div [ fail_result "Refuted";
+            proof_attempt_alternatives callgraph proof
           ]
-  | (V_unknown {proof;callgraph;instances;reason}) ->
-    H.div [ unknown_result reason
-          ; proof_attempt_instances_alternatives instances callgraph proof
+  | V_unknown {proof;callgraph;instances;reason} ->
+    H.div [ unknown_result reason;
+            proof_attempt_instances_alternatives instances callgraph proof
           ]
 
 let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
-  match (ir) with
-  | (I_sat {proof;callgraph;_}) ->
+  match ir with
+  | I_sat {proof;callgraph;_} ->
     H.div [ success_result "Instance"
           ; proof_attempt_alternatives callgraph proof
           ]

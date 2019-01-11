@@ -12,7 +12,7 @@ module Res = struct
   let to_action (r : R.t) : C.Kernel.exec_action =
     let open Top_result in
     let m =
-      match (view r) with
+      match view r with
       | Decompose d ->
         Decompose_render.to_html r d
         |> Doc_render.mime_of_html
