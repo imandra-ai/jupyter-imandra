@@ -204,6 +204,10 @@ let proof_attempt_instances_alternatives instances callgraph proof =
            ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]])
         ])
 
+let p_upto fmt = function
+  | Imandra_lib.Event.Upto_bound b -> Format.fprintf fmt "upto bound %i" b
+  | Upto_steps s -> Format.fprintf fmt "upto steps %i" s
+
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
   Format.printf "html-of-verify-result %a@." pp_view (Verify vr);
@@ -211,6 +215,10 @@ let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_
   | V_proved {proof; callgraph; _} ->
     H.div [ success_result "Proved";
             proof_alternatives proof callgraph
+          ]
+  | V_proved_upto {callgraph; upto} ->
+     H.div [ success_result (Format.asprintf "Proved %a" p_upto upto);
+            proof_alternatives None callgraph
           ]
   | V_refuted {proof; callgraph;_} ->
     H.div [ fail_result "Refuted";
@@ -231,6 +239,10 @@ let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> H
   | (I_unsat {proof; callgraph; _}) ->
     H.div [ fail_result "Unsatisfiable"
           ; proof_alternatives proof callgraph
+          ]
+  | (I_unsat_upto {callgraph; upto}) ->
+    H.div [ fail_result (Format.asprintf "Unsatisfiable %a" p_upto upto)
+          ; proof_alternatives None callgraph
           ]
   | (I_unknown {proof;callgraph;instances;reason}) ->
     H.div [ unknown_result reason
