@@ -1,5 +1,5 @@
-
 open Imandra_lib
+open Jupyter_imandra
 
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
