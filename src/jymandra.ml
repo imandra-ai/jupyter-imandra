@@ -4,6 +4,15 @@ open Jupyter_imandra
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module Log = Jupyter_kernel.Log
+module H = Tyxml.Html
+
+let mime_of_html (h:_ H.elt) : C.mime_data =
+  let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
+  {C.mime_type="text/html"; mime_content=s; mime_b64=false}
+
+
+let mime_of_txt (s:string) : C.mime_data =
+  {C.mime_type="text/plain"; mime_content=s; mime_b64=false}
 
 module Res = struct
   module R = Evaluator.Res
@@ -15,20 +24,20 @@ module Res = struct
       match view r with
       | Decompose d ->
         Decompose_render.to_html r d
-        |> Doc_render.mime_of_html
+        |> mime_of_html
 
       | Verify vr ->
         Doc_render.html_of_verify_result vr
-        |> Doc_render.mime_of_html
+        |> mime_of_html
 
       | Instance ir ->
         Doc_render.html_of_instance_result ir
-        |> Doc_render.mime_of_html
+        |> mime_of_html
 
       | _ ->
         R.to_doc r
         |> Doc_render.to_html
-        |> Doc_render.mime_of_html
+        |> mime_of_html
     in
     C.Kernel.Mime [m]
 end
@@ -82,10 +91,10 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
     | Some (ev,_) ->
       let d = Event.to_doc ev in
-      let txt = Doc_render.mime_of_txt @@
+      let txt = mime_of_txt @@
         Document.to_string d
       and html =
-        Doc_render.mime_of_html @@ Doc_render.to_html d
+        mime_of_html @@ Doc_render.to_html d
       in
       Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt;html]}
   with e ->

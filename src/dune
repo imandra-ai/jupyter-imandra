@@ -2,7 +2,7 @@
  (name jupyter_imandra)
  (public_name jupyter-imandra)
  (modules :standard \ jymandra evaluator)
- (libraries containers imandra.lib tyxml uuidm yojson jupyter-kernel))
+ (libraries containers imandra.lib tyxml uuidm yojson))
 
 (executable
   (name jymandra)

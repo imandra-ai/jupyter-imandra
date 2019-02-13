@@ -1,4 +1,3 @@
-module C = Jupyter_kernel.Client
 module H = Tyxml.Html
 module D = Imandra_lib.Document
 
@@ -248,12 +247,3 @@ let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> H
     H.div [ unknown_result reason
           ; proof_attempt_instances_alternatives instances callgraph proof
           ]
-
-
-let mime_of_html (h:_ H.elt) : C.mime_data =
-  let s = CCFormat.sprintf "%a@." (H.pp_elt ()) h in
-  {C.mime_type="text/html"; mime_content=s; mime_b64=false}
-
-
-let mime_of_txt (s:string) : C.mime_data =
-  {C.mime_type="text/plain"; mime_content=s; mime_b64=false}

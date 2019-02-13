@@ -13,14 +13,13 @@ build: [
 ]
 depends: [
   "dune" {build}
-  "base-bytes"
-  "ocaml-compiler-libs"
+  "base-bytes" {build}
+  "ocaml-compiler-libs" {build}
   "containers"
-  "imandra"
-  "jupyter-kernel"
+  "imandra" {build}
+  "jupyter-kernel" {build}
   "tyxml"
-  "curly"
-  "octavius"
+  "curly" {build}
+  "octavius" {build}
   "uuidm"
 ]
-
