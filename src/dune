@@ -1,11 +1,19 @@
+(library
+ (name jupyter_imandra)
+ (modules :standard \ jymandra)
+ (libraries jupyter-kernel containers containers.unix unix
+            compiler-libs.common compiler-libs.toplevel
+            imandra.lib imandra.batbmc z3 tyxml curly bytes octavius uuidm))
+
 (executable
   (name jymandra)
   (public_name jymandra)
   (package jupyter-imandra)
   (modes byte)
+  (modules jymandra)
   (flags :standard -safe-string -warn-error -a+8)
   (libraries jupyter-kernel containers containers.unix unix
-             compiler-libs.common compiler-libs.toplevel
+             compiler-libs.common compiler-libs.toplevel jupiter_imandra
              imandra.lib imandra.batbmc z3 tyxml curly bytes octavius uuidm)
   )
 
