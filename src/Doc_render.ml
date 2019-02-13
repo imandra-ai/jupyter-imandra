@@ -170,7 +170,6 @@ let proof_alternatives proof callgraph =
          (match callgraph with
           | None -> []
           | Some (lazy c) ->
-            Format.printf "callgraph: %S@." c;
             ["call graph", D.graphviz @@ c]);
         ])
 
@@ -210,7 +209,6 @@ let p_upto fmt = function
 
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
-  Format.printf "html-of-verify-result %a@." pp_view (Verify vr);
   match vr with
   | V_proved {proof; callgraph; _} ->
     H.div [ success_result "Proved";
