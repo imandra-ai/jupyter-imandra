@@ -1,4 +1,4 @@
-open Imandra_lib
+open Imandra_client_lib
 open Jupyter_imandra
 
 module C = Jupyter_kernel.Client
@@ -139,13 +139,13 @@ let reason_kernel : C.Kernel.t =
 
 let () =
   let use_reason = ref false in
-  Imandra_lib.init();
+  let server_name = ref None in
   let imandra_init () =
-    Evaluator.init ~reason:!use_reason ();
-    Imandra_batbmc.register (); (* external solvers *)
-    print_endline "init done";
-    let kernel = if !use_reason then reason_kernel else ocaml_kernel in
-    Lwt.return kernel
+    Client.with_server ?server_name:!server_name (fun () ->
+      Evaluator.init ~reason:!use_reason ();
+      print_endline "init done";
+      let kernel = if !use_reason then reason_kernel else ocaml_kernel in
+      Lwt.return kernel)
   in
   Lwt_main.run
     (Main.main
@@ -154,6 +154,7 @@ let () =
          ("--coredump-dir", Arg.String(fun dir -> Imandra_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
          ("--require", Arg.String Imandra_lib.Imandra.require_lib_at_init, " Require given library");
          ("--reason", Arg.Set use_reason, " Use reason syntax");
+         ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process")
        ]
        ~usage:"jupyter-imandra"
        ~kernel_init:imandra_init)

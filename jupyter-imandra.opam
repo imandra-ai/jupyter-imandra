@@ -16,7 +16,7 @@ depends: [
   "base-bytes" {build}
   "ocaml-compiler-libs" {build}
   "containers"
-  "imandra" {build}
+  "imandra-client" {build}
   "jupyter-kernel" {build}
   "tyxml"
   "curly" {build}
