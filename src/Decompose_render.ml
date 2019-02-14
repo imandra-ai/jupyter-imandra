@@ -105,43 +105,42 @@ let regions_js ft_id = Printf.sprintf {|
 })();
 |} ft_id
 
+
+let regions_to_html ~pp_cs regions =
+  let uuid = Uuidm.v `V4 |> Uuidm.to_string in
+  let id = "decompose-" ^ uuid in
+  H.div ~a:[H.a_id id; H.a_class ["decompose"]]
+        [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json ~pp_cs regions |> Yojson.Basic.pretty_to_string))
+        ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
+        ; H.div ~a:[H.a_class ["decompose-details"]]
+                [ H.div ~a:[H.a_class ["decompose-details-header"]]
+                        [H.txt "Regions details"]
+
+                ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
+                          H.txt "No group selected."
+                        ]
+
+                ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
+                        [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Direct sub-regions: "]
+                                      ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.txt "-"]
+                                      ]
+                        ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Contained regions: "]
+                                      ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.txt "-"]
+                                      ]
+                        ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Constraints"]
+                        ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
+                                [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.txt "<constraint>"]
+                                ]
+                        ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
+                                [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Invariant"]
+                                ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
+                                ]
+                ]]
+        ; H.script (H.Unsafe.data (regions_js id))
+        ]
+
 let to_html ?(pp_cs = (List.map Term.to_string)) (res : Top_result.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
-    [("Voronoi"
-     , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
-        let id = "decompose-" ^ uuid in
-        H.div ~a:[H.a_id id; H.a_class ["decompose"]]
-          [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json ~pp_cs regions |> Yojson.Basic.pretty_to_string))
-          ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
-          ; H.div ~a:[H.a_class ["decompose-details"]]
-              [ H.div ~a:[H.a_class ["decompose-details-header"]]
-                  [H.txt "Regions details"]
-
-              ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
-                  H.txt "No group selected."
-                ]
-
-              ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
-                  [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Direct sub-regions: "]
-                                ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.txt "-"]
-                                ]
-                  ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Contained regions: "]
-                                ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.txt "-"]
-                                ]
-                  ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Constraints"]
-                  ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
-                       [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.txt "<constraint>"]
-                       ]
-                  ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
-                       [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Invariant"]
-                       ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
-                       ]
-
-                  ]]
-          ; H.script (H.Unsafe.data (regions_js id))
-          ]
-       )
-     )
-    ; ("Table"
-      , (res |> Top_result.to_doc |> Doc_render.to_html))
+    [("Voronoi" , regions_to_html ~pp_cs regions)
+    ; ("Table" , (res |> Top_result.to_doc |> Doc_render.to_html))
     ]
