@@ -23,7 +23,7 @@ type region_group =
 
 let to_region ~pp_cs (decompose_region : Top_result.decompose_region) : region =
   let r_constraints = pp_cs decompose_region.reg_constraints in
-  let r_invariant = pp_cs [decompose_region.reg_invariant] in
+  let r_invariant = String.concat "\n" @@ pp_cs [decompose_region.reg_invariant] in
   { r_constraints = if r_constraints = [] then ["true"] else r_constraints
   ; r_invariant
   }
