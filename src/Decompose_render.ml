@@ -1,7 +1,6 @@
 open Imandra_lib
 
 module H = Tyxml.Html
-module R = Evaluator.Res
 
 type 'a html = ([> Html_types.div] as 'a) H.elt
 
@@ -105,7 +104,7 @@ let regions_js ft_id = Printf.sprintf {|
 })();
 |} ft_id
 
-let to_html (res : R.t) (regions: Top_result.decompose_region list) : _ html =
+let to_html (res : Top_result.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
     [("Voronoi"
      , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
