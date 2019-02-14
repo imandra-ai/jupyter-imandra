@@ -1,5 +1,4 @@
-
-open Imandra_lib
+open Imandra_client_lib
 
 let init ?(reason=false) () =
   Pconfig.State.Set.push_top_results true;
