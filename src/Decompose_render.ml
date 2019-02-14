@@ -21,10 +21,11 @@ type region_group =
   ; rg_weight: int
   }
 
-let to_region (decompose_region : Top_result.decompose_region) : region =
-  let r_constraints = CCList.map Term.to_string decompose_region.reg_constraints in
+let to_region ~pp_cs (decompose_region : Top_result.decompose_region) : region =
+  let r_constraints = pp_cs decompose_region.reg_constraints in
+  let r_invariant = pp_cs [decompose_region.reg_invariant] in
   { r_constraints = if r_constraints = [] then ["true"] else r_constraints
-  ; r_invariant = Term.to_string decompose_region.reg_invariant
+  ; r_invariant
   }
 
 module StringSet = CCSet.Make(String)
@@ -91,8 +92,8 @@ let rec region_group_to_json (rg : region_group) : J.json =
          ; ("weight", `Int rg.rg_weight)
          ]
 
-let regions_to_json (decompose_regions: Top_result.decompose_region list) : J.json  =
-  let region_groups = decompose_regions |> CCList.map to_region |> group_regions [] [] in
+let regions_to_json ~pp_cs (decompose_regions: Top_result.decompose_region list) : J.json  =
+  let region_groups = decompose_regions |> CCList.map (to_region ~pp_cs)|> group_regions [] [] in
   `Assoc [("regions", `List (CCList.map region_group_to_json region_groups))]
 
 let regions_js ft_id = Printf.sprintf {|
@@ -104,13 +105,13 @@ let regions_js ft_id = Printf.sprintf {|
 })();
 |} ft_id
 
-let to_html (res : Top_result.t) (regions: Top_result.decompose_region list) : _ html =
+let to_html ?(pp_cs = (List.map Term.to_string)) (res : Top_result.t) (regions: Top_result.decompose_region list) : _ html =
   Doc_render.alternatives
     [("Voronoi"
      , (let uuid = (Uuidm.v `V4 |> Uuidm.to_string) in
         let id = "decompose-" ^ uuid in
         H.div ~a:[H.a_id id; H.a_class ["decompose"]]
-          [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json regions |> Yojson.Basic.pretty_to_string))
+          [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json ~pp_cs regions |> Yojson.Basic.pretty_to_string))
           ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
           ; H.div ~a:[H.a_class ["decompose-details"]]
               [ H.div ~a:[H.a_class ["decompose-details-header"]]
