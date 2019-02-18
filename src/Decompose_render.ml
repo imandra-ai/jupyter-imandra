@@ -8,32 +8,29 @@ module J = Yojson.Basic
 
 module StringMap = CCMap.Make(String)
 
-type region =
-  { r_constraints : string list
-  ; r_invariant : string
-  }
+module D = Document
 
 type region_group =
   { rg_constraints: string list
   ; rg_label_path : int list
-  ; rg_region: region option
+  ; rg_region: D.region option
   ; rg_children : region_group list
   ; rg_weight: int
   }
 
-let to_region ~pp_cs (decompose_region : Top_result.decompose_region) : region =
-  let r_constraints = pp_cs decompose_region.reg_constraints in
-  let r_invariant = String.concat "\n" @@ pp_cs [decompose_region.reg_invariant] in
-  { r_constraints = if r_constraints = [] then ["true"] else r_constraints
-  ; r_invariant
+let to_region ~pp_cs (decompose_region : Top_result.decompose_region) : D.region =
+  let constraints = pp_cs decompose_region.reg_constraints in
+  let invariant = String.concat "\n" @@ pp_cs [decompose_region.reg_invariant] in
+  { constraints = if constraints = [] then ["true"] else constraints
+  ; invariant
   }
 
 module StringSet = CCSet.Make(String)
 
-let rec group_regions (idx_path : int list) (constraint_path: string list) (regions: region list) : region_group list =
+let rec group_regions (idx_path : int list) (constraint_path: string list) (regions: D.region list) : region_group list =
   let all_constraints_with_dup =
     regions
-    |> CCList.flat_map (fun r -> r.r_constraints)
+    |> CCList.flat_map (fun (r : D.region) -> r.constraints)
     |> CCList.filter (fun c1 -> not (CCList.exists (fun c2 -> c1 = c2) constraint_path) )
   in
   let constraints_by_most_frequent =
@@ -49,8 +46,8 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
   let grouped =
     constraints_by_most_frequent
     |> CCList.fold_left (fun (groups, regions) konstraint ->
-        let (has, without) = regions |> CCList.partition (fun r ->
-            CCList.exists (fun c -> c = konstraint) r.r_constraints) in
+        let (has, without) = regions |> CCList.partition (fun (r : D.region) ->
+            CCList.exists (fun c -> c = konstraint) r.constraints) in
 
         let i = CCList.length groups + 1 in
         let idx_path = i :: idx_path in
@@ -77,9 +74,9 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
   in
   grouped |> fst
 
-let region_to_json (r : region) : J.json =
-  `Assoc [ ("constraints", `List (CCList.map (fun c -> `String c) r.r_constraints))
-         ; ("invariant", `String r.r_invariant)
+let region_to_json (r : D.region) : J.json =
+  `Assoc [ ("constraints", `List (CCList.map (fun c -> `String c) r.constraints))
+         ; ("invariant", `String r.invariant)
          ]
 
 let rec region_group_to_json (rg : region_group) : J.json =
@@ -92,8 +89,8 @@ let rec region_group_to_json (rg : region_group) : J.json =
          ; ("weight", `Int rg.rg_weight)
          ]
 
-let regions_to_json ~pp_cs (decompose_regions: Top_result.decompose_region list) : J.json  =
-  let region_groups = decompose_regions |> CCList.map (to_region ~pp_cs)|> group_regions [] [] in
+let regions_to_json regions : J.json  =
+  let region_groups = group_regions [] [] regions in
   `Assoc [("regions", `List (CCList.map region_group_to_json region_groups))]
 
 let regions_js ft_id = Printf.sprintf {|
@@ -106,11 +103,11 @@ let regions_js ft_id = Printf.sprintf {|
 |} ft_id
 
 
-let regions_to_html ~pp_cs regions =
+let regions_to_html (regions : D.region list) =
   let uuid = Uuidm.v `V4 |> Uuidm.to_string in
   let id = "decompose-" ^ uuid in
   H.div ~a:[H.a_id id; H.a_class ["decompose"]]
-        [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json ~pp_cs regions |> Yojson.Basic.pretty_to_string))
+        [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json regions |> Yojson.Basic.pretty_to_string))
         ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
         ; H.div ~a:[H.a_class ["decompose-details"]]
                 [ H.div ~a:[H.a_class ["decompose-details-header"]]
@@ -139,8 +136,9 @@ let regions_to_html ~pp_cs regions =
         ; H.script (H.Unsafe.data (regions_js id))
         ]
 
-let to_html ?(pp_cs = (List.map Term.to_string)) (res : Top_result.t) (regions: Top_result.decompose_region list) : _ html =
+let to_html ?(pp_cs = (List.map Term.to_string)) (res : Top_result.t) (decompose_regions: Top_result.decompose_region list) : _ html =
+  let regions = decompose_regions |> CCList.map (to_region ~pp_cs) in
   Doc_render.alternatives
-    [("Voronoi" , regions_to_html ~pp_cs regions)
+    [("Voronoi" , regions_to_html regions)
     ; ("Table" , (res |> Top_result.to_doc |> Doc_render.to_html))
     ]
