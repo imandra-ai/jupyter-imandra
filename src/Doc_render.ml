@@ -134,6 +134,9 @@ let to_html (doc:D.t) : [> Html_types.div] html =
       alternatives (vs |> List.map (fun (name, sub) ->
           (name, aux ~depth sub)))
 
+    | D.Regions rs ->
+       Decompose_render.regions_to_html rs
+
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.txt @@ D.to_string doc
