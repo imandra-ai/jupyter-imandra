@@ -334,8 +334,8 @@ let proof_attempt_instances_alternatives instances callgraph proof =
         ])
 
 let p_upto fmt = function
-  | Imandra_lib.Event.Upto_bound b -> Format.fprintf fmt "upto bound %i" b
-  | Upto_steps s -> Format.fprintf fmt "upto steps %i" s
+  | Imandra_lib.Event.Upto_bound b -> Format.fprintf fmt "up to bound %i" b
+  | Upto_steps s -> Format.fprintf fmt "up to steps %i" s
 
 let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
   let open Imandra_lib.Top_result in
