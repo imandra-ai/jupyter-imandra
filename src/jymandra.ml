@@ -140,8 +140,10 @@ let reason_kernel : C.Kernel.t =
 let () =
   let use_reason = ref false in
   let fake_server_name = ref None in
-  let server_name = ref (Some "imandra_network_client -imandra-web-host https://m.dev.imandracapital.com -auth0-base-host test-ai.eu.auth0.com -auth0-client-id DQs4kqaeTPAENZ8dAj64qEm2SbJgncNK -auth0-audience https://m.dev.imandracapital.com/api -config /Users/dave/.imandra-dev") in
+  let server_name = ref (Some "imandra_network_client -imandra-web-host https://m.dev.imandracapital.com -auth0-base-host test-ai.eu.auth0.com -auth0-client-id DQs4kqaeTPAENZ8dAj64qEm2SbJgncNK -auth0-audience https://m.dev.imandracapital.com/api -config /Users/dave/.imandra-dev -version master") in
   let imandra_init () =
+    print_endline "starting init dave";
+    Imandra_client_lib.Debug.set_debug ();
     Evaluator.init ~reason:!use_reason ();
     print_endline "init done";
     let kernel = if !use_reason then reason_kernel else ocaml_kernel in
