@@ -1,4 +1,4 @@
-open Imandra_lib
+open Imandra_client_lib
 
 module H = Tyxml.Html
 module D = Document
@@ -334,11 +334,11 @@ let proof_attempt_instances_alternatives instances callgraph proof =
         ])
 
 let p_upto fmt = function
-  | Imandra_lib.Event.Upto_bound b -> Format.fprintf fmt "up to bound %i" b
+  | Imandra_client_lib.Event.Upto_bound b -> Format.fprintf fmt "up to bound %i" b
   | Upto_steps s -> Format.fprintf fmt "up to steps %i" s
 
-let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_types.div] html =
-  let open Imandra_lib.Top_result in
+let html_of_verify_result (vr : Imandra_client_lib.Top_result.verify_result) : [> Html_types.div] html =
+  let open Imandra_client_lib.Top_result in
   match vr with
   | V_proved {proof; callgraph; _} ->
     H.div [ success_result "Proved";
@@ -357,8 +357,8 @@ let html_of_verify_result (vr : Imandra_lib.Top_result.verify_result) : [> Html_
             proof_attempt_instances_alternatives instances callgraph proof
           ]
 
-let html_of_instance_result (ir : Imandra_lib.Top_result.instance_result) : [> Html_types.div] html =
-  let open Imandra_lib.Top_result in
+let html_of_instance_result (ir : Imandra_client_lib.Top_result.instance_result) : [> Html_types.div] html =
+  let open Imandra_client_lib.Top_result in
   match ir with
   | I_sat {proof;callgraph;_} ->
     H.div [ success_result "Instance"

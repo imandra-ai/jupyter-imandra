@@ -65,7 +65,7 @@ let wrap_exec_exn default f =
       Location.report_exception Format.err_formatter x;
       default
 
-module Res = Imandra_lib.Top_result
+module Res = Imandra_client_lib.Top_result
 
 let exec ~count code (callback:string -> unit) : Res.t list =
   wrap_capture callback @@ fun () ->
