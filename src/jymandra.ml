@@ -139,25 +139,19 @@ let reason_kernel : C.Kernel.t =
 
 let () =
   let use_reason = ref false in
-  let fake_server_name = ref None in
-  let server_name = ref (Some "imandra_network_client -imandra-web-host https://m.dev.imandracapital.com -auth0-base-host test-ai.eu.auth0.com -auth0-client-id DQs4kqaeTPAENZ8dAj64qEm2SbJgncNK -auth0-audience https://m.dev.imandracapital.com/api -config /Users/dave/.imandra-dev -version master") in
-  let imandra_init () =
-    print_endline "starting init dave";
-    Imandra_client_lib.Debug.set_debug ();
-    Evaluator.init ~reason:!use_reason ();
-    print_endline "init done";
-    let kernel = if !use_reason then reason_kernel else ocaml_kernel in
-    Lwt.return kernel
-  in
+  let server_name = ref None in
+
+  Main.init
+    ~additional_args:[
+      ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_client_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
+      ("--coredump-dir", Arg.String(fun dir -> Imandra_client_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
+      ("--require", Arg.String Imandra_client_lib.Imandra.require_lib_at_init, " Require given library");
+      ("--reason", Arg.Set use_reason, " Use reason syntax");
+      ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process")
+    ]
+    ~usage:"jupyter-imandra";
+
   Client.with_server ?server_name:!server_name (fun () ->
-      Lwt_main.run
-        (Main.main
-           ~args:[
-             ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_client_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
-             ("--coredump-dir", Arg.String(fun dir -> Imandra_client_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
-             ("--require", Arg.String Imandra_client_lib.Imandra.require_lib_at_init, " Require given library");
-             ("--reason", Arg.Set use_reason, " Use reason syntax");
-             ("--server", Arg.String (fun s -> fake_server_name := Some s), " Name of server process")
-           ]
-           ~usage:"jupyter-imandra"
-           ~kernel_init:imandra_init))
+      Evaluator.init ~reason:(!use_reason) ();
+      let kernel = if !use_reason then reason_kernel else ocaml_kernel in
+      Lwt_main.run (Main.main ~kernel))
