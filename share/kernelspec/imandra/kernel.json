@@ -1,16 +1,8 @@
 {
     "argv": [
-        "opam",
-        "exec",
-        "--",
-        "dune",
-        "exec",
-        "--",
         "jymandra",
-        "--log",
-        "logloglog.log",
         "--server",
-        "lolol",
+        "imandra_server",
         "--connection-file",
         "{connection_file}"
     ],

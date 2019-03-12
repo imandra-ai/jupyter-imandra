@@ -1,6 +1,8 @@
 {
     "argv": [
         "jymandra",
+        "--server",
+        "imandra_server",
         "--connection-file",
         "{connection_file}",
         "--reason"
