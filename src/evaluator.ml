@@ -1,13 +1,11 @@
 open Imandra_client_lib
 
 let init ?(reason=false) () =
-  Pconfig.State.Set.push_top_results true;
-  Pconfig.State.Set.console_print false;
+  Pconfig.State.Set.print_banner false;
   let syntax = if reason then Syntax.Reason else Syntax.OCaml in
-  print_endline "before do_init";
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
-  print_endline "after do_init";
   (* setup some params *)
+  Pconfig.State.Set.push_top_results true;
   Pconfig.State.Set.console_print false;
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
