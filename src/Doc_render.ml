@@ -272,21 +272,49 @@ let to_html (doc:D.t) : [> Html_types.div] html =
   in
   H.div [aux ~depth:3 doc]
 
+module Styles = struct
+  let imandra_vr =
+    ["font-size: 1.2em"; "padding: 0.5em"]
+
+  let proved_color = "green"
+  let refuted_color = "#D84315"
+  let unknown_color = "#337ab7"
+
+  let imandra_vr =
+    ["font-size: 1.2em"; "padding: 0.5em"]
+
+  let imandra_vr_proved =
+    ["border-top: 1px solid " ^ proved_color; "border-bottom: 1px solid " ^ proved_color]
+
+  let imandra_vr_refuted =
+    ["border-top: 1px dashed " ^ refuted_color; "border-bottom: 1px dashed " ^ refuted_color]
+
+  let imandra_vr_unknown =
+    ["border-top: 1px dashed " ^ unknown_color; "border-bottom: 1px dashed " ^ unknown_color]
+
+  let imandra_vr_i color =
+    ["margin-right: 0.5em"; "color: " ^ color]
+
+  let imandra_vr_text =
+    ["display: inline-block"; "margin-left: 0.5em"; "font-family: 'Merriweather Sans', sans-serif"; "font-weight: bold"]
+
+end
+
 let success_result text =
-  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-proved"]] [
-    H.i ~a:[H.a_class ["fa"; "fa-check-circle"]] [];
+  H.div ~a:[H.a_style (CCString.concat "; " (Styles.imandra_vr @ Styles.imandra_vr_proved))] [
+    H.i ~a:[H.a_class ["fa"; "fa-check-circle"]; H.a_style (CCString.concat "; " (Styles.imandra_vr_i Styles.proved_color))] [];
     H.span [H.txt text]
   ]
 
 let fail_result text =
-  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-refuted"]] [
-    H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]] [];
+  H.div ~a:[H.a_style (CCString.concat "; " (Styles.imandra_vr @ Styles.imandra_vr_refuted))] [
+    H.i ~a:[H.a_class ["fa"; "fa-times-circle-o"]; H.a_style (CCString.concat "; " (Styles.imandra_vr_i Styles.refuted_color))] [];
     H.span [H.txt text]
   ]
 
 let unknown_result reason =
-  H.div ~a:[H.a_class ["imandra-vr"; "imandra-vr-unknown"]] [
-    H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]] [];
+  H.div ~a:[H.a_style (CCString.concat "; " (Styles.imandra_vr @ Styles.imandra_vr_unknown))] [
+    H.i ~a:[H.a_class ["fa"; "fa-question-circle-o"]; H.a_style (CCString.concat "; " (Styles.imandra_vr_i Styles.unknown_color))] [];
     H.span [H.txt (Printf.sprintf "Unknown (%s)" reason)]
   ]
 
