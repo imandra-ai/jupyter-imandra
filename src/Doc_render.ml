@@ -273,9 +273,6 @@ let to_html (doc:D.t) : [> Html_types.div] html =
   H.div [aux ~depth:3 doc]
 
 module Styles = struct
-  let imandra_vr =
-    ["font-size: 1.2em"; "padding: 0.5em"]
-
   let proved_color = "green"
   let refuted_color = "#D84315"
   let unknown_color = "#337ab7"
