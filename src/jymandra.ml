@@ -59,7 +59,9 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
       (fun _e ->
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
+         Log.logf "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace());
          Imandra.coredump ();
+         print_endline "exception, restart";
          Lwt.fail C.Restart
       )
 
