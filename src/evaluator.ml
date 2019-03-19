@@ -1,6 +1,7 @@
 open Imandra_client_lib
 
 let init ?(reason=false) () =
+  Printexc.record_backtrace true;
   Pconfig.State.Set.print_banner false;
   let syntax = if reason then Syntax.Reason else Syntax.OCaml in
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
@@ -35,7 +36,8 @@ let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
          with ex ->
            reset ();
            close fd;
-           Printf.printf "wrap_capture exception here: %s\n%!" (Printexc.to_string ex);
+           Printf.printf "wrap_capture exception here: %s\n%s\n%!"
+             (Printexc.to_string ex) (Printexc.get_backtrace ());
            flush_all ();
            raise ex
        in
