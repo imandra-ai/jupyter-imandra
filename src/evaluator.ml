@@ -35,7 +35,7 @@ let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
          with ex ->
            reset ();
            close fd;
-           print_endline "wrap_capture exception here";
+           Printf.printf "wrap_capture exception here: %s\n%!" (Printexc.to_string ex);
            flush_all ();
            raise ex
        in
