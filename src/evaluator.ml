@@ -7,7 +7,7 @@ let init ?(reason=false) () =
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
   (* setup some params *)
   Pconfig.State.Set.push_top_results true;
-  Pconfig.State.Set.console_print false;
+  Pconfig.State.Set.console_print true;
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
   ()
