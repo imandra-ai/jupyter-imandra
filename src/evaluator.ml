@@ -5,6 +5,8 @@ let init ?(reason=false) () =
   Pconfig.State.Set.print_banner false;
   let syntax = if reason then Syntax.Reason else Syntax.OCaml in
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
+  (* reflect jupyter imandra *)
+  Topdirs.dir_directory @@ Imandra_interactive.Util_packages.ocamlfind_dir_of_lib "jupyter-imandra";
   (* setup some params *)
   Pconfig.State.Set.push_top_results true;
   Pconfig.State.Set.console_tags [Console.T.Waterfall];
