@@ -1,0 +1,11 @@
+{
+    "argv": [
+        "jymandra",
+        "--no-backend",
+        "--connection-file",
+        "{connection_file}",
+        "--reason"
+    ],
+    "display_name": "Imandra-reason (no backend)",
+    "language": "reason"
+}

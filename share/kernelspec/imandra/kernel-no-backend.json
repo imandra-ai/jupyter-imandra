@@ -1,0 +1,10 @@
+{
+    "argv": [
+        "jymandra",
+        "--no-backend",
+        "--connection-file",
+        "{connection_file}"
+    ],
+    "display_name": "Imandra (no backend)",
+    "language": "ocaml"
+}
