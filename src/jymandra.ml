@@ -142,6 +142,7 @@ let reason_kernel : C.Kernel.t =
 let () =
   let use_reason = ref false in
   let server_name = ref None in
+  let no_backend = ref false in
 
   let config = Main.mk_config
     ~additional_args:[
@@ -149,12 +150,19 @@ let () =
       ("--coredump-dir", Arg.String(fun dir -> Imandra_client_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
       ("--require", Arg.String Imandra_client_lib.Imandra.require_lib_at_init, " Require given library");
       ("--reason", Arg.Set use_reason, " Use reason syntax");
-      ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process")
+      ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process");
+      ("--no-backend", Arg.Set no_backend, " no Imandra backend");
     ]
     ~usage:"jupyter-imandra"
     ()
   in
-  Client.with_server ?server_name:!server_name (fun () ->
-      Evaluator.init ~reason:(!use_reason) ();
-      let kernel = if !use_reason then reason_kernel else ocaml_kernel in
-      Lwt_main.run (Main.main ~config ~kernel))
+  let run() =
+    Evaluator.init ~reason:(!use_reason) ();
+    let kernel = if !use_reason then reason_kernel else ocaml_kernel in
+    Lwt_main.run (Main.main ~config ~kernel)
+  in
+  if !no_backend then (
+    Imandra_client_lib.Client_with_no_backend.run run
+  ) else (
+    Client.with_server ?server_name:!server_name run
+  )
