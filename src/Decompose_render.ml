@@ -1,4 +1,4 @@
-open Imandra_client_lib
+open Imandra_surface
 
 module H = Tyxml.Html
 module D = Document
