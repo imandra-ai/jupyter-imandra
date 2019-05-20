@@ -9,7 +9,7 @@ let init ?(reason=false) () =
   Topdirs.dir_directory @@ Imandra_interactive.Util_packages.ocamlfind_dir_of_lib "jupyter-imandra";
   (* setup some params *)
   Pconfig.State.Set.push_top_results true;
-  Pconfig.State.Set.console_tags [Console.T.Waterfall];
+  Pconfig.State.Set.console_tags [Console.T.Waterfall; Console.T.Suggestions];
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
   ()
