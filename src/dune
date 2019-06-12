@@ -3,7 +3,7 @@
  (public_name jupyter-imandra)
  (modules :standard \ jymandra evaluator)
   (flags :standard -safe-string -warn-error -3-32)
- (libraries containers imandra-client.lib tyxml uuidm yojson))
+ (libraries containers imandra-client.lib tyxml uuidm yojson imandra-tools))
 
 (executable
   (name jymandra)

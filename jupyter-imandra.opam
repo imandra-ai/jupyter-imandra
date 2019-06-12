@@ -22,4 +22,5 @@ depends: [
   "curly" {build}
   "octavius" {build}
   "uuidm"
+  "imandra-tools"
 ]
