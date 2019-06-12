@@ -9,7 +9,10 @@ type 'a html = ([> Html_types.div] as 'a) H.elt
 
 let pp_cs ?inv cs =
   let nodes = pp ?inv cs in
-  List.map (CCFormat.to_string (Printer.print ())) nodes
+  List.map (fun n ->
+      CCFormat.to_string (Printer.print ()) n
+      |> CCString.replace ~which:`All ~sub:"\n" ~by:" ")
+    nodes
 
 let regions_doc ?(pp_cs=pp_cs) regions =
   let open Top_result in
