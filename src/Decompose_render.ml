@@ -18,7 +18,7 @@ let regions_doc ?(pp_cs=pp_cs) regions =
   let open Top_result in
   let r_to_doc region =
     { Document.constraints = pp_cs region.reg_constraints;
-      invariant = List.hd @@ pp_cs ~inv:true [region.reg_invariant] }
+      invariant = "F = " ^ List.hd @@ pp_cs ~inv:true [region.reg_invariant] }
   in
   Document.regions @@ List.map r_to_doc regions
 
