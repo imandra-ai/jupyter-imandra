@@ -117,7 +117,7 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
 
 let region_to_json (r : D.region) : J.json =
   `Assoc [ ("constraints", `List (CCList.map (fun c -> `String c) r.constraints))
-         ; ("invariant", `String r.invariant)
+         ; ("invariant", `String ("F = " ^r.invariant))
          ]
 
 let rec region_group_to_json (rg : region_group) : J.json =
