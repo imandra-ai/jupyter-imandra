@@ -12,7 +12,7 @@ define([], function () {
         relaxationMaxDuration: 3000,
         relaxationVisible: false,
         relaxationQualityThreshold: 0,
-        stacking: 'flattened',
+        stacking: 'hierarchical',
         descriptionGroupType: 'flattened', //stab
         descriptionGroupPosition: 225,
         descriptionGroupDistanceFromCenter: 1,
