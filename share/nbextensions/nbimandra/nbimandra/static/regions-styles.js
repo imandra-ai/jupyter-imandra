@@ -23,6 +23,17 @@ define([], function () {
                     vars.labelText = "";
                 }
             }
+        },
+        onGroupMouseWheel: function (e) {
+            e.allowOriginalEventDefault();
+            e.preventDefault();
+        },
+        onGroupDrag: function (e) {
+            // Prevent dragging only on touch devices
+            if (('ontouchstart' in window)) {
+                e.allowOriginalEventDefault();
+                e.preventDefault();
+            }
         }
     };
 });
