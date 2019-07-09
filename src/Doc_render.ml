@@ -122,7 +122,7 @@ let region_to_json (r : D.region) : J.json =
 
 let rec region_group_to_json (rg : region_group) : J.json =
   let label_path = (rg.rg_label_path |> CCList.rev |> CCList.map string_of_int |> CCString.concat ".") in
-  let label = match rg.rg_region with Some _ -> "R[" ^ label_path ^ "]" | None -> "(" ^ label_path ^ ")"in
+  let label = match rg.rg_region with Some _ -> label_path | None -> "" in
   `Assoc [ ("constraints", `List (CCList.map (fun s -> `String s) rg.rg_constraints))
          ; ("region", match rg.rg_region with Some r -> region_to_json r | None -> `Null)
          ; ("groups", `List (CCList.map region_group_to_json rg.rg_children))
@@ -143,6 +143,9 @@ let regions_to_html (regions : D.region list) =
         ; H.div ~a:[H.a_class ["decompose-details"]]
                 [ H.div ~a:[H.a_class ["decompose-details-header"]]
                         [H.txt "Regions details"]
+
+                ; H.div ~a:[]
+                        [ H.txt "Click on a region to view it, double click on a region to zoom in on it." ]
 
                 ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
                           H.txt "No group selected."
