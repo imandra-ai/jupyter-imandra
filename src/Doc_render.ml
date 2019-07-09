@@ -149,7 +149,8 @@ let regions_to_html (regions : D.region list) =
                         ; H.li [H.txt "Unnumbered regions are groups whose children share a particular constraint"]
                         ; H.li [H.txt "Click on a region to view its details"]
                         ; H.li [H.txt "Double click on a region to zoom in on it"]
-                        ; H.li [H.txt "Hit escape to zoom out"]
+                        ; H.li [H.txt "Shift+double click to zoom out"]
+                        ; H.li [H.txt "Hit escape to reset back to the top"]
                         ]
 
                 ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
