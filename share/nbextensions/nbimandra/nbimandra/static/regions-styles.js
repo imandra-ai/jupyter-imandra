@@ -18,7 +18,7 @@ define([], function () {
         groupLabelDecorator: function (opts, props, vars) {
             if (!props.group.region) {
                 if (props.level == 0 || props.parent.open) {
-                    vars.labelText = "Click to zoom";
+                    vars.labelText = "Dbl click to zoom";
                 } else {
                     vars.labelText = "";
                 }
