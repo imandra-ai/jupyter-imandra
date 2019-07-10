@@ -144,17 +144,16 @@ let regions_to_html (regions : D.region list) =
                 [ H.div ~a:[H.a_class ["decompose-details-header"]]
                         [H.txt "Regions details"]
 
-                ; H.ul ~a:[]
-                        [ H.li [H.txt "Concrete regions are numbered"]
-                        ; H.li [H.txt "Unnumbered regions are groups whose children share a particular constraint"]
-                        ; H.li [H.txt "Click on a region to view its details"]
-                        ; H.li [H.txt "Double click on a region to zoom in on it"]
-                        ; H.li [H.txt "Shift+double click to zoom out"]
-                        ; H.li [H.txt "Hit escape to reset back to the top"]
-                        ]
-
-                ; H.div ~a:[H.a_class ["decompose-details-no-selection"]] [
-                          H.txt "No group selected."
+                ; H.div ~a:[H.a_class ["decompose-details-no-selection"]]
+                        [ H.p [H.txt "No group selected."]
+                        ; H.ul ~a:[]
+                            [ H.li [H.txt "Concrete regions are numbered"]
+                            ; H.li [H.txt "Unnumbered regions are groups whose children share a particular constraint"]
+                            ; H.li [H.txt "Click on a region to view its details"]
+                            ; H.li [H.txt "Double click on a region to zoom in on it"]
+                            ; H.li [H.txt "Shift+double click to zoom out"]
+                            ; H.li [H.txt "Hit escape to reset back to the top"]
+                            ]
                         ]
 
                 ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
