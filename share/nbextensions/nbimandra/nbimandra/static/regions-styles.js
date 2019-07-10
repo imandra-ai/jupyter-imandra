@@ -7,8 +7,6 @@ define([], function () {
         rainbowStartColor: 'hsla(162, 76%, 79%, 1)',
         rainbowEndColor: 'hsla(166, 78%, 80%, 1)',
         groupFillType: 'plain',
-        rolloutDuration: 0,
-        pullbackDuration: 0,
         parentFillOpacity: 0.1,
         parentLabelOpacity: 0.1,
         groupLabelMaxFontSize: 36,
@@ -34,6 +32,11 @@ define([], function () {
                 e.allowOriginalEventDefault();
                 e.preventDefault();
             }
-        }
+        },
+        rolloutDuration: 0,
+        exposeDuration: 0,
+        openCloseDuration: 0,
+        pullbackDuration: 0,
+        fadeDuration: 0
     };
 });
