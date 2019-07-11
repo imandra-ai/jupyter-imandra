@@ -134,46 +134,45 @@ let regions_to_json regions : J.json  =
   let region_groups = group_regions [] [] regions in
   `Assoc [("regions", `List (CCList.map region_group_to_json region_groups))]
 
-let regions_to_html (regions : D.region list) =
+let regions_to_html ?(load=true) (regions : D.region list) =
   let uuid = Uuidm.v `V4 |> Uuidm.to_string in
   let id = "decompose-" ^ uuid in
   H.div ~a:[H.a_id id; H.a_class ["decompose"]]
-        [ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json regions |> Yojson.Basic.pretty_to_string))
-        ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
-        ; H.div ~a:[H.a_class ["decompose-details"]]
-                [ H.div ~a:[H.a_class ["decompose-details-header"]]
-                        [H.txt "Regions details"]
+    ([ H.textarea ~a:[H.a_class ["display-none"]] (H.txt (regions_to_json regions |> Yojson.Basic.pretty_to_string))
+     ; H.div ~a:[H.a_class ["decompose-foamtree"]] []
+     ; H.div ~a:[H.a_class ["decompose-details"]]
+         [ H.div ~a:[H.a_class ["decompose-details-header"]]
+             [H.txt "Regions details"]
 
-                ; H.div ~a:[H.a_class ["decompose-details-no-selection"]]
-                        [ H.p [H.txt "No group selected."]
-                        ; H.ul ~a:[]
-                            [ H.li [H.txt "Concrete regions are numbered"]
-                            ; H.li [H.txt "Unnumbered regions are groups whose children share a particular constraint"]
-                            ; H.li [H.txt "Click on a region to view its details"]
-                            ; H.li [H.txt "Double click on a region to zoom in on it"]
-                            ; H.li [H.txt "Shift+double click to zoom out"]
-                            ; H.li [H.txt "Hit escape to reset back to the top"]
-                            ]
-                        ]
+         ; H.div ~a:[H.a_class ["decompose-details-no-selection"]]
+             [ H.p [H.txt "No group selected."]
+             ; H.ul ~a:[]
+                 [ H.li [H.txt "Concrete regions are numbered"]
+                 ; H.li [H.txt "Unnumbered regions are groups whose children share a particular constraint"]
+                 ; H.li [H.txt "Click on a region to view its details"]
+                 ; H.li [H.txt "Double click on a region to zoom in on it"]
+                 ; H.li [H.txt "Shift+double click to zoom out"]
+                 ; H.li [H.txt "Hit escape to reset back to the top"]
+                 ]
+             ]
 
-                ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
-                        [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Direct sub-regions: "]
-                                      ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.txt "-"]
-                                      ]
-                        ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Contained regions: "]
-                                      ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.txt "-"]
-                                      ]
-                        ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Constraints"]
-                        ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
-                                [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.txt "<constraint>"]
-                                ]
-                        ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
-                                [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Invariant"]
-                                ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
-                                ]
-                ]]
-        ; H.script (H.Unsafe.data (regions_js id))
-        ]
+         ; H.div ~a:[H.a_class ["decompose-details-selection hidden"]]
+             [ H.div ~a:[] [ H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Direct sub-regions: "]
+                           ; H.span ~a:[H.a_class ["decompose-details-direct-sub-regions-text"]] [H.txt "-"]
+                           ]
+             ; H.div ~a:[] [H.span ~a:[H.a_class ["decompose-details-label"]] [H.txt "Contained regions: "]
+                           ; H.span ~a:[H.a_class ["decompose-details-contained-regions-text"]] [H.txt "-"]
+                           ]
+             ; H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Constraints"]
+             ; H.div ~a:[H.a_class ["decompose-details-constraints"]]
+                 [ H.pre ~a:[H.a_class ["decompose-details-constraint"]] [H.txt "<constraint>"]
+                 ]
+             ; H.div ~a:[H.a_class ["decompose-details-invariant"]]
+                 [ H.div ~a:[H.a_class ["decompose-details-section-header"]] [H.txt "Invariant"]
+                 ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
+                 ]
+             ]]]
+    @ (if load then [H.script (H.Unsafe.data (regions_js id))] else [])
 
 (* display a document as HTML *)
 let to_html (doc:D.t) : [> Html_types.div] html =
