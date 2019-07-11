@@ -2,7 +2,7 @@ opam-version: "2.0"
 name: "jupyter_imandra"
 version: "0.0.1"
 synopsis: "A very simple Jupyter kernel for Imandra"
-maintainer: "Simon Cruanes <smon@aestheticintegration.com>"
+maintainer: "Simon Cruanes <simon@aestheticintegration.com>"
 authors: ["Simon Cruanes <simon@aestheticintegration.com>" "Kostya"]
 homepage: "http://www.imandra.ai/"
 bug-reports: "Simon <simon@aestheticintegration.com>"
