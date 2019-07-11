@@ -14,13 +14,16 @@ let pp_cs ?inv cs =
       |> CCString.replace ~which:`All ~sub:"\n" ~by:" ")
     nodes
 
-let regions_doc ?(pp_cs=pp_cs) regions =
+let terms_doc ?(pp_cs=pp_cs) regions =
   let open Top_result in
   let r_to_doc region =
     { Document.constraints = pp_cs region.reg_constraints;
       invariant = List.hd @@ pp_cs ~inv:true [region.reg_invariant] }
   in
-  Document.regions @@ List.map r_to_doc regions
+  List.map r_to_doc regions
+
+let regions_doc ?(pp_cs=pp_cs) regions =
+  Document.regions (terms_doc ~pp_cs regions)
 
 let to_html ?(pp_cs=pp_cs) (res : Top_result.t) (decompose_regions: Top_result.decompose_region list) : _ html =
   let regions = decompose_regions |> CCList.map (Doc_render.to_region ~pp_cs) in
