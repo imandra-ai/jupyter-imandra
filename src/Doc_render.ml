@@ -172,7 +172,7 @@ let regions_to_html ?(load=true) (regions : D.region list) =
                  ; H.pre ~a:[H.a_class ["decompose-details-invariant-text"]] [H.txt "<invariant>"]
                  ]
              ]]]
-    @ (if load then [H.script (H.Unsafe.data (regions_js id))] else [])
+    @ (if load then [H.script (H.Unsafe.data (regions_js id))] else []))
 
 (* display a document as HTML *)
 let to_html (doc:D.t) : [> Html_types.div] html =
