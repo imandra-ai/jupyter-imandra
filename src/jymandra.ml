@@ -146,9 +146,10 @@ let () =
 
   let config = Main.mk_config
     ~additional_args:[
-      ("--lockdown", Arg.Int(fun lockdown_uuid -> Imandra_client_lib.Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
-      ("--coredump-dir", Arg.String(fun dir -> Imandra_client_lib.Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
-      ("--require", Arg.String Imandra_client_lib.Imandra.require_lib_at_init, " Require given library");
+      ("--lockdown", Arg.Int(fun lockdown_uuid -> Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
+      ("--coredump-dir", Arg.String(fun dir -> Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
+      ("--require", Arg.String Imandra.require_lib_at_init, " Require given library at init");
+      ("--use", Arg.String Imandra.use_at_init, " Use code snippet at init");
       ("--reason", Arg.Set use_reason, " Use reason syntax");
       ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process");
       ("--no-backend", Arg.Set no_backend, " no Imandra backend");
