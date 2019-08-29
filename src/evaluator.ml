@@ -3,7 +3,7 @@ open Imandra_client_lib
 let init ?(reason=false) () =
   Printexc.record_backtrace true;
   Pconfig.State.Set.print_banner false;
-  let syntax = if reason then Syntax.Reason else Syntax.OCaml in
+  let syntax = if reason then Syntax.Reason else Syntax.Iml in
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
   (* reflect jupyter imandra *)
   Topdirs.dir_directory @@ Imandra_interactive.Util_packages.ocamlfind_dir_of_lib "jupyter-imandra";
