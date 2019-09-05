@@ -149,6 +149,8 @@ let () =
       ("--lockdown", Arg.Int(fun lockdown_uuid -> Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
       ("--coredump-dir", Arg.String(fun dir -> Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
       ("--require", Arg.String Imandra.require_lib_at_init, " Require given library at init");
+      ("--require-use", Arg.String (Imandra.require_lib_at_init ~meth:`Use), " Require given library at init using `#use`");
+      ("--require-mod-use", Arg.String (Imandra.require_lib_at_init ~meth:`Mod_use), " Require given library at init using `#mod_use`");
       ("--use", Arg.String Imandra.use_at_init, " Use code snippet at init");
       ("--reason", Arg.Set use_reason, " Use reason syntax");
       ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process");
