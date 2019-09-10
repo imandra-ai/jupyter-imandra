@@ -12,6 +12,7 @@ let init ?(reason=false) () =
   Pconfig.State.Set.console_tags [Console.T.Waterfall; Console.T.Suggestions];
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
+  Imandra_interactive.Backend.Cache.off ();
   ()
 
 let bigflush () =
