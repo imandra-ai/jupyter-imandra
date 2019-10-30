@@ -76,6 +76,7 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
   in
   let constraints_by_most_frequent =
     all_constraints_with_dup
+    |> CCList.filter (fun c -> not (List.for_all (fun (r : D.region) -> CCList.exists (fun c2 -> c = c2) r.constraints) regions))
     |> CCList.fold_left (fun acc c ->
         StringMap.update c (function None -> Some 1 | Some i -> Some (i+1)) acc
       ) StringMap.empty
