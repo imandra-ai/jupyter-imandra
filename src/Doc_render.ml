@@ -89,9 +89,8 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
     |> CCList.fold_left (fun (groups, regions) konstraint ->
         let (has, without) = regions |> CCList.partition (fun (r : D.region) ->
             CCList.exists (fun c -> c = konstraint) r.constraints) in
-
         let i = CCList.length groups + 1 in
-        let idx_path = if  without = [] then idx_path else i :: idx_path in
+        let idx_path = if without = [] && (not (List.length has = 1)) then idx_path else i :: idx_path in
         let constraint_path = konstraint :: constraint_path in
 
         if CCList.length has > 0 then
