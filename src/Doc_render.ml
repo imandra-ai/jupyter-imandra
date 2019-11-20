@@ -114,12 +114,12 @@ let rec group_regions (idx_path : int list) (constraint_path: string list) (regi
   in
   grouped |> fst
 
-let region_to_json (r : D.region) : J.json =
+let region_to_json (r : D.region) : J.t =
   `Assoc [ ("constraints", `List (CCList.map (fun c -> `String c) r.constraints))
          ; ("invariant", `String ("F = " ^r.invariant))
          ]
 
-let rec region_group_to_json (rg : region_group) : J.json =
+let rec region_group_to_json (rg : region_group) : J.t =
   let label_path = (rg.rg_label_path |> CCList.rev |> CCList.map string_of_int |> CCString.concat ".") in
   let label = match rg.rg_region with Some _ -> label_path | None -> "" in
   `Assoc [ ("constraints", `List (CCList.map (fun s -> `String s) rg.rg_constraints))
@@ -129,7 +129,7 @@ let rec region_group_to_json (rg : region_group) : J.json =
          ; ("weight", `Int rg.rg_weight)
          ]
 
-let regions_to_json regions : J.json  =
+let regions_to_json regions : J.t  =
   let region_groups = group_regions [] [] regions in
   `Assoc [("regions", `List (CCList.map region_group_to_json region_groups))]
 
