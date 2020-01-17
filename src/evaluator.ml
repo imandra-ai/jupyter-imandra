@@ -76,6 +76,9 @@ let exec ~count code (callback:string -> unit) : Res.t list =
   Imandra.eval_string ~loc code
 
 let exec_lwt ~count (code:string) : (string * Res.t list) Lwt.t =
-  let out = ref "" in
-  let r_l = exec ~count code (fun s -> out := s) in
-  Lwt.return (!out,r_l)
+  Lwt_preemptive.detach
+    (fun () ->
+      let out = ref "" in
+      let r_l = exec ~count code (fun s -> out := s) in
+      !out,r_l)
+    ()
