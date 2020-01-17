@@ -30,10 +30,7 @@ reindent:
 	@find src/ '(' -name '*.ml' -or -name '*.mli' ')' -type f -print0 | xargs -0 ocp-indent -i
 
 watch:
-	while find src -name '*.ml*' -print0 | xargs -0 inotifywait -e delete_self -e modify ; do \
-		echo "============ at `date` ==========" ; \
-		make all; \
-	done
+	@dune build @install -w
 
 watch-share:
 	chokidar "share/nbextensions/nbimandra/**/*" -c "source venv/bin/activate && pip install share/nbextensions/nbimandra && jupyter nbextension install --py --sys-prefix nbimandra && jupyter nbextension enable --py --sys-prefix nbimandra"
