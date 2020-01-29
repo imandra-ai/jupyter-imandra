@@ -22,6 +22,8 @@ depends: [
   "curly" {build}
   "octavius" {build}
   "uuidm"
+  "logs"
+  "ISO8601"
   "yojson" { >= "1.6" }
   "imandra-tools"
 ]

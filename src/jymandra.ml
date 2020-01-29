@@ -1,9 +1,10 @@
 open Imandra_client_lib
 open Jupyter_imandra
 
+let src = Logs.Src.create ~doc:"main jymandra process" "jymandra"
+
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
-module Log = Jupyter_kernel.Log
 module H = Tyxml.Html
 
 let mime_of_html (h:_ H.elt) : C.mime_data =
@@ -45,7 +46,7 @@ end
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
-  Log.logf "parse %S\n%!" str;
+  Logs.debug ~src (fun k->k  "parse %S\n%!" str);
   if str = "##coredump" then
     let () = Imandra.coredump () in
     (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
@@ -59,7 +60,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
       (fun _e ->
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
-         Log.logf "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace());
+         Logs.err ~src (fun k->k "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace()));
          Imandra.coredump ();
          print_endline "exception, restart";
          Lwt.fail C.Restart
@@ -86,7 +87,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
   try
     let module Isp = Completion.Inspect in
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
-    Log.logf "inspection request %s :pos %d :lvl %d\n%!" c pos lvl;
+    Logs.debug ~src (fun k->k "inspection request %s :pos %d :lvl %d\n%!" c pos lvl);
     match Isp.inspect c ~cursor_pos:pos with
     | None ->
       (* not found *)
@@ -140,6 +141,7 @@ let reason_kernel : C.Kernel.t =
     ()
 
 let () =
+  Logs_reporter.setup_logs_sync ();
   let use_reason = ref false in
   let server_name = ref None in
   let no_backend = ref false in
@@ -160,9 +162,12 @@ let () =
     ()
   in
   let run() =
+    Logs.info (fun k->k "jymandra: run");
     Evaluator.init ~reason:(!use_reason) ();
     let kernel = if !use_reason then reason_kernel else ocaml_kernel in
-    Lwt_main.run (Main.main ~config ~kernel)
+    Lwt_main.run (Main.main ~config ~kernel);
+    Logs.info (fun k->k "main loop finished");
+    ()
   in
   if !no_backend then (
     Imandra_client_lib.Client_with_no_backend.run run

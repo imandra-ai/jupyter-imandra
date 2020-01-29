@@ -3,7 +3,8 @@
  (public_name jupyter-imandra)
  (modules :standard \ jymandra evaluator)
   (flags :standard -safe-string -warn-error -3-32)
- (libraries containers imandra-client.lib tyxml uuidm yojson imandra-tools))
+ (libraries containers imandra-client.lib tyxml uuidm yojson logs
+            ISO8601 imandra-tools))
 
 (executable
   (name jymandra)
@@ -12,7 +13,7 @@
   (modes byte)
   (modules jymandra evaluator)
   (flags :standard -safe-string -warn-error -3-32 -linkall)
-  (libraries jupyter-kernel containers containers.unix unix
+  (libraries jupyter-kernel containers containers.unix unix logs
              compiler-libs.common compiler-libs.toplevel jupyter-imandra
              imandra-client.lib tyxml curly bytes octavius uuidm)
   )

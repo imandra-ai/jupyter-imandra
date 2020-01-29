@@ -1,6 +1,9 @@
 open Imandra_client_lib
 
+let src = Logs.Src.create ~doc:"jymandra evaluator" "jymandra.eval"
+
 let init ?(reason=false) () =
+  Logs.debug ~src (fun k->k "initialize reason=%B" reason);
   Printexc.record_backtrace true;
   Pconfig.State.Set.print_banner false;
   let syntax = if reason then Syntax.Reason else Syntax.Iml in
@@ -12,12 +15,13 @@ let init ?(reason=false) () =
   Pconfig.State.Set.console_tags [Console.T.Waterfall; Console.T.Suggestions];
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
+  Logs.debug ~src (fun k->k "init done");
   ()
 
 let bigflush () =
   Format.pp_print_flush Format.std_formatter ();
   Format.pp_print_flush Format.err_formatter ();
-  flush_all ()
+  ()
 
 let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
   let open Unix in
@@ -40,7 +44,7 @@ let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
            close fd;
            Printf.printf "wrap_capture exception here: %s\n%s\n%!"
              (Printexc.to_string ex) (Printexc.get_backtrace ());
-           flush_all ();
+           bigflush();
            raise ex
        in
        reset ();
@@ -70,6 +74,7 @@ let wrap_exec_exn default f =
 module Res = Imandra_client_lib.Top_result
 
 let exec ~count code (callback:string -> unit) : Res.t list =
+  Logs.debug ~src (fun k->k "(@[exec count=%d@ code=```@.%s@.```@])" count code);
   wrap_capture callback @@ fun () ->
   wrap_exec_exn []      @@ fun () ->
   let loc = Printf.sprintf "jupyter cell %d" count in
