@@ -18,10 +18,10 @@ let init ?(reason=false) () =
   ()
 
 let bigflush () =
-  Log.debug (fun k->k "bigflush start");
+  (*Log.debug (fun k->k "bigflush start"); *)
   Format.pp_print_flush Format.std_formatter ();
   Format.pp_print_flush Format.err_formatter ();
-  Log.debug (fun k->k "bigflush done");
+  (*Log.debug (fun k->k "bigflush done"); *)
   ()
 
 let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
