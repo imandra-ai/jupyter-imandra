@@ -1,8 +1,6 @@
 open Imandra_client_lib
 open Jupyter_imandra
 
-let src = Logs.Src.create ~doc:"main jymandra process" "jymandra"
-
 module C = Jupyter_kernel.Client
 module Main = Jupyter_kernel.Client_main
 module H = Tyxml.Html
@@ -46,7 +44,7 @@ end
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
-  Logs.debug ~src (fun k->k  "parse %S\n%!" str);
+  Log.debug (fun k->k  "parse %S\n%!" str);
   if str = "##coredump" then
     let () = Imandra.coredump () in
     (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
@@ -60,7 +58,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
       (fun _e ->
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
-         Logs.err ~src (fun k->k "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace()));
+         Log.err (fun k->k "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace()));
          Imandra.coredump ();
          print_endline "exception, restart";
          Lwt.fail C.Restart
@@ -87,7 +85,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
   try
     let module Isp = Completion.Inspect in
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
-    Logs.debug ~src (fun k->k "inspection request %s :pos %d :lvl %d\n%!" c pos lvl);
+    Log.debug (fun k->k "inspection request %s :pos %d :lvl %d\n%!" c pos lvl);
     match Isp.inspect c ~cursor_pos:pos with
     | None ->
       (* not found *)
@@ -141,7 +139,7 @@ let reason_kernel : C.Kernel.t =
     ()
 
 let () =
-  Logs_reporter.setup_logs_sync ();
+  Log.setup_logs_sync ();
   let use_reason = ref false in
   let server_name = ref None in
   let no_backend = ref false in

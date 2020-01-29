@@ -1,9 +1,8 @@
+module Log = Jupyter_imandra.Log
 open Imandra_client_lib
 
-let src = Logs.Src.create ~doc:"jymandra evaluator" "jymandra.eval"
-
 let init ?(reason=false) () =
-  Logs.debug ~src (fun k->k "initialize reason=%B" reason);
+  Log.debug (fun k->k "initialize reason=%B" reason);
   Printexc.record_backtrace true;
   Pconfig.State.Set.print_banner false;
   let syntax = if reason then Syntax.Reason else Syntax.Iml in
@@ -15,7 +14,7 @@ let init ?(reason=false) () =
   Pconfig.State.Set.console_tags [Console.T.Waterfall; Console.T.Suggestions];
   Pconfig.State.Set.redef true;
   Pconfig.State.Set.timeout 60_000;
-  Logs.debug ~src (fun k->k "init done");
+  Log.debug (fun k->k "init done");
   ()
 
 let bigflush () =
@@ -74,7 +73,7 @@ let wrap_exec_exn default f =
 module Res = Imandra_client_lib.Top_result
 
 let exec ~count code (callback:string -> unit) : Res.t list =
-  Logs.debug ~src (fun k->k "(@[exec count=%d@ code=```@.%s@.```@])" count code);
+  Log.debug (fun k->k "(@[exec count=%d@ code=```@.%s@.```@])" count code);
   wrap_capture callback @@ fun () ->
   wrap_exec_exn []      @@ fun () ->
   let loc = Printf.sprintf "jupyter cell %d" count in

@@ -1,4 +1,7 @@
 
+let src = Logs.Src.create ~doc:"jupyter-imandra interface" "jymandra"
+include (val Logs.src_log src)
+
 module Fmt = CCFormat
 
 let buf_fmt () =
