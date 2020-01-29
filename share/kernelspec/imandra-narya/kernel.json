@@ -1,0 +1,13 @@
+{
+    "argv": [
+        "jymandra",
+        "--server",
+        "imandra_server",
+        "--require-use",
+        "narya_prelude",
+        "--connection-file",
+        "{connection_file}"
+    ],
+    "display_name": "Imandra-narya",
+    "language": "ocaml"
+}

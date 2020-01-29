@@ -18,8 +18,10 @@ let init ?(reason=false) () =
   ()
 
 let bigflush () =
+  Log.debug (fun k->k "bigflush start");
   Format.pp_print_flush Format.std_formatter ();
   Format.pp_print_flush Format.err_formatter ();
+  Log.debug (fun k->k "bigflush done");
   ()
 
 let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
@@ -27,6 +29,7 @@ let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
   Unix.putenv "TERM" ""; (* ensure that upon errors, invalid input is repeated *)
   CCIO.File.with_temp ~prefix:"jupyter-imandra" ~suffix:".capture"
     (fun capture ->
+       Log.debug (fun k->k "wrap capture with %S" capture);
        let fd = openfile capture [ O_RDWR; O_TRUNC; O_CREAT ] 0o600  in
        let tmp_cout, tmp_cerr = dup stdout, dup stderr in
        dup2 fd stdout;
@@ -53,6 +56,7 @@ let wrap_capture (callback:string -> unit) (f:unit -> 'a) : 'a =
        let _ = read  fd buffer 0 sz in
        close fd;
        callback (Bytes.unsafe_to_string buffer);
+       Log.debug (fun k->k "wrap capture for %S is done" capture);
        result)
 
 (* TODO: wow ??? *)

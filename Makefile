@@ -11,6 +11,7 @@ clean:
 
 install-kernel:
 	jupyter kernelspec install `pwd`/share/kernelspec/imandra --user
+	jupyter kernelspec install `pwd`/share/kernelspec/imandra-narya --user
 	jupyter kernelspec install `pwd`/share/kernelspec/imandra-reason --user
 
 install-nbimandra:

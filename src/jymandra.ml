@@ -44,7 +44,7 @@ end
 (* blocking function *)
 let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
-  Log.debug (fun k->k  "parse %S\n%!" str);
+  Log.debug (fun k->k "parse %S" str);
   if str = "##coredump" then
     let () = Imandra.coredump () in
     (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
@@ -85,7 +85,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
   try
     let module Isp = Completion.Inspect in
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
-    Log.debug (fun k->k "inspection request %s :pos %d :lvl %d\n%!" c pos lvl);
+    Log.debug (fun k->k "inspection request %s :pos %d :lvl %d" c pos lvl);
     match Isp.inspect c ~cursor_pos:pos with
     | None ->
       (* not found *)
