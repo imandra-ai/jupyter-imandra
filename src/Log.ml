@@ -58,6 +58,6 @@ let enable_debug () =
 let setup_logs_sync ?(debug=false) () =
   Logs.set_reporter @@ sync_reporter ();
   if debug || (try bool_of_string(Sys.getenv "JYMANDRA_LOG") with _ -> false) then (
-  enable_debug();
+    enable_debug();
   );
   ()
