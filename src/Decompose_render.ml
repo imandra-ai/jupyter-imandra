@@ -9,8 +9,10 @@ module J = Yojson.Basic
 
 type 'a html = ([> Html_types.div] as 'a) H.elt
 
-let pp_cs ?inv:_ (_cs:Term.t list) : string list =
-  []
+let pp_cs ?inv:_ (cs:Term.t list) : string list =
+  cs
+  |> List.map Term.to_string_as_value
+  |> List.map (CCString.replace ~which:`All ~sub:"\n" ~by:" ")
   (* TODO
   let nodes = pp ?inv cs in
   List.map (fun n ->
