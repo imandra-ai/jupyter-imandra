@@ -1,5 +1,7 @@
 open Imandra_surface
+    (* TODO
 open Imandra_tools.Region_pp.PPrinter
+       *)
 
 module H = Tyxml.Html
 module D = Document
@@ -7,12 +9,15 @@ module J = Yojson.Basic
 
 type 'a html = ([> Html_types.div] as 'a) H.elt
 
-let pp_cs ?inv cs =
+let pp_cs ?inv:_ (_cs:Term.t list) : string list =
+  []
+  (* TODO
   let nodes = pp ?inv cs in
   List.map (fun n ->
       CCFormat.to_string (Printer.print ()) n
       |> CCString.replace ~which:`All ~sub:"\n" ~by:" ")
     nodes
+     *)
 
 let terms_doc ?(pp_cs=pp_cs) regions =
   let open Top_result in
