@@ -142,6 +142,8 @@ let () =
   Log.setup_logs_sync ();
   let use_reason = ref false in
   let server_name = ref None in
+  let address = ref None in
+  let no_start_server = ref false in
   let no_backend = ref false in
 
   let config = Main.mk_config
@@ -154,6 +156,8 @@ let () =
       ("--use", Arg.String Imandra.use_at_init, " Use code snippet at init");
       ("--reason", Arg.Set use_reason, " Use reason syntax");
       ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process");
+      ("--address", Arg.String (fun s -> address := Some(s)), " Socket address used to communicate with the server");
+      ("--no-start-server", Arg.Set no_start_server, " Don't try to start the server subprocess (use in combination with --address if you are running the server in a separate process)");
       ("--no-backend", Arg.Set no_backend, " no Imandra backend");
     ]
     ~usage:"jupyter-imandra"
@@ -170,5 +174,9 @@ let () =
   if !no_backend then (
     Imandra_client_lib.Client_with_no_backend.run run
   ) else (
-    Client.with_server ?server_name:!server_name run
+    Client.with_server
+      ?address:!address
+      ~start_server:(not !no_start_server)
+      ?server_name:!server_name
+      run
   )
