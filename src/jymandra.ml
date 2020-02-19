@@ -143,6 +143,7 @@ let () =
   let use_reason = ref false in
   let server_name = ref None in
   let address = ref None in
+  let socket_dir = ref None in
   let no_start_server = ref false in
   let no_backend = ref false in
 
@@ -157,6 +158,7 @@ let () =
       ("--reason", Arg.Set use_reason, " Use reason syntax");
       ("--server", Arg.String (fun s -> server_name := Some s), " Name of server process");
       ("--address", Arg.String (fun s -> address := Some(s)), " Socket address used to communicate with the server");
+      ("--socket-dir", Arg.String (fun s -> socket_dir := Some(s)), " Directory in which to create the socket used to communicate with the server");
       ("--no-start-server", Arg.Set no_start_server, " Don't try to start the server subprocess (use in combination with --address if you are running the server in a separate process)");
       ("--no-backend", Arg.Set no_backend, " no Imandra backend");
     ]
@@ -176,6 +178,7 @@ let () =
   ) else (
     Client.with_server
       ?address:!address
+      ?socket_dir:!socket_dir
       ~start_server:(not !no_start_server)
       ?server_name:!server_name
       run
