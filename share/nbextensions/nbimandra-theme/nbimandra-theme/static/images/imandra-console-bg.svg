@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="linear-gradient" x1="189.5" y1="145" x2="189.5" y2="-0.26" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0080ff"/>
+      <stop offset="0.21" stop-color="#009eea"/>
+      <stop offset="0.56" stop-color="#00cacb" stop-opacity="0.44"/>
+      <stop offset="0.84" stop-color="#00e6b8" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#00f0b1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="560.5" y1="936" x2="560.5" y2="831.81" gradientTransform="translate(727 936) rotate(180)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0080ff" stop-opacity="0"/>
+      <stop offset="0.21" stop-color="#009eea" stop-opacity="0.21"/>
+      <stop offset="0.42" stop-color="#00b8d7" stop-opacity="0.54"/>
+      <stop offset="0.56" stop-color="#00cacb" stop-opacity="0.56"/>
+      <stop offset="0.84" stop-color="#00e6b8"/>
+      <stop offset="1" stop-color="#00f0b1"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="399.5" y1="936" x2="399.5" y2="883.91" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-4" x1="235.5" y1="197" x2="235.5" y2="-0.35" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-5" x1="424.5" y1="288" x2="424.5" y2="-0.51" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-6" x1="488.5" y1="380" x2="488.5" y2="-0.68" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-7" x1="514.5" y1="936" x2="514.5" y2="807.77" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-8" x1="325.5" y1="936" x2="325.5" y2="807.77" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-9" x1="281.5" y1="421" x2="281.5" y2="-0.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-10" x1="468.5" y1="936" x2="468.5" y2="681.55" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-11" x1="261.5" y1="936" x2="261.5" y2="738.65" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-12" x1="376.5" y1="936" x2="376.5" y2="681.55" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-13" x1="327.5" y1="876" x2="327.5" y2="-1.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-14" x1="422.5" y1="936" x2="422.5" y2="95.51" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-15" x1="373.5" y1="924" x2="373.5" y2="-1.65" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-16" x1="376.5" y1="936" x2="376.5" y2="-13.69" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-17" x1="419.5" y1="977" x2="419.5" y2="-1.74" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-18" x1="330.5" y1="936" x2="330.5" y2="-76.8" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-19" x1="465.5" y1="555" x2="465.5" y2="-0.99" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-20" x1="284.5" y1="936" x2="284.5" y2="155.61" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-21" x1="511.5" y1="1011" x2="511.5" y2="-1.8" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-22" x1="238.5" y1="936" x2="238.5" y2="103.52" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-23" x1="557.5" y1="1054" x2="557.5" y2="-1.88" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-24" x1="192.5" y1="936" x2="192.5" y2="-119.88" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-25" x1="603.5" y1="921" x2="603.5" y2="-1.64" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-26" x1="146.5" y1="936" x2="146.5" y2="-136.91" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-27" x1="649.5" y1="827" x2="649.5" y2="-1.47" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-28" x1="100.5" y1="936" x2="100.5" y2="77.47" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-29" x1="695.5" y1="927" x2="695.5" y2="-1.65" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-30" x1="54.5" y1="936" x2="54.5" y2="218.72" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-31" x1="741.5" y1="921" x2="741.5" y2="-1.64" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-32" x1="8.5" y1="936" x2="8.5" y2="7.35" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-33" x1="787.5" y1="766" x2="787.5" y2="-1.36" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-34" x1="-37.5" y1="873" x2="-37.5" y2="355.08" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-35" x1="-108.5" y1="936" x2="-108.5" y2="83.48" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-36" x1="879.5" y1="876" x2="879.5" y2="-1.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-37" x1="925.5" y1="876" x2="925.5" y2="-1.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-38" x1="-175.5" y1="936" x2="-175.5" y2="58.44" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-39" x1="972" y1="876" x2="972" y2="-1.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-40" x1="-221.5" y1="936" x2="-221.5" y2="352.96" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-41" x1="1019" y1="876" x2="1019" y2="-1.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-42" x1="-268.5" y1="936" x2="-268.5" y2="58.44" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-43" x1="1266.5" y1="244" x2="1266.5" y2="116.77" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-44" x1="-362.5" y1="936" x2="-362.5" y2="180.66" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-45" x1="1113" y1="649" x2="1113" y2="-1.16" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-46" x1="408.5" y1="145" x2="408.5" y2="-0.26" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-47" x1="341.5" y1="936" x2="341.5" y2="831.81" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-48" x1="180.5" y1="936" x2="180.5" y2="883.91" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-49" x1="454.5" y1="197" x2="454.5" y2="-0.35" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-50" x1="638.5" y1="288" x2="638.5" y2="-0.51" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-51" x1="707.5" y1="380" x2="707.5" y2="-0.68" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-52" x1="295.5" y1="936" x2="295.5" y2="807.77" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-53" x1="111.5" y1="936" x2="111.5" y2="807.77" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-54" x1="500.5" y1="421" x2="500.5" y2="-0.75" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-55" x1="249.5" y1="936" x2="249.5" y2="681.55" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-56" x1="42.5" y1="936" x2="42.5" y2="738.65" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-57" x1="157.5" y1="936" x2="157.5" y2="681.55" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-58" x1="546.5" y1="876" x2="546.5" y2="-1.56" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-59" x1="203.5" y1="936" x2="203.5" y2="95.51" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-60" x1="592.5" y1="924" x2="592.5" y2="-1.65" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-61" x1="157.5" y1="936" x2="157.5" y2="-13.69" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-62" x1="638.5" y1="977" x2="638.5" y2="-1.74" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-63" x1="111.5" y1="936" x2="111.5" y2="-76.8" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-64" x1="684.5" y1="927" x2="684.5" y2="-1.65" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-65" x1="65.5" y1="936" x2="65.5" y2="155.61" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-66" x1="730.5" y1="1011" x2="730.5" y2="-1.8" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-67" x1="19.5" y1="824" x2="19.5" y2="-42.54" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-68" x1="777.5" y1="1054" x2="777.5" y2="-1.88" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-69" x1="-27" y1="936" x2="-27" y2="-119.88" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-70" x1="824.5" y1="921" x2="824.5" y2="-1.64" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-71" x1="-74" y1="936" x2="-74" y2="-136.91" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-72" x1="871.5" y1="827" x2="871.5" y2="-1.47" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-73" x1="-121" y1="936" x2="-121" y2="77.47" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-74" x1="918.5" y1="927" x2="918.5" y2="-1.65" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-75" x1="-168" y1="936" x2="-168" y2="218.72" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-76" x1="965.5" y1="921" x2="965.5" y2="-1.64" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-77" x1="-215" y1="936" x2="-215" y2="7.35" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-78" x1="1059.5" y1="876" x2="1059.5" y2="-1.56" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-79" x1="-309" y1="936" x2="-309" y2="77.47" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-80" x1="-517.5" y1="936" x2="-517.5" y2="172.64" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-81" x1="1337.5" y1="649" x2="1337.5" y2="81.99" gradientTransform="matrix(-1, 0, 0, 1, 2102, 0)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-82" x1="-562.5" y1="936" x2="-562.5" y2="63.45" gradientTransform="matrix(1, 0, 0, -1, 1375, 936)" xlink:href="#linear-gradient-2"/>
+  </defs>
+  <title>imandra_console_bg</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <rect width="1920" height="1080"/>
+      <rect x="184.21" width="10.58" height="145" style="fill: url(#linear-gradient)"/>
+      <rect x="161.21" width="10.58" height="104" style="fill: url(#linear-gradient-2)"/>
+      <rect x="322.21" width="10.58" height="52" style="fill: url(#linear-gradient-3)"/>
+      <rect x="230.21" width="10.58" height="197" style="fill: url(#linear-gradient-4)"/>
+      <rect x="419.21" width="10.58" height="288" style="fill: url(#linear-gradient-5)"/>
+      <rect x="483.21" width="10.58" height="380" style="fill: url(#linear-gradient-6)"/>
+      <rect x="207.21" width="10.58" height="128" style="fill: url(#linear-gradient-7)"/>
+      <rect x="396.21" width="10.58" height="128" style="fill: url(#linear-gradient-8)"/>
+      <rect x="276.21" width="10.58" height="421" style="fill: url(#linear-gradient-9)"/>
+      <rect x="253.21" width="10.58" height="254" style="fill: url(#linear-gradient-10)"/>
+      <rect x="460.21" width="10.58" height="197" style="fill: url(#linear-gradient-11)"/>
+      <rect x="345.21" width="10.58" height="254" style="fill: url(#linear-gradient-12)"/>
+      <rect x="322.21" width="10.58" height="876" style="fill: url(#linear-gradient-13)"/>
+      <rect x="299.21" width="10.58" height="839" style="fill: url(#linear-gradient-14)"/>
+      <rect x="368.21" width="10.58" height="924" style="fill: url(#linear-gradient-15)"/>
+      <rect x="345.21" width="10.58" height="948" style="fill: url(#linear-gradient-16)"/>
+      <rect x="414.21" width="10.58" height="977" style="fill: url(#linear-gradient-17)"/>
+      <rect x="391.21" width="10.58" height="1011" style="fill: url(#linear-gradient-18)"/>
+      <rect x="460.21" width="10.58" height="555" style="fill: url(#linear-gradient-19)"/>
+      <rect x="437.21" width="10.58" height="779" style="fill: url(#linear-gradient-20)"/>
+      <rect x="506.21" width="10.58" height="1011" style="fill: url(#linear-gradient-21)"/>
+      <rect x="483.21" width="10.58" height="831" style="fill: url(#linear-gradient-22)"/>
+      <rect x="552.21" width="10.58" height="1054" style="fill: url(#linear-gradient-23)"/>
+      <rect x="529.21" width="10.58" height="1054" style="fill: url(#linear-gradient-24)"/>
+      <rect x="598.21" width="10.58" height="921" style="fill: url(#linear-gradient-25)"/>
+      <rect x="575.21" width="10.58" height="1071" style="fill: url(#linear-gradient-26)"/>
+      <rect x="644.21" width="10.58" height="827" style="fill: url(#linear-gradient-27)"/>
+      <rect x="621.21" width="10.58" height="857" style="fill: url(#linear-gradient-28)"/>
+      <rect x="690.21" width="10.58" height="927" style="fill: url(#linear-gradient-29)"/>
+      <rect x="667.21" width="10.58" height="716" style="fill: url(#linear-gradient-30)"/>
+      <rect x="736.21" width="10.58" height="921" style="fill: url(#linear-gradient-31)"/>
+      <rect x="713.21" width="10.58" height="927" style="fill: url(#linear-gradient-32)"/>
+      <rect x="782.21" width="10.58" height="766" style="fill: url(#linear-gradient-33)"/>
+      <rect x="759.21" y="63" width="10.58" height="517" style="fill: url(#linear-gradient-34)"/>
+      <rect x="830.21" width="10.58" height="851" style="fill: url(#linear-gradient-35)"/>
+      <rect x="874.21" width="10.58" height="876" style="fill: url(#linear-gradient-36)"/>
+      <rect x="920.21" width="10.58" height="876" style="fill: url(#linear-gradient-37)"/>
+      <rect x="897.21" width="10.58" height="876" style="fill: url(#linear-gradient-38)"/>
+      <rect x="966.71" width="10.58" height="876" style="fill: url(#linear-gradient-39)"/>
+      <rect x="943.21" width="10.58" height="582" style="fill: url(#linear-gradient-40)"/>
+      <rect x="1013.71" width="10.58" height="876" style="fill: url(#linear-gradient-41)"/>
+      <rect x="990.21" width="10.58" height="876" style="fill: url(#linear-gradient-42)"/>
+      <rect x="830.67" y="117" width="9.66" height="127" style="fill: url(#linear-gradient-43)"/>
+      <rect x="1084.21" width="10.58" height="754" style="fill: url(#linear-gradient-44)"/>
+      <rect x="1107.71" width="10.58" height="649" style="fill: url(#linear-gradient-45)"/>
+      <rect x="1688.21" width="10.58" height="145" style="fill: url(#linear-gradient-46)"/>
+      <rect x="1711.21" width="10.58" height="104" style="fill: url(#linear-gradient-47)"/>
+      <rect x="1550.21" width="10.58" height="52" style="fill: url(#linear-gradient-48)"/>
+      <rect x="1642.21" width="10.58" height="197" style="fill: url(#linear-gradient-49)"/>
+      <rect x="1458.21" width="10.58" height="288" style="fill: url(#linear-gradient-50)"/>
+      <rect x="1389.21" width="10.58" height="380" style="fill: url(#linear-gradient-51)"/>
+      <rect x="1665.21" width="10.58" height="128" style="fill: url(#linear-gradient-52)"/>
+      <rect x="1481.21" width="10.58" height="128" style="fill: url(#linear-gradient-53)"/>
+      <rect x="1596.21" width="10.58" height="421" style="fill: url(#linear-gradient-54)"/>
+      <rect x="1619.21" width="10.58" height="254" style="fill: url(#linear-gradient-55)"/>
+      <rect x="1412.21" width="10.58" height="197" style="fill: url(#linear-gradient-56)"/>
+      <rect x="1527.21" width="10.58" height="254" style="fill: url(#linear-gradient-57)"/>
+      <rect x="1550.21" width="10.58" height="876" style="fill: url(#linear-gradient-58)"/>
+      <rect x="1573.21" width="10.58" height="839" style="fill: url(#linear-gradient-59)"/>
+      <rect x="1504.21" width="10.58" height="924" style="fill: url(#linear-gradient-60)"/>
+      <rect x="1527.21" width="10.58" height="948" style="fill: url(#linear-gradient-61)"/>
+      <rect x="1458.21" width="10.58" height="977" style="fill: url(#linear-gradient-62)"/>
+      <rect x="1481.21" width="10.58" height="1011" style="fill: url(#linear-gradient-63)"/>
+      <rect x="1412.21" width="10.58" height="927" style="fill: url(#linear-gradient-64)"/>
+      <rect x="1435.21" width="10.58" height="779" style="fill: url(#linear-gradient-65)"/>
+      <rect x="1366.21" width="10.58" height="1011" style="fill: url(#linear-gradient-66)"/>
+      <rect x="1389.21" y="112" width="10.58" height="865" style="fill: url(#linear-gradient-67)"/>
+      <rect x="1319.21" width="10.58" height="1054" style="fill: url(#linear-gradient-68)"/>
+      <rect x="1342.71" width="10.58" height="1054" style="fill: url(#linear-gradient-69)"/>
+      <rect x="1272.21" width="10.58" height="921" style="fill: url(#linear-gradient-70)"/>
+      <rect x="1295.71" width="10.58" height="1071" style="fill: url(#linear-gradient-71)"/>
+      <rect x="1225.21" width="10.58" height="827" style="fill: url(#linear-gradient-72)"/>
+      <rect x="1248.71" width="10.58" height="857" style="fill: url(#linear-gradient-73)"/>
+      <rect x="1178.21" width="10.58" height="927" style="fill: url(#linear-gradient-74)"/>
+      <rect x="1201.71" width="10.58" height="716" style="fill: url(#linear-gradient-75)"/>
+      <rect x="1131.21" width="10.58" height="921" style="fill: url(#linear-gradient-76)"/>
+      <rect x="1154.71" width="10.58" height="927" style="fill: url(#linear-gradient-77)"/>
+      <rect x="1037.21" width="10.58" height="876" style="fill: url(#linear-gradient-78)"/>
+      <rect x="1060.71" width="10.58" height="857" style="fill: url(#linear-gradient-79)"/>
+      <rect x="852.21" width="10.58" height="762" style="fill: url(#linear-gradient-80)"/>
+      <rect x="759.21" y="83" width="10.58" height="566" style="fill: url(#linear-gradient-81)"/>
+      <rect x="807.21" width="10.58" height="871" style="fill: url(#linear-gradient-82)"/>
+    </g>
+  </g>
+</svg>

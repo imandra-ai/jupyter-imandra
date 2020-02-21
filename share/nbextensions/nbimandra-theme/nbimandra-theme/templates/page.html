@@ -1,0 +1,12 @@
+{% extends "templates/page.html" %}
+
+{% block title %}Imandra Notebook{% endblock %}
+{% block favicon %}<link id="favicon" rel="shortcut icon" type="image/x-icon" href="{{base_url}}nbextensions/nbimandra-theme/images/favicon.ico">{% endblock %}
+
+{% block stylesheet %}
+{{super()}}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather" type="text/css" />
+<link rel="stylesheet" href="{{ base_url + "nbextensions/nbimandra-theme/theme.css" }}" type="text/css" />
+{% endblock %}
+
+{% block logo %}<img src='{{base_url}}nbextensions/nbimandra-theme/images/logo.png' alt='Imandra'/>{% endblock %}
