@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="85.39" height="85.39" viewBox="0 0 85.39 85.39">
+  <defs>
+    <linearGradient id="linear-gradient" x1="10.04" y1="35.07" x2="57.2" y2="35.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0080ff"/>
+      <stop offset="0.21" stop-color="#009eea"/>
+      <stop offset="0.56" stop-color="#00cacb"/>
+      <stop offset="0.84" stop-color="#00e6b8"/>
+      <stop offset="1" stop-color="#00f0b1"/>
+    </linearGradient>
+  </defs>
+  <title>notebooks_1</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <circle cx="42.69" cy="42.69" r="42.19" style="fill: #fff"/>
+      <g>
+        <circle cx="42.69" cy="42.69" r="42.19" style="fill: #fff"/>
+        <circle cx="42.69" cy="42.69" r="42.19" style="fill: none;stroke: #f9f9f9;stroke-miterlimit: 10"/>
+      </g>
+      <g style="opacity: 0.22">
+        <path d="M64,81.91H36.76a4.62,4.62,0,0,1-4.62-4.62V26.52a4.61,4.61,0,0,1,4.62-4.61H73.68a4.61,4.61,0,0,1,4.62,4.61V68.23C78.3,70.77,66.52,81.91,64,81.91Z" style="fill: #a3a3a3"/>
+      </g>
+      <g>
+        <rect x="29.42" y="19.91" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: #fff"/>
+        <rect x="29.42" y="19.91" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: none;stroke: #bfd5e7;stroke-miterlimit: 10"/>
+      </g>
+      <rect x="35.49" y="27.42" width="34.81" height="2.75" rx="1.37" ry="1.37" style="fill: #bfd5e7"/>
+      <rect x="35.49" y="35.79" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(105.8 79.87) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <rect x="35.49" y="48.41" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(105.8 105.12) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <rect x="35.49" y="60.75" width="34.81" height="14.94" rx="2.36" ry="2.36" transform="translate(105.8 136.45) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <g style="opacity: 0.22">
+        <rect x="21.65" y="14.25" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: #a3a3a3"/>
+      </g>
+      <g>
+        <rect x="19.9" y="12.56" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: #fff"/>
+        <rect x="19.9" y="12.56" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: none;stroke: #bfd5e7;stroke-miterlimit: 10"/>
+      </g>
+      <rect x="25.29" y="18.92" width="34.81" height="2.75" rx="1.37" ry="1.37" style="fill: #bfd5e7"/>
+      <rect x="25.29" y="27.28" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(85.39 62.86) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <rect x="25.29" y="39.91" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(85.39 88.11) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <rect x="25.29" y="52.25" width="34.81" height="14.94" rx="2.36" ry="2.36" transform="translate(85.39 119.44) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <g style="opacity: 0.22">
+        <rect x="12.24" y="6.48" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: #a3a3a3"/>
+      </g>
+      <g>
+        <rect x="10.54" y="5.07" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: #fff"/>
+        <rect x="10.54" y="5.07" width="46.15" height="60" rx="4.62" ry="4.62" style="fill: none;stroke-miterlimit: 10;stroke: url(#linear-gradient)"/>
+      </g>
+      <rect x="16.21" y="11.55" width="34.81" height="2.75" rx="1.37" ry="1.37" style="fill: #bfd5e7"/>
+      <rect x="16.21" y="19.91" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(67.24 48.12) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <path d="M16.21,19.91h1.23a2,2,0,0,1,2,2v4.13a2.13,2.13,0,0,1-2.13,2.13H16.21a0,0,0,0,1,0,0v-8.3A0,0,0,0,1,16.21,19.91Z" transform="translate(35.7 48.12) rotate(180)" style="fill: #0068ff"/>
+      <rect x="16.21" y="32.54" width="34.81" height="8.3" rx="1.76" ry="1.76" transform="translate(67.24 73.37) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+      <rect x="16.21" y="44.88" width="34.81" height="14.94" rx="2.36" ry="2.36" transform="translate(67.24 104.7) rotate(180)" style="fill: #bfd5e7;opacity: 0.26"/>
+    </g>
+  </g>
+</svg>

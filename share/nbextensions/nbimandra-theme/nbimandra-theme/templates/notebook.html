@@ -1,0 +1,25 @@
+{% extends "templates/notebook.html" %}
+
+{% block favicon %}<link id="favicon" rel="shortcut icon" type="image/x-icon" href="{{base_url}}nbextensions/nbimandra-theme/images/favicon-notebook.ico">{% endblock %}
+
+{% block site %}
+<div class="container imandra-header">
+    <div class="imandra-header-image">
+        <img src="{{base_url}}nbextensions/nbimandra-theme/images/imandra-header.svg" style="margin-top: 1em; margin-bottom: 1em">
+    </div>
+    <div class="imandra-quick-links">
+        <a href="{{base_url}}" class="imandra-quick-link">
+            <img src="{{base_url + "nbextensions/nbimandra-theme/images/quick-link-notebooks.svg"}}">
+            <div class="imandra-quick-link-text">View all notebooks</div>
+        </a>
+        <a href="{{base_url}}terminals/try" class="imandra-quick-link">
+            <img src="{{base_url + "nbextensions/nbimandra-theme/images/quick-link-console.svg"}}">
+            <div class="imandra-quick-link-text">Imandra terminal</div>
+        </a>
+    </div>
+</div>
+
+
+{{super()}}
+
+{% endblock %}
