@@ -10,5 +10,5 @@ setuptools.setup(
     install_requires=[
         'notebook',
     ],
-    package_data={'nbimandra-theme': ['static/*', 'static/images/*', 'templates/*']},
+    package_data={'nbimandra-theme': ['static/*', 'static/images/*', 'templates/*', 'templates/jupyterhub-singleuser/*']},
 )

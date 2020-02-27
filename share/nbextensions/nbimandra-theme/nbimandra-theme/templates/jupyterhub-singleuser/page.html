@@ -1,5 +1,9 @@
-{# Note: any changes to this file should also be made in ./jupyterhub-singleuser/page.html #}
-{% extends "templates/page.html" %}
+{#
+Extend the patched page template provided by jupyterhub-singleuser.
+
+The nbimandra-theme server extension makes this available as "singleuser.page_template".
+#}
+{% extends "singleuser.page_template" %}
 
 {% block title %}{% include "_page_title.html" %}{% endblock %}
 {% block favicon %}{% include "_page_favicon.html" %}{% endblock %}
