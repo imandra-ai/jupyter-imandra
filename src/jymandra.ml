@@ -21,7 +21,7 @@ module Res = struct
     let open Top_result in
     let m =
       match view r with
-      | Decompose d ->
+      | Modular_decomp d ->
         Decompose_render.to_html r d
         |> mime_of_html
 

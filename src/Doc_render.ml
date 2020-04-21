@@ -16,9 +16,9 @@ type region_group =
   ; rg_weight: int
   }
 
-let to_region ~(pp_cs : ?inv:bool -> Term.t list -> string list) (decompose_region : Top_result.decompose_region) : D.region =
-  let constraints = pp_cs decompose_region.reg_constraints in
-  let invariant = List.hd @@ pp_cs ~inv:true [decompose_region.reg_invariant] in
+let to_region ~(pp_cs : ?inv:bool -> Term.t list -> string list) (decompose_region : Top_result.modular_region) : D.region =
+  let constraints = pp_cs (Modular_region.constraints decompose_region) in
+  let invariant = List.hd @@ pp_cs ~inv:true [Modular_region.invariant decompose_region] in
   { constraints = if constraints = [] then ["true"] else constraints
   ; invariant
   }
