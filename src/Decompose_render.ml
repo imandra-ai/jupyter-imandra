@@ -22,12 +22,12 @@ let terms_doc ?(pp_cs=pp_cs) regions =
   in
   List.map r_to_doc regions
 
-let regions_doc ?(pp_cs=pp_cs) regions =
-  Document.regions (terms_doc ~pp_cs regions)
-
 let get_regions d =
   Modular_decomposition.to_region_list d
   |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i)
+
+let regions_doc ?(pp_cs=pp_cs) d =
+  Document.regions (terms_doc ~pp_cs (d |> get_regions))
 
 let to_html ?(pp_cs=pp_cs) (res : Top_result.t) (d: Modular_decomposition.t) : _ html =
   let regions = d |> get_regions |> CCList.map (Doc_render.to_region ~pp_cs) in
