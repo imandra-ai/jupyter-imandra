@@ -24,7 +24,10 @@ let terms_doc ?(pp_cs=pp_cs) regions =
 
 let get_regions d =
   Modular_decomposition.to_region_list d
-  |> CCList.map (fun (i, _) -> Modular_decomp.get_region d i)
+  |> CCList.filter_map
+    (fun (i, _) ->
+       try Some (Modular_decomp.get_region d i)
+       with _ -> None)
 
 let regions_doc ?(pp_cs=pp_cs) d =
   Document.regions (terms_doc ~pp_cs (d |> get_regions))
