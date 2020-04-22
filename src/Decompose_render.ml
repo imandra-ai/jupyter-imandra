@@ -37,6 +37,6 @@ let to_html ?(pp_cs=pp_cs) (res : Top_result.t) (d: Modular_decomposition.t) : _
   let capped = min total 256 in
   let regions = d |> get_regions |> CCList.take capped |> CCList.map (Doc_render.to_region ~pp_cs) in
   Doc_render.alternatives
-    [( Printf.sprintf "Voronoi (%d of %d)" capped total), Doc_render.regions_to_html regions)
+    [((Printf.sprintf "Voronoi (%d of %d)" capped total), Doc_render.regions_to_html regions)
     ; ("Table" , (res |> Top_result.to_doc |> Doc_render.to_html))
     ]
