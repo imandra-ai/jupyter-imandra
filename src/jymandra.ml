@@ -139,6 +139,7 @@ let reason_kernel : C.Kernel.t =
     ()
 
 let () =
+  Unix.putenv "TERM" "dumb";
   Log.setup_logs_sync ();
   let use_reason = ref false in
   let server_name = ref None in
