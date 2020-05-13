@@ -32,13 +32,6 @@ let regions_js ft_id = Printf.sprintf {|
 })();
 |} ft_id
 
-let fold_js elId = Printf.sprintf {|
-require(['nbextensions/nbimandra/fold'], function (fold) {
-  var target = '#%s';
-  fold.hydrate(target);
-});
-|}  elId
-
 let alternatives_js elId = Printf.sprintf {|
 require(['nbextensions/nbimandra/alternatives'], function (alternatives) {
   var target = '#%s';
@@ -248,21 +241,10 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | D.OCamldoc_tag _ -> H.txt @@ D.to_string doc
 
     | D.Fold { folded_by_default; summary; sub } ->
-      let body_class = if folded_by_default then ["collapse"] else [] in
-      let down_icon_class = if folded_by_default then ["hidden"] else [] in
-      let right_icon_class = if folded_by_default then [] else ["hidden"] in
-      let id = "fold-" ^ (Uuidm.v `V4 |> Uuidm.to_string) in
-      H.div ~a:[H.a_class ["imandra-fold panel panel-default"]; H.a_id id]
-        [ H.div ~a:[H.a_class ["panel-heading"]]
-            [ H.div
-                [ H.i ~a:[H.a_class (["fa fa-chevron-down"] @ down_icon_class)] []
-                ; H.i ~a:[H.a_class (["fa fa-chevron-right"] @ right_icon_class)] []
-                ; H.span [H.txt (if summary = "" then "Expand" else summary)]
-                ]
-            ]
-        ; H.div ~a:[H.a_class (["panel-body"] @ body_class)] [aux ~depth sub]
-        ; H.script (H.Unsafe.data (fold_js id))
-        ]
+      H.details
+        ~a:[H.Unsafe.string_attrib "open" (string_of_bool @@ not folded_by_default)]
+        (H.summary [H.txt (if summary = "" then "Expand" else summary)])
+        [aux ~depth sub]
 
     | D.Alternatives {views=vs; _} ->
       alternatives (vs |> List.map (fun (name, sub) ->
