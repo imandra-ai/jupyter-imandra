@@ -15,7 +15,7 @@
   (flags :standard -safe-string -warn-error -3-32 -linkall)
   (libraries jupyter-kernel containers containers.unix unix logs
              compiler-libs.common compiler-libs.toplevel jupyter-imandra
-             imandra-client.lib tyxml curly bytes octavius uuidm digestif.c)
+             imandra-client.lib tyxml curly bytes octavius uuidm digestif.ocaml)
   )
 
 (install
