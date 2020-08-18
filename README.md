@@ -8,10 +8,10 @@ as well as the `imandra` library and Z3.
 
     $ make
 
-## Installation 
+## Installation
 Check in which directories your Jupyter looks for kernels.
 
-    $ make install install-kernel 
+    $ make install install-kernel
 
 Start a web notebook with:
 
@@ -31,3 +31,7 @@ Start a web notebook with:
     pip install share/nbextensions/nbimandra
     jupyter nbextension install --py --sys-prefix nbimandra
     jupyter nbextension enable --py --sys-prefix nbimandra
+
+## Debug logging
+
+Enable debug logging with `JYMANDRA_LOG=true`.
