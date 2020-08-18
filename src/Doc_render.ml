@@ -271,6 +271,9 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | D.Regions rs ->
        regions_to_html rs
 
+    | D.Html html ->
+      H.div ~a [html]
+
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
       H.txt @@ D.to_string doc
