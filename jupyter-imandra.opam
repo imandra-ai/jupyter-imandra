@@ -17,6 +17,7 @@ depends: [
   "containers"
   "imandra-client"
   "jupyter-kernel"
+  "digestif"
   "tyxml"
   "uuidm"
   "logs"
