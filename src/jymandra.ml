@@ -117,10 +117,10 @@ let ocaml_kernel : C.Kernel.t =
     ~is_complete
     ~history:(fun _ -> Lwt.return [])
     ~inspect:(fun ir -> Lwt.return @@ inspect ir)
-    ~language:"ocaml"
+    ~language:"iml"
     ~language_version:[0;1;0]
-    ~codemirror_mode:"mllike"
-    ~file_extension:".ml"
+    ~codemirror_mode:"imandra"
+    ~file_extension:".iml"
     ~complete:(fun ~pos msg -> Lwt.return @@ complete pos msg)
     ()
 
