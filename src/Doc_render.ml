@@ -1,7 +1,7 @@
 open Imandra_surface
 
 module H = Tyxml.Html
-module D = Document
+module D = Imandra_document.Document
 module J = Yojson.Basic
 
 type 'a html = ([> Html_types.div] as 'a) H.elt

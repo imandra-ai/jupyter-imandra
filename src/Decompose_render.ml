@@ -3,7 +3,7 @@ open Imandra_interactive
 open Imandra_tools.Region_pp.PPrinter
 
 module H = Tyxml.Html
-module D = Document
+module D = Imandra_document.Document
 module J = Yojson.Basic
 
 type 'a html = ([> Html_types.div] as 'a) H.elt
@@ -17,7 +17,7 @@ let pp_cs ?inv cs =
 
 let terms_doc ?(pp_cs=pp_cs) regions =
   let r_to_doc region =
-    { Document.constraints = pp_cs (Modular_region.constraints region);
+    { D.constraints = pp_cs (Modular_region.constraints region);
       invariant = List.hd @@ pp_cs ~inv:true [Modular_region.invariant region] }
   in
   List.map r_to_doc regions
@@ -30,7 +30,7 @@ let get_regions d =
        with _ -> None)
 
 let regions_doc ?(pp_cs=pp_cs) d =
-  Document.regions (terms_doc ~pp_cs (d |> get_regions))
+  D.regions (terms_doc ~pp_cs (d |> get_regions))
 
 let to_html ?(pp_cs=pp_cs) (res : Top_result.t) (d: Modular_decomposition.t) : _ html =
   let total = Modular_decomp.n_regions d in
