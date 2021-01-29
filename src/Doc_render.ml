@@ -173,6 +173,9 @@ let regions_to_html ?(load=true) (regions : D.region list) =
              ]]]
     @ (if load then [H.script (H.Unsafe.data (regions_js id))] else []))
 
+let cast_to_html (h:D.html) : _ html =
+  (H.Unsafe.data (h:D.html :> string) : [>`Div] H.elt)
+
 (* display a document as HTML *)
 let to_html (doc:D.t) : [> Html_types.div] html =
   let mk_header ?a ~depth l : _ html = match depth with
@@ -271,8 +274,8 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     | D.Regions rs ->
        regions_to_html rs
 
-    | D.Html html ->
-      H.div ~a [html]
+    | D.Html h ->
+      H.div ~a [cast_to_html h]
 
     | _ ->
       (* protect against fast moving changes to {!Document.t} *)
