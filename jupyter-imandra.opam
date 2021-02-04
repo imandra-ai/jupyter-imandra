@@ -16,9 +16,10 @@ depends: [
   "ocaml-compiler-libs" {build}
   "containers"
   "imandra-client"
+  "imandra-document"
+  "tyxml"
   "jupyter-kernel"
   "digestif"
-  "tyxml"
   "uuidm"
   "logs"
   "ISO8601"

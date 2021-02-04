@@ -16,7 +16,8 @@
   (libraries digestif ; HACK: needs to be first -_-
              jupyter-kernel containers containers.unix unix logs
              compiler-libs.common compiler-libs.toplevel jupyter-imandra
-             imandra-client.lib imandra-document tyxml curly bytes octavius uuidm)
+             imandra-client.lib imandra-document imandra-document.tyxml
+             tyxml curly bytes uuidm)
   )
 
 (install
