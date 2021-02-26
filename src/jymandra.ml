@@ -91,7 +91,7 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
     | Some (ev,_) ->
-      let d = Event.to_doc ev in
+      let d = Event.to_doc ~proofs:true ev in
       let txt = mime_of_txt @@
         Document.to_string d
       and html =
