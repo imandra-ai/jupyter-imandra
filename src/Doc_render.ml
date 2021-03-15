@@ -336,8 +336,8 @@ let proof_alternatives proof callgraph =
             ["proof", D.block ~a:[D.A.cls "imandra-proof-top"] [proof]]);
          (match callgraph with
           | None -> []
-          | Some (lazy c) ->
-            ["call graph", D.graphviz @@ c]);
+          | Some c ->
+            ["call graph", D.graphviz c]);
         ])
 
 let proof_attempt_alternatives callgraph proof =
@@ -346,7 +346,7 @@ let proof_attempt_alternatives callgraph proof =
         [(match callgraph with
           | None -> []
           | Some callgraph ->
-            [ "call graph", D.graphviz @@ Lazy.force callgraph]);
+            [ "call graph", D.graphviz callgraph]);
          (match proof with
           | None -> []
           | Some proof ->
@@ -363,7 +363,7 @@ let proof_attempt_instances_alternatives instances callgraph proof =
          (match callgraph with
           | None -> []
           | Some callgraph ->
-            ["call graph", D.graphviz @@ Lazy.force callgraph]);
+            ["call graph", D.graphviz callgraph]);
          (match proof with
           | None -> []
           | Some proof ->
