@@ -67,10 +67,11 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
 (* auto-completion *)
 let complete pos str =
   let module IC = Completion in
+  let hist = History.State.get() in
   let start, stop, l =
     if pos > String.length str then 0,0, []
     else (
-      let {IC.start;stop;x=l} = IC.complete ~cursor_pos:pos str in
+      let {IC.start;stop;x=l} = IC.complete_at hist ~cursor_pos:pos str in
       start, stop, List.map (fun c -> c.IC.text) l
     )
   in
@@ -86,11 +87,15 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
     let module Isp = Completion.Inspect in
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
     Log.debug (fun k->k "inspection request %s :pos %d :lvl %d" c pos lvl);
-    match Isp.inspect c ~cursor_pos:pos with
+    let hist = History.State.get() in
+    match Isp.inspect_at hist c ~cursor_pos:pos with
     | None ->
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
-    | Some (ev,_) ->
+    | Some {text; descr; ev=None; _} ->
+      let txt = mime_of_txt @@ Printf.sprintf "%s\n%s" text descr in
+      Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt]}
+    | Some {ev=Some ev;_} ->
       let d = Event.to_doc ~proofs:true ev in
       let txt = mime_of_txt @@
         Document.to_string d
