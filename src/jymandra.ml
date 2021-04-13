@@ -12,6 +12,8 @@ let mime_of_html (h:_ H.elt) : C.mime_data =
 
 let mime_of_txt (s:string) : C.mime_data =
   {C.mime_type="text/plain"; mime_content=s; mime_b64=false}
+let mime_of_md (s:string) : C.mime_data =
+  {C.mime_type="text/markdown"; mime_content=s; mime_b64=false}
 
 module Res = struct
   module R = Evaluator.Res
@@ -97,12 +99,9 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
       Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt]}
     | Some {ev=Some ev;_} ->
       let d = Event.to_doc ~proofs:true ev in
-      let txt = mime_of_txt @@
-        Document.to_string d
-      and html =
-        mime_of_html @@ Doc_render.to_html d
-      in
-      Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt;html]}
+      let txt_md = mime_of_md @@ Document.to_string_markdown d
+      and html = mime_of_html @@ Doc_render.to_html d in
+      Ok {C.Kernel.iro_status="ok"; iro_found=true; iro_data=[txt_md;html]}
   with e ->
     let bt = Printexc.get_backtrace() in
     Error (Printexc.to_string e ^ bt)
