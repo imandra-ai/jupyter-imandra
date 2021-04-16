@@ -48,7 +48,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
   let open Lwt.Infix in
   Log.debug (fun k->k "parse %S" str);
   if str = "##coredump" then
-    let () = Imandra.coredump () in
+    let () = Coredump.into_file None in
     (Result.Ok (C.Kernel.ok (Some "Coredump written.")))
     |> Lwt.return
   else
@@ -61,7 +61,7 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
          (* Any exception that reaches here from imandra should indicate a
          problem, so we want to know about it *)
          Log.err (fun k->k "exn: %s\n%s\n%!" (Printexc.to_string _e) (Printexc.get_backtrace()));
-         Imandra.coredump ();
+         Coredump.into_file None;
          print_endline "exception, restart";
          Lwt.fail C.Restart
       )
