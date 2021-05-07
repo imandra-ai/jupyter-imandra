@@ -70,10 +70,11 @@ let run_ count str : C.Kernel.exec_status_ok C.or_error Lwt.t =
 let complete pos str =
   let module IC = Completion in
   let hist = History.State.get() in
+  let ctx = {IC.env = History.last_env hist; db = History.db hist} in
   let start, stop, l =
     if pos > String.length str then 0,0, []
     else (
-      let {IC.start;stop;x=l} = IC.complete_at hist ~cursor_pos:pos str in
+      let {IC.start;stop;x=l} = IC.complete_at ctx ~cursor_pos:pos str in
       start, stop, List.map (fun c -> c.IC.text) l
     )
   in
@@ -90,7 +91,8 @@ let inspect (r:C.Kernel.inspect_request) : (C.Kernel.inspect_reply_ok, string) r
     let {C.Kernel.ir_code=c; ir_cursor_pos=pos; ir_detail_level=lvl} = r in
     Log.debug (fun k->k "inspection request %s :pos %d :lvl %d" c pos lvl);
     let hist = History.State.get() in
-    match Isp.inspect_at hist c ~cursor_pos:pos with
+    let ctx = {Completion.env = History.last_env hist; db = History.db hist} in
+    match Isp.inspect_at ctx c ~cursor_pos:pos with
     | None ->
       (* not found *)
       Ok {C.Kernel.iro_status="ok"; iro_found=false; iro_data=[]}
