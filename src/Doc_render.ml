@@ -200,7 +200,8 @@ let to_html (doc:D.t) : [> Html_types.div] html =
     aux_content ~a ~depth doc
   and aux_content ~a ~depth doc : _ html=
     match D.view doc with
-    | D.Section s -> mk_header ~a ~depth [H.txt s]
+    | D.Section (s,l) ->
+      H.div (mk_header ~a ~depth [H.txt s] :: List.map (aux ~depth:(depth+1)) l)
     | D.String s -> H.txt s
     | D.Text s -> H.txt s
     | D.Pre s -> H.pre ~a [H.txt s]
