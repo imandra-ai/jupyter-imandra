@@ -151,6 +151,7 @@ let () =
   let socket_dir = ref None in
   let no_start_server = ref false in
   let no_backend = ref false in
+  let use_tcp = ref false in
 
   let config = Main.mk_config
     ~additional_args:[
@@ -166,6 +167,7 @@ let () =
       ("--socket-dir", Arg.String (fun s -> socket_dir := Some(s)), " Directory in which to create the socket used to communicate with the server");
       ("--no-start-server", Arg.Set no_start_server, " Don't try to start the server subprocess (use in combination with --address if you are running the server in a separate process)");
       ("--no-backend", Arg.Set no_backend, " no Imandra backend");
+      ("--tcp", Arg.Set use_tcp, " Use tcp to communicate with server");
     ]
     ~usage:"jupyter-imandra"
     ()
@@ -183,6 +185,7 @@ let () =
   ) else (
     Client.with_server
       ?address:!address
+      ~use_tcp:!use_tcp
       ?socket_dir:!socket_dir
       ~start_server:(not !no_start_server)
       ?server_name:!server_name
