@@ -4,16 +4,18 @@ open Imandra_client_lib
 let init ?(reason=false) () =
   Log.debug (fun k->k "initialize reason=%B" reason);
   Printexc.record_backtrace true;
-  Pconfig.State.Set.print_banner false;
+  Pconfig.(State.apply_op @@ Op_print_banner false);
   let syntax = if reason then Syntax.Reason else Syntax.Iml in
   Imandra_client_lib.Imandra.do_init ~syntax ~linenoise:false ();
   (* reflect jupyter imandra *)
   Topdirs.dir_directory @@ Imandra_interactive.Util_packages.ocamlfind_dir_of_lib "jupyter-imandra";
   (* setup some params *)
-  Pconfig.State.Set.push_top_results true;
-  Pconfig.State.Set.console_tags [Console.T.Waterfall; Console.T.Suggestions];
-  Pconfig.State.Set.redef true;
-  Pconfig.State.Set.timeout 60_000;
+  Pconfig.(State.apply_op_l [
+    Op_push_top_results true;
+    Op_console_tags [Console.T.Waterfall; Console.T.Suggestions];
+    Op_redef true;
+    Op_timeout 60_000;
+  ]);
   Log.debug (fun k->k "init done");
   ()
 
