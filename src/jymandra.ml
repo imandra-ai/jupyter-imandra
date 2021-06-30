@@ -157,8 +157,8 @@ let () =
 
   let config = Main.mk_config
     ~additional_args:[
-      ("--lockdown", Arg.Int(fun lockdown_uuid -> Pconfig.State.Set.lockdown (Some lockdown_uuid)), " Lockdown mode to the given user id");
-      ("--coredump-dir", Arg.String(fun dir -> Pconfig.State.Set.coredump_dir (Some dir)), " Enable coredumps and write them to given dir");
+      ("--lockdown", Arg.Int(fun lockdown_uuid -> Pconfig.(State.apply_op @@ Op_lockdown (Some lockdown_uuid))), " Lockdown mode to the given user id");
+      ("--coredump-dir", Arg.String(fun dir -> Pconfig.(State.apply_op @@ Op_coredump_dir (Some dir))), " Enable coredumps and write them to given dir");
       ("--require", Arg.String Imandra.require_lib_at_init, " Require given library at init");
       ("--require-use", Arg.String (Imandra.require_lib_at_init ~meth:`Use), " Require given library at init using `#use`");
       ("--require-mod-use", Arg.String (Imandra.require_lib_at_init ~meth:`Mod_use), " Require given library at init using `#mod_use`");
